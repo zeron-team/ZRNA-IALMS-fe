@@ -1,0 +1,14 @@
+.lesson-header {
+  height: 65px;
+  background-color: var(--sidebar-bg);
+  color: #fff;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  padding: 0 2rem;
+  width: 100%;
+}
+.lesson-header-back a { color: #9CA3AF; text-decoration: none; }
+.lesson-header-progress { text-align: center; }
+.lesson-header-progress span { font-size: 0.8rem; opacity: 0.7; }
+.lesson-header-title { text-align: right; font-weight: 600; }

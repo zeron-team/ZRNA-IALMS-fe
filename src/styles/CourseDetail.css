@@ -1,0 +1,106 @@
+.course-detail-panel {
+  padding: 2.5rem;
+}
+
+.course-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 80ch; /* Mejora la legibilidad */
+}
+
+.curriculum-header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.curriculum-list {
+  margin-top: 2.5rem;
+}
+
+.module-step {
+  display: flex;
+  position: relative;
+  gap: 2rem;
+  padding-left: 1rem;
+}
+
+.module-step:not(:last-child) {
+  padding-bottom: 2.5rem;
+}
+
+.module-step-indicator {
+  position: absolute;
+  left: -22px; /* Centra el círculo en la línea */
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.indicator-circle {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: var(--panel-bg);
+  color: var(--text-secondary);
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  z-index: 2;
+  border: 3px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.indicator-line {
+  width: 3px;
+  flex-grow: 1;
+  background-color: var(--border-color);
+  z-index: 1;
+}
+
+.module-step-content {
+  padding-top: 0.5rem;
+  width: 100%;
+}
+.module-step-content h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.module-step-content p {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-secondary);
+}
+
+/* --- Estilos por Estado --- */
+.module-step.completed .indicator-circle,
+.module-step.terminado .indicator-circle {
+  background-color: var(--success);
+  color: #fff;
+  border-color: var(--success);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+}
+.module-step.completed .indicator-line,
+.module-step.terminado .indicator-line {
+  background: var(--success);
+}
+
+.module-step.cursando .indicator-circle {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.module-step.locked .indicator-circle {
+  background-color: #f0f0f0;
+  color: #ccc;
+  border-color: #f0f0f0;
+}
+.module-step.locked h4, .module-step.locked p {
+  color: #ccc;
+}

@@ -1,3 +1,32 @@
+
+
+
+
+
+
+Quick setup — if you’ve done this kind of thing before
+or	
+	
+Get started by creating a new file or uploading an existing file. We recommend every repository include a README, LICENSE, and .gitignore.
+…or create a new repository on the command line
+* ZRNA-IALMS-fe
+```text
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/zeron-team/ZRNA-IALMS-fe.git
+git push -u origin main
+```
+…or push an existing repository from the command line
+```text
+git remote add origin https://github.com/zeron-team/ZRNA-IALMS-fe.git
+git branch -M main
+git push -u origin main
+```
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

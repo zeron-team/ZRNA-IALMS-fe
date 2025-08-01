@@ -1,0 +1,13 @@
+.star-rating {
+  display: flex;
+  gap: 2px;
+}
+.star {
+  font-size: 1.1rem;
+}
+.star.filled {
+  color: #f59e0b; /* Amarillo/Dorado */
+}
+.star.empty {
+  color: #d1d5db; /* Gris claro */
+}

@@ -1,0 +1,31 @@
+.admin-page-container {
+  width: 100%;
+}
+
+.courses-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.courses-table th, .courses-table td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.courses-table th {
+  background-color: #F9FAFB;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.courses-table tr:hover {
+  background-color: #F9FAFB;
+}
+
+.actions-cell {
+  white-space: nowrap;
+}

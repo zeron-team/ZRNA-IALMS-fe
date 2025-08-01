@@ -1,0 +1,89 @@
+.login-page {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 2rem 0;
+  background-color: var(--background);
+}
+
+.login-panel {
+  display: flex;
+  width: 900px;
+  max-width: 95%;
+  background-color: var(--panel-bg);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.login-promo {
+  flex: 1;
+  background: linear-gradient(45deg, #111827, var(--accent));
+  color: white;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-promo h1 { font-size: 2.5rem; }
+.login-promo p { font-size: 1.1rem; opacity: 0.9; }
+
+.login-form-section {
+  flex: 1;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-form-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.login-form-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-form-section input,
+.login-form-section textarea,
+.login-form-section select {
+  border: 1px solid var(--border-color);
+  padding: 12px 15px;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.login-form-section input:focus,
+.login-form-section textarea:focus,
+.login-form-section select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.error-message {
+  color: var(--danger);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* --- Responsividad --- */
+@media (max-width: 920px) {
+  .login-promo { display: none; }
+  .login-panel { flex-direction: column; width: 90%; max-width: 400px; height: auto; }
+}

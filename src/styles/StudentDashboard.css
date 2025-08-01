@@ -1,0 +1,83 @@
+/*  frontend/src/styles/StudentDashboard.css  */
+
+.dashboard-header p {
+  margin-top: -1.5rem;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.dashboard-main-column {
+  grid-column: span 2;
+}
+
+.dashboard-side-column {
+  grid-column: span 1;
+}
+
+.dashboard-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+/* Tarjeta de Curso en Progreso */
+.progress-course-card {
+  background-color: var(--panel-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.progress-course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+.progress-course-card h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--accent);
+}
+.progress-course-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+/* Tarjeta de Recomendación */
+.recommendation-card {
+  background: linear-gradient(135deg, var(--sidebar-bg) 0%, #34495e 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.recommendation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+.recommendation-card h3 {
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #ecf0f1;
+}
+.recommendation-card p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 1rem;
+}

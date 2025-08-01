@@ -1,0 +1,32 @@
+/* frontend/src/styles/global.css */
+:root {
+  --sidebar-bg: #111827;
+  --background: #F9FAFB;
+  --panel-bg: #FFFFFF;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --accent: #6366F1; /* Índigo */
+  --accent-hover: #4F46E5;
+  --accent-glow: rgba(99, 102, 241, 0.5);
+  --border-color: #E5E7EB;
+  --danger: #EF4444;
+  --success: #10B981;
+}
+
+body {
+  font-family: 'Poppins', sans-serif; /* <-- Fuente actualizada */
+  background-color: var(--background);
+  margin: 0;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: var(--accent-hover);
+}

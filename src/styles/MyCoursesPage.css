@@ -1,0 +1,47 @@
+/*  frontend/src/styles/MyCoursesPage.css */
+
+.my-courses-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.my-course-card {
+  background-color: var(--panel-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+  transition: all 0.3s ease;
+}
+
+.my-course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.my-course-card-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.my-course-card h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.my-course-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.my-course-card-footer {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
