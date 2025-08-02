@@ -11,10 +11,10 @@ import AdminRoute from './auth/AdminRoute';
 
 // --- Componentes y Páginas ---
 import Layout from './components/Layout';
+import CourseList from './components/CourseList';
+import CourseDetail from './components/CourseDetail';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import CourseDetail from './components/CourseDetail';
-import CourseList from './components/CourseList';
 import ModuleViewPage from './pages/ModuleViewPage';
 import ManageCoursesPage from './pages/ManageCoursesPage';
 import AdminUsersPage from './pages/AdminUsersPage';
@@ -22,9 +22,11 @@ import MyCoursesPage from './pages/MyCoursesPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import LearningPathsPage from './pages/LearningPathsPage';
-import HomePage from './pages/HomePage'; // <-- Componente principal para "/"
+import HomePage from './pages/HomePage';
+import LandingPage from './pages/LandingPage';
+import CheckEmailPage from './pages/CheckEmailPage';
+import EmailVerifiedPage from './pages/EmailVerifiedPage';
 
-//import './App_old.css';
 
 function App() {
   return (
@@ -33,17 +35,18 @@ function App() {
         <Layout>
           <Routes>
             {/* Rutas Públicas */}
+            <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/check-email" element={<CheckEmailPage />} />
+            <Route path="/verify-email" element={<EmailVerifiedPage />} />
 
             {/* --- Rutas Protegidas --- */}
 
-            {/* La ruta principal AHORA es el 'Inicio' (Dashboard o Galería para Admins) */}
-            <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+            {/* La ruta principal para usuarios logueados */}
+            <Route path="/dashboard" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
 
-            {/* 2. Se añade la nueva ruta para la Galería de Cursos */}
             <Route path="/courses" element={<ProtectedRoute><CourseList /></ProtectedRoute>} />
-
             <Route path="/course/:id" element={<ProtectedRoute><CourseDetail /></ProtectedRoute>} />
             <Route path="/module/:moduleId" element={<ProtectedRoute><ModuleViewPage /></ProtectedRoute>} />
             <Route path="/my-courses" element={<ProtectedRoute><MyCoursesPage /></ProtectedRoute>} />

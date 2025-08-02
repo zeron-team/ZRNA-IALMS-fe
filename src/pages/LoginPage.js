@@ -15,9 +15,9 @@ const LoginPage = () => {
     setError('');
     try {
       await login(username, password);
-      navigate('/');
+      navigate('/dashboard'); // <-- Redirige al dashboard
     } catch (err) {
-      setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.');
+      setError(err.message || 'Error al iniciar sesión.');
     }
   };
 

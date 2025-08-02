@@ -1,0 +1,53 @@
+/* frontend/src/pages/CheckEmailPage.css */
+
+.check-email-page {
+  display: grid;
+  place-items: center;
+  padding: 4rem 1rem;
+}
+
+.check-email-panel {
+  max-width: 600px;
+  text-align: center;
+  background-color: var(--panel-bg);
+  padding: 3rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.check-email-icon {
+  font-size: 4rem;
+  color: var(--accent);
+  margin-bottom: 2rem;
+  animation: fly-in 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.check-email-panel h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.check-email-panel p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.spam-notice {
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  opacity: 0.8;
+}
+
+@keyframes fly-in {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

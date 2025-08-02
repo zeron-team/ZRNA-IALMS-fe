@@ -56,11 +56,13 @@ export const api = {
       body: formData,
     });
   },
-  registerUser: (userData) => request('/users/', {
+  registerUser: (userData) => request('/auth/register', {
     method: 'POST',
     body: JSON.stringify(userData),
   }),
   getCurrentUser: () => request('/users/me'),
+
+  verifyEmail: (token) => request(`/auth/verify-email?token=${token}`),
 
   // --- Vistas Públicas y Generales ---
   getCourses: () => request('/courses/'),
@@ -108,6 +110,7 @@ export const api = {
   // --- Dashboard de Estudiante ---
   getStudentDashboard: () => request('/dashboard/student'),
   getQuizStatus: (moduleId) => request(`/quizzes/module/${moduleId}/status`),
+  getCategoriesWithCourses: () => request('/categories/with-courses'),
 
   getModuleDetail: (moduleId) => request(`/modules/${moduleId}`),
   completeModule: (moduleId) => request(`/modules/${moduleId}/complete`, { method: 'POST' }),

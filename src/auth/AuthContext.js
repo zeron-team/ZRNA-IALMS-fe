@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('token', data.access_token);
     const userData = await api.getCurrentUser();
     setUser(userData);
+    return userData;
   };
 
   // --- ESTA ES LA FUNCIÓN IMPORTANTE ---

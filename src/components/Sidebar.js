@@ -22,7 +22,7 @@ const Sidebar = () => {
 
   // 2. Modifica el array de enlaces
   const navLinks = [
-    { label: 'Inicio', path: '/', icon: <FaHome />, roles: ['student', 'instructor', 'admin'] },
+    { label: 'Inicio', path: '/dashboard', icon: <FaHome />, roles: ['student', 'instructor', 'admin'] },
     { label: 'Galería de Cursos', path: '/courses', icon: <FaThLarge />, roles: ['student', 'instructor', 'admin'] },
     { label: 'Mis Cursos', path: '/my-courses', icon: <FaBookOpen />, roles: ['student'] },
     { label: 'Administrar Cursos', path: '/manage-courses', icon: <FaUserGraduate />, roles: ['instructor', 'admin'] },
