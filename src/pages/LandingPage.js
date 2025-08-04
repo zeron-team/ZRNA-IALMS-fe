@@ -19,7 +19,6 @@ const LandingPage = () => {
 
   return (
     <div className="landing-container">
-      {/* --- Sección Hero --- */}
       <header className="hero-section">
         <div className="hero-content">
           <h1>El Futuro del Aprendizaje es Impulsado por IA</h1>
@@ -35,7 +34,6 @@ const LandingPage = () => {
         </div>
       </header>
 
-      {/* --- NUEVA SECCIÓN: Por Qué IA --- */}
       <section className="why-ai-section">
         <h2>¿Por Qué IA en la Educación?</h2>
         <p className="section-subtitle">
@@ -45,22 +43,21 @@ const LandingPage = () => {
           <div className="feature-card">
             <FaDraftingCompass className="feature-icon" />
             <h3>Aprendizaje Personalizado</h3>
-            <p>La IA diseña Rutas de Conocimiento únicas y sugiere cursos basados en tus objetivos y progreso, creando un camino educativo solo para ti.</p>
+            <p>La IA diseña Rutas de Conocimiento únicas y sugiere cursos basados en tus objetivos y progreso.</p>
           </div>
           <div className="feature-card">
             <FaBrain className="feature-icon" />
             <h3>Contenido Siempre Relevante</h3>
-            <p>Olvídate de los cursos obsoletos. Nuestra IA genera lecciones y quizzes basados en la información más actual del mundo tecnológico.</p>
+            <p>Nuestra IA genera currículas y lecciones basadas en la información más actual del mundo tecnológico.</p>
           </div>
           <div className="feature-card">
             <FaRocket className="feature-icon" />
             <h3>Evaluación Inteligente</h3>
-            <p>Nuestros quizzes, creados por IA, no solo miden tu conocimiento, sino que te ayudan a identificar áreas de mejora para un aprendizaje más efectivo.</p>
+            <p>Nuestros quizzes, creados por IA, no solo miden tu conocimiento, sino que te ayudan a mejorar.</p>
           </div>
         </div>
       </section>
 
-      {/* --- Sección Cursos por Categoría --- */}
       <section className="featured-courses-section">
         <h2>Explora Nuestros Cursos</h2>
         {courseData.map(category => (

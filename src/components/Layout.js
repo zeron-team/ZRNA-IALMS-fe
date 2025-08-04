@@ -1,22 +1,28 @@
 // frontend/src/components/Layout.js
 
-import React, { useState } from 'react'; // <-- 1. Importa useState
+import React, { useState } from 'react';
 import { useAuth } from '../auth/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
-import Logo from './Logo';
 import WhatsAppButton from './WhatsAppButton';
 import ContactModal from './ContactModal';
-import { FaBell, FaUserCircle } from 'react-icons/fa';
+import { FaBell, FaBars, FaTimes, FaSignOutAlt } from 'react-icons/fa';
 import '../styles/Layout.css';
 
 const Layout = ({ children }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // --- 2. DECLARA LA VARIABLE DE ESTADO ---
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Oculta el layout principal en la vista de lección para una experiencia inmersiva
+  if (location.pathname.startsWith('/module/')) {
+    return <main>{children}</main>;
+  }
 
   const handleLogout = () => {
     logout();
@@ -27,39 +33,58 @@ const Layout = ({ children }) => {
 
   return (
     <div className="app-container">
-      {user && <Sidebar />}
+      {user && <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />}
 
       <div className={mainViewClass}>
         <header className="layout-header">
-          <Link to={user ? "/dashboard" : "/"}>
-             <Logo />
-          </Link>
+          <div className="header-left">
+            {user && (
+              <button className="hamburger-btn" onClick={() => setIsSidebarOpen(true)}>
+                <FaBars />
+              </button>
+            )}
+            <Link to={user ? "/dashboard" : "/"} className="header-brand-text">
+               Zeron Academy
+            </Link>
+          </div>
 
-          {user && (
+          {user ? (
             <div className="header-user-menu">
-              <div className="notification-icon">
+              <div className="notification-icon" title="Notificaciones">
                 <FaBell />
                 <div className="badge">3</div>
               </div>
-              <div className="user-info">
-                <FaUserCircle className="user-avatar" />
-                <span>{user.username}</span>
-              </div>
+              {/* Se elimina la sección de perfil del header */}
               <button onClick={handleLogout} className="btn-logout">
-                Cerrar Sesión
+                <FaSignOutAlt/>
+                <span className="logout-text">Cerrar Sesión</span>
               </button>
             </div>
+          ) : (
+              <>
+                <div className="header-public-menu">
+                  <Link to="/login" className="btn btn-secondary">Iniciar Sesión</Link>
+                <Link to="/register" className="btn btn-primary">Registrarse</Link>
+              </div>
+              <button className="hamburger-btn public" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+              </button>
+            </>
           )}
         </header>
 
-        <main className="main-content">{children}</main>
+        {!user && isMobileMenuOpen && (
+          <div className="mobile-menu">
+            <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>Iniciar Sesión</Link>
+            <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>Registrarse</Link>
+          </div>
+        )}
 
+        <main className="main-content">{children}</main>
         <Footer />
       </div>
 
-      {/* --- 3. USA EL ESTADO PARA MOSTRAR/OCULTAR --- */}
       <WhatsAppButton onClick={() => setIsContactModalOpen(true)} />
-
       {isContactModalOpen && <ContactModal onClose={() => setIsContactModalOpen(false)} />}
     </div>
   );

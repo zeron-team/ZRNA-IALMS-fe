@@ -1,0 +1,122 @@
+.admin-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columnas para las estadísticas */
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+/* --- Tarjetas de Estadísticas --- */
+.stat-card {
+  background-color: var(--panel-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-icon {
+  font-size: 1.8rem;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: white;
+  display: grid;
+  place-items: center;
+}
+.stat-icon.users { background-color: var(--accent); }
+.stat-icon.courses { background-color: var(--success); }
+.stat-icon.enrollments { background-color: #f59e0b; }
+.stat-icon.categories { background-color: #8B5CF6; }
+
+.stat-info h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+.stat-info p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* --- Sección de Inscripciones --- */
+/* --- Tabla de Inscripciones Rediseñada --- */
+.enrollment-panel {
+  margin-top: 2rem;
+}
+
+.enrollment-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+}
+
+.enrollment-table th, .enrollment-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.enrollment-table th {
+  background-color: #F9FAFB;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.enrollment-table tr:hover {
+  background-color: #F9FAFB;
+}
+
+.enrollment-table td {
+  font-weight: 500;
+}
+
+.enrollment-table tr:last-child td {
+  border-bottom: none;
+}
+
+.course-enrollment-section {
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.course-enrollment-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.course-enrollment-section h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.course-enrollment-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.course-enrollment-section li {
+  color: var(--text-secondary);
+}

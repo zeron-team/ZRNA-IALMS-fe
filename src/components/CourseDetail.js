@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { FaCheck, FaLock } from 'react-icons/fa';
-import '../styles/CourseDetail.css'; // Asegúrate de tener y usar este archivo CSS
+import '../styles/CourseDetail.css'; // Asegúrate de que este archivo exista y tenga los estilos del timeline
 
 const CourseDetail = () => {
   const [course, setCourse] = useState(null);
@@ -32,10 +32,12 @@ const CourseDetail = () => {
     fetchDetails();
   }, [fetchDetails]);
 
+  // Vista de carga
   if (loading) {
     return <div className="page-container"><p>Cargando detalles del curso...</p></div>;
   }
 
+  // Vista de error o si el curso no se encuentra
   if (!course) {
     return (
       <div className="page-container">
@@ -44,12 +46,13 @@ const CourseDetail = () => {
         </div>
         <div className="page-panel">
           <p>Curso no encontrado o el ID es inválido.</p>
-          <Link to="/courses">&larr; Volver al catálogo</Link>
+          <Link to="/courses" className="btn btn-secondary">&larr; Volver al catálogo</Link>
         </div>
       </div>
     );
   }
 
+  // Vista principal con los detalles del curso
   return (
     <div className="page-container">
       <div className="page-header">

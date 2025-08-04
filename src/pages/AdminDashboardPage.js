@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
-
+import { FaUsers, FaBook, FaUserCheck, FaLayerGroup } from 'react-icons/fa';
+import '../styles/AdminDashboardPage.css';
 
 const AdminDashboardPage = () => {
   const [stats, setStats] = useState(null);
@@ -13,10 +14,13 @@ const AdminDashboardPage = () => {
     Promise.all([
       api.getDashboardStats(),
       api.getDetailedEnrollments()
-    ]).then(([statsData, enrollmentsData]) => {
+    ])
+    .then(([statsData, enrollmentsData]) => {
       setStats(statsData);
       setEnrollments(enrollmentsData);
-    }).catch(console.error).finally(() => setLoading(false));
+    })
+    .catch(console.error)
+    .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <p>Cargando dashboard...</p>;
@@ -28,25 +32,61 @@ const AdminDashboardPage = () => {
       </div>
 
       {/* --- Tarjetas de Estadísticas --- */}
-      <div className="stats-cards">
-        <div className="stat-card"><h2>{stats?.total_users}</h2><p>Usuarios Totales</p></div>
-        <div className="stat-card"><h2>{stats?.total_courses}</h2><p>Cursos Totales</p></div>
-        <div className="stat-card"><h2>{stats?.total_enrollments}</h2><p>Inscripciones Totales</p></div>
+      <div className="admin-dashboard-grid">
+        {stats && (
+            <>
+              <div className="stat-card">
+                <div className="stat-icon users"><FaUsers/></div>
+                <div className="stat-info">
+                  <h2>{stats.total_users}</h2>
+                  <p>Usuarios Totales</p>
+                </div>
+              </div>
+
+              <div className="stat-card">
+                <div className="stat-icon enrollments"><FaUserCheck/></div>
+                <div className="stat-info">
+                  <h2>{stats.total_enrollments}</h2>
+                  <p>Inscripciones Totales</p>
+                </div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-icon courses"><FaBook/></div>
+                <div className="stat-info">
+                  <h2>{stats.total_courses}</h2>
+                  <p>Cursos Totales</p>
+                </div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-icon categories"><FaLayerGroup/></div>
+                <div className="stat-info">
+                  <h2>{stats.total_categories}</h2>
+                  <p>Categorías Totales</p>
+                </div>
+              </div>
+            </>
+        )}
       </div>
 
-      {/* --- Lista Detallada de Inscripciones --- */}
-      <div className="page-panel">
+      {/* --- Panel de Inscripciones por Curso --- */}
+      <div className="page-panel enrollment-panel">
         <h2>Inscripciones por Curso</h2>
-        {enrollments.map(course => (
-          <div key={course.id} className="course-enrollment-section">
-            <h3>{course.title} ({course.enrolled_students.length} inscritos)</h3>
-            <ul>
-              {course.enrolled_students.map(student => (
-                <li key={student.id}>{student.username} ({student.email})</li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <table className="enrollment-table">
+          <thead>
+          <tr>
+            <th>Título del Curso</th>
+              <th>Cantidad de Inscritos</th>
+            </tr>
+          </thead>
+          <tbody>
+            {enrollments.map(course => (
+              <tr key={course.id}>
+                <td>{course.title}</td>
+                <td>{course.enrollment_count}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

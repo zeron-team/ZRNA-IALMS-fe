@@ -15,14 +15,14 @@
 
 .node {
   position: absolute;
-  width: 5px;   /* <-- Tamaño reducido */
-  height: 5px;  /* <-- Tamaño reducido */
+  width: 2px;
+  height: 2px;
   background-color: var(--accent);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--accent-glow);
+  /* Se reduce drásticamente el tamaño y la propagación de la sombra */
+  box-shadow: 0 0 4px var(--accent-glow);
   animation: pulse-logo-neuron 4s infinite ease-in-out;
 }
-
 @keyframes pulse-logo-neuron {
   0%, 100% { transform: scale(0.8); opacity: 0.7; }
   50% { transform: scale(1.4); opacity: 1; }

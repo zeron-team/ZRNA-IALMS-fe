@@ -1,20 +1,20 @@
 /* frontend/src/styles/global.css */
 :root {
   --sidebar-bg: #111827;
-  --background: #F9FAFB;
+  --background: #F3F4F6;
   --panel-bg: #FFFFFF;
-  --text-primary: #1F2937;
-  --text-secondary: #6B7280;
-  --accent: #6366F1; /* Índigo */
-  --accent-hover: #4F46E5;
-  --accent-glow: rgba(99, 102, 241, 0.5);
+  --text-primary: #6e788d;
+  --text-secondary: #6e788d;
+  --accent: #5e62b6; /* Indigo */
+  --accent-hover: #4338CA;
+  --accent-light: #EEF2FF;
   --border-color: #E5E7EB;
   --danger: #EF4444;
   --success: #10B981;
 }
 
 body {
-  font-family: 'Poppins', sans-serif; /* <-- Fuente actualizada */
+  font-family: 'Poppins', sans-serif;
   background-color: var(--background);
   margin: 0;
   color: var(--text-primary);

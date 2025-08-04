@@ -3,15 +3,17 @@
 const API_URL = "http://localhost:8000";
 
 /**
- * Función helper para realizar todas las peticiones a la API,
- * añadiendo automáticamente el token de autenticación si existe.
+ * Función helper para realizar todas las peticiones a la API.
+ * - Añade automáticamente el token de autenticación.
+ * - Maneja errores comunes y de sesión expirada (401).
+ * - Previene llamadas a la API con IDs indefinidos.
  */
 const request = async (endpoint, options = {}) => {
-  if (endpoint.includes("undefined")) {
+  if (String(endpoint).includes("undefined")) {
     console.error("Llamada a la API cancelada por ID indefinido:", endpoint);
-    // Devuelve una promesa que nunca se resuelve o lanza un error controlado
     return Promise.reject(new Error("ID de recurso inválido."));
   }
+
   const token = localStorage.getItem('token');
   const headers = {
     'Content-Type': 'application/json',
@@ -24,12 +26,13 @@ const request = async (endpoint, options = {}) => {
 
   const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
 
+  if (response.status === 401) {
+    localStorage.removeItem('token');
+    window.location.href = '/'; // Redirige a la landing page
+    throw new Error("Tu sesión ha expirado. Por favor, inicia sesión de nuevo.");
+  }
+
   if (!response.ok) {
-    if (response.status === 401) {
-      localStorage.removeItem('token');
-      // Descomentar para forzar redirección al login si un token expira
-      // window.location.href = '/login';
-    }
     const errorData = await response.json();
     throw new Error(errorData.detail || 'Ocurrió un error en la petición');
   }
@@ -45,7 +48,7 @@ const request = async (endpoint, options = {}) => {
 // --- Objeto ÚNICO 'api' con TODOS los métodos ---
 export const api = {
 
-  // --- Autenticación y Perfil ---
+  // --- Autenticación y Verificación ---
   login: (username, password) => {
     const formData = new URLSearchParams();
     formData.append('username', username);
@@ -60,22 +63,36 @@ export const api = {
     method: 'POST',
     body: JSON.stringify(userData),
   }),
-  getCurrentUser: () => request('/users/me'),
-
   verifyEmail: (token) => request(`/auth/verify-email?token=${token}`),
 
-  // --- Vistas Públicas y Generales ---
+  // --- Datos del Usuario Logueado ---
+  getCurrentUser: () => request('/users/me'),
+
+  // --- Vistas Generales ---
   getCourses: () => request('/courses/'),
   getCourseDetail: (courseId) => request(`/courses/${courseId}`),
   getCourseSummary: (courseId) => request(`/courses/${courseId}/summary`),
+  getCategories: () => request('/categories/'),
+  getCategoriesWithCourses: () => request('/categories/with-courses'),
   getLearningPaths: () => request('/learning-paths/'),
   getLearningPathDetail: (pathId) => request(`/learning-paths/${pathId}`),
+  getModuleDetail: (moduleId) => request(`/modules/${moduleId}`),
+
+  // --- Dashboard de Estudiante ---
+  getStudentDashboard: () => request('/dashboard/student'),
 
   // --- Acciones de Estudiante ---
   enrollInCourse: (courseId) => request(`/courses/${courseId}/enroll`, { method: 'POST' }),
   getMyEnrolledCourses: () => request('/my-courses'),
-  // --- Acciones de Instructor y Admin ---
-  getMyTaughtCourses: () => request('/users/me/courses'), // Para la página "Administrar Cursos"
+  getQuizForModule: (moduleId) => request(`/quizzes/module/${moduleId}`),
+  getQuizStatus: (moduleId) => request(`/quizzes/module/${moduleId}/status`),
+  submitQuiz: (moduleId, answers) => request(`/quizzes/module/${moduleId}/submit`, {
+    method: 'POST',
+    body: JSON.stringify(answers),
+  }),
+
+  // --- Acciones de Instructor / Admin ---
+  getMyTaughtCourses: () => request('/users/me/courses'),
   createCourse: (courseData) => request('/courses/', {
     method: 'POST',
     body: JSON.stringify(courseData),
@@ -106,18 +123,4 @@ export const api = {
   }),
   getDashboardStats: () => request('/admin/dashboard-stats'),
   getDetailedEnrollments: () => request('/admin/enrollments'),
-
-  // --- Dashboard de Estudiante ---
-  getStudentDashboard: () => request('/dashboard/student'),
-  getQuizStatus: (moduleId) => request(`/quizzes/module/${moduleId}/status`),
-  getCategoriesWithCourses: () => request('/categories/with-courses'),
-  getCategories: () => request('/categories/'),
-  getModuleDetail: (moduleId) => request(`/modules/${moduleId}`),
-  completeModule: (moduleId) => request(`/modules/${moduleId}/complete`, { method: 'POST' }),
-  getQuizForModule: (moduleId) => request(`/quizzes/module/${moduleId}`),
-  submitQuiz: (moduleId, answers) => request(`/quizzes/module/${moduleId}/submit`, {
-    method: 'POST',
-    body: JSON.stringify(answers),
-  }),
-
 };
