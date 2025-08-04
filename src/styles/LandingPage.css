@@ -1,27 +1,94 @@
 /* frontend/src/pages/LandingPage.css  */
 
-.landing-container { width: 100%; }
-
+/* --- HERO SECTION --- */
 .hero-section {
   position: relative;
   display: flex;
   align-items: center;
-  padding: 8rem 4rem;
+  padding: 8rem 5%;
   background-color: var(--sidebar-bg);
   color: #fff;
   overflow: hidden;
+  min-height: 80vh;
+}
+.hero-content {
+  max-width: 50%;
+  z-index: 2;
+}
+.hero-content h1 {
+  font-size: 3.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: #9CA3AF;
+  margin-bottom: 2.5rem;
+  max-width: 50ch;
+}
+.hero-cta { display: flex; gap: 1rem; }
+.btn-lg { padding: 1rem 2rem; font-size: 1.1rem; }
+.hero-visual {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 50%;
+  z-index: 1;
 }
 
-.featured-courses-section {
-  padding: 6rem 4rem;
-}
-.featured-courses-section h2 {
+/* --- WHY AI SECTION --- */
+.why-ai-section {
+  padding: 6rem 5%;
+  background-color: var(--panel-bg);
   text-align: center;
+}
+.why-ai-section h2 {
   font-size: 2.5rem;
-  margin-bottom: 4rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+.why-ai-section .section-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 70ch;
+  margin: 0 auto 4rem auto;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.feature-card {
+  text-align: left;
+  padding: 2rem;
+}
+.feature-icon {
+  font-size: 2.5rem;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+.feature-card h3 { font-size: 1.25rem; margin-bottom: 1rem; font-weight: 600; }
+.feature-card p { color: var(--text-secondary); line-height: 1.6; }
+
+/* --- FEATURED COURSES SECTION --- */
+.featured-courses-section {
+  padding: 6rem 5%;
+}
+.featured-courses-section .course-card h2 {
+  font-size: 1.2rem; /* Reduce el tamaño del título */
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 .category-row {
   margin-bottom: 4rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .category-row h3 {
   font-size: 1.8rem;
@@ -29,24 +96,3 @@
   border-bottom: 2px solid var(--accent-light);
   padding-bottom: 1rem;
 }
-
-
-.hero-content { max-width: 600px; z-index: 2; }
-.hero-content h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 1.5rem; }
-.hero-subtitle { font-size: 1.2rem; color: #9CA3AF; margin-bottom: 2.5rem; }
-.hero-cta { display: flex; gap: 1rem; }
-.btn-lg { padding: 1rem 2rem; font-size: 1.1rem; }
-.hero-visual { position: absolute; top: 50%; left: 60%; transform: translateY(-50%); z-index: 1; }
-
-.how-it-works { padding: 6rem 4rem; text-align: center; background-color: var(--panel-bg); }
-.how-it-works h2 { font-size: 2.5rem; margin-bottom: 4rem; font-weight: 700; }
-.steps-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; }
-.step-card { padding: 2rem; }
-.step-icon-wrapper {
-  width: 80px; height: 80px; margin: 0 auto 2rem auto;
-  background-color: var(--accent-light);
-  border-radius: 50%; display: grid; place-items: center;
-}
-.step-icon { font-size: 2.5rem; color: var(--accent); }
-.step-card h3 { font-size: 1.25rem; margin-bottom: 1rem; font-weight: 600; }
-.step-card p { color: var(--text-secondary); line-height: 1.6; }

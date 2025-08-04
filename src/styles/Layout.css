@@ -26,16 +26,22 @@
 
 /* --- HEADER PROFESIONAL --- */
 .layout-header {
-  height: 65px;
-  padding: 0 2.5rem;
+  height: 70px;
+  padding: 0 2rem;
   background-color: var(--panel-bg);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Alinea los elementos a los extremos */
   position: sticky;
   top: 0;
   z-index: 10;
-  box-sizing: border-box;
+}
+
+.header-user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .header-title {
@@ -59,50 +65,49 @@
 
 .notification-icon {
   position: relative;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   cursor: pointer;
   color: var(--text-secondary);
-  transition: color 0.2s;
 }
+
 .notification-icon:hover {
   color: var(--text-primary);
 }
 
 .badge {
-  position: absolute;
-  top: -5px;
-  right: -8px;
-  background-color: var(--danger);
-  color: white;
-  font-size: 0.7rem;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-weight: bold;
+  position: absolute; top: -5px; right: -8px; background-color: var(--danger);
+  color: white; font-size: 0.7rem; width: 16px; height: 16px;
+  border-radius: 50%; display: grid; place-items: center; font-weight: 500;
   border: 2px solid var(--panel-bg);
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  font-size: 0.9rem;
+  gap: 0.5rem;
+  font-weight: 500;
 }
 
-.logout-button {
-  border: none;
-  background-color: var(--danger);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s;
+.user-avatar {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
 }
-.logout-button:hover {
-  background-color: var(--danger-hover);
+
+.btn-logout {
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover {
+  background-color: var(--danger);
+  border-color: var(--danger);
+  color: white;
 }
 
 /* --- FOOTER --- */

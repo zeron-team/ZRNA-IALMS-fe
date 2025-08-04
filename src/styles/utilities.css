@@ -1,16 +1,13 @@
 /* src/styles/utilities.css */
 
-/* --- CLASES DE UTILIDAD REUTILIZABLES --- */
-
 /* Paneles y Contenedores */
 .page-container { width: 100%; box-sizing: border-box; }
 .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
 .page-header h1 {
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  margin: 0;
-  font-size: 2.25rem;
+  font-weight: 700;
+  font-size: 2rem;
   color: var(--text-primary);
+  letter-spacing: -0.025em;
 }
 .page-panel {
   background-color: var(--panel-bg);
@@ -20,24 +17,26 @@
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-/* Sistema de Botones */
+/* Sistema de Botones Refinado */
 .btn {
-  border: 1px solid transparent; padding: 0.7rem 1.2rem; border-radius: 8px;
-  font-size: 0.9rem; font-weight: 600; cursor: pointer;
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: 1px solid transparent;
+  padding: 0.6rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 .btn-primary { background-color: var(--accent); color: white; }
 .btn-primary:hover { background-color: var(--accent-hover); }
-.btn-success { background-color: var(--success); color: white; }
 .btn-secondary {
   background-color: var(--panel-bg);
   color: var(--text-secondary);

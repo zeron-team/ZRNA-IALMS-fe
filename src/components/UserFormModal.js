@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
-import './UserFormModal.css';
+import '../styles/UserFormModal.css';
 
 const UserFormModal = ({ user, onClose, onSave }) => {
   const isEditMode = Boolean(user); // Determina si estamos en modo edición

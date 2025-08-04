@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     // Opcional: podrías redirigir al login aquí con `Maps('/login')`
   };
 
-  const authValue = { user, login, logout };
+  const authValue = { user, setUser, login, logout, loading };
 
   if (loading) {
     return <p>Cargando aplicación...</p>;

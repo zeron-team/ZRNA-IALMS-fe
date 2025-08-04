@@ -111,7 +111,7 @@ export const api = {
   getStudentDashboard: () => request('/dashboard/student'),
   getQuizStatus: (moduleId) => request(`/quizzes/module/${moduleId}/status`),
   getCategoriesWithCourses: () => request('/categories/with-courses'),
-
+  getCategories: () => request('/categories/'),
   getModuleDetail: (moduleId) => request(`/modules/${moduleId}`),
   completeModule: (moduleId) => request(`/modules/${moduleId}/complete`, { method: 'POST' }),
   getQuizForModule: (moduleId) => request(`/quizzes/module/${moduleId}`),

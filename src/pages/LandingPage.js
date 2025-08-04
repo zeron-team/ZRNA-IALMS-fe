@@ -12,7 +12,6 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Carga las categorías con sus cursos para mostrarlos en la landing
     api.getCategoriesWithCourses()
       .then(setCourseData)
       .catch(console.error);
@@ -29,7 +28,6 @@ const LandingPage = () => {
           </p>
           <div className="hero-cta">
             <Link to="/register" className="btn btn-primary btn-lg">Comienza a Aprender Gratis</Link>
-            {/*<Link to="/courses" className="btn btn-secondary btn-lg">Explorar Cursos</Link> */}
           </div>
         </div>
         <div className="hero-visual">
@@ -37,24 +35,27 @@ const LandingPage = () => {
         </div>
       </header>
 
-      {/* --- Sección "Cómo Funciona" --- */}
-      <section className="how-it-works">
-        <h2>Un Ecosistema de Aprendizaje Inteligente</h2>
-        <div className="steps-container">
-          <div className="step-card">
-            <div className="step-icon-wrapper"><FaDraftingCompass className="step-icon" /></div>
-            <h3>1. Elige tu Futuro</h3>
-            <p>Selecciona una de nuestras Rutas de Conocimiento diseñadas para carreras de alta demanda.</p>
+      {/* --- NUEVA SECCIÓN: Por Qué IA --- */}
+      <section className="why-ai-section">
+        <h2>¿Por Qué IA en la Educación?</h2>
+        <p className="section-subtitle">
+          Revolucionamos el aprendizaje tradicional con contenido que se adapta, evoluciona y te prepara para el futuro del trabajo.
+        </p>
+        <div className="features-grid">
+          <div className="feature-card">
+            <FaDraftingCompass className="feature-icon" />
+            <h3>Aprendizaje Personalizado</h3>
+            <p>La IA diseña Rutas de Conocimiento únicas y sugiere cursos basados en tus objetivos y progreso, creando un camino educativo solo para ti.</p>
           </div>
-          <div className="step-card">
-            <div className="step-icon-wrapper"><FaBrain className="step-icon" /></div>
-            <h3>2. Contenido Creado por IA</h3>
-            <p>Nuestra IA genera currículas, lecciones y quizzes completos, siempre actualizados y relevantes.</p>
+          <div className="feature-card">
+            <FaBrain className="feature-icon" />
+            <h3>Contenido Siempre Relevante</h3>
+            <p>Olvídate de los cursos obsoletos. Nuestra IA genera lecciones y quizzes basados en la información más actual del mundo tecnológico.</p>
           </div>
-          <div className="step-card">
-            <div className="step-icon-wrapper"><FaRocket className="step-icon" /></div>
-            <h3>3. Acelera tu Progreso</h3>
-            <p>Avanza a través de módulos con quizzes interactivos que validan tu conocimiento.</p>
+          <div className="feature-card">
+            <FaRocket className="feature-icon" />
+            <h3>Evaluación Inteligente</h3>
+            <p>Nuestros quizzes, creados por IA, no solo miden tu conocimiento, sino que te ayudan a identificar áreas de mejora para un aprendizaje más efectivo.</p>
           </div>
         </div>
       </section>
@@ -68,10 +69,13 @@ const LandingPage = () => {
               <h3>{category.name}</h3>
               <div className="course-list">
                 {category.courses.map(course => (
-                  <div key={course.id} className="course-card" onClick={() => navigate(`/course/${course.id}`)}>
+                  <div key={course.id} className="course-card" onClick={() => navigate(`/login`)}>
+                    <div className="course-card-image"></div>
                     <div className="course-card-content">
-                      <span className={`tag-level level-${course.level}`}>{course.level}</span>
-                      <h4>{course.title}</h4>
+                      <div className="course-card-tags">
+                        <span className={`tag-level level-${course.level}`}>{course.level}</span>
+                      </div>
+                      <h2>{course.title}</h2>
                       <p>{course.description}</p>
                     </div>
                   </div>

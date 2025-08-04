@@ -5,7 +5,7 @@ import { api } from '../services/api';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaCheckCircle, FaPlusCircle, FaLightbulb, FaTools } from 'react-icons/fa';
 import ThinkingIndicator from '../components/ThinkingIndicator';
-import '../styles/utilities.css';
+import '../styles/LearningPathsPage.css';
 
 const LearningPathsPage = () => {
   const [paths, setPaths] = useState([]);
@@ -87,23 +87,27 @@ const LearningPathsPage = () => {
     }
   };
 
-  const renderCourseStep = (course) => (
-    <div key={`${course.status}-${course.id}-${course.step}`} className={`module-step status-${course.user_status}`}>
-      <div className="module-step-indicator">
-        <div className="indicator-circle">
-          {course.user_status === 'terminado' ? <FaCheckCircle /> : <span>{String(course.step).padStart(2, '0')}</span>}
+  const renderCourseStep = (course) => {
+    const stepClass = `timeline-step status-${course.user_status}`;
+
+    return (
+      <div key={`${course.status}-${course.id}-${course.step}`} className={stepClass}>
+        <div className="timeline-indicator">
+          <div className="indicator-circle">
+            {course.user_status === 'terminado' ? <FaCheckCircle /> : <span>{String(course.step).padStart(2, '0')}</span>}
+          </div>
+          <div className="indicator-line"></div>
         </div>
-        <div className="indicator-line"></div>
-      </div>
-      <div className="module-step-content page-panel">
-        <h4>{course.title}</h4>
-        <p>{course.description}</p>
+        <div className="timeline-content page-panel">
+          <h4>{course.title}</h4>
+          <p>{course.description}</p>
         <div className="step-actions">
           <ActionButtons course={course} />
         </div>
       </div>
     </div>
   );
+  };
 
   if (loadingPaths) return <p>Cargando rutas de conocimiento...</p>;
 

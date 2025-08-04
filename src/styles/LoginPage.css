@@ -70,6 +70,12 @@
   box-shadow: 0 0 0 3px var(--accent-light);
 }
 
+.login-form-section .btn {
+  padding: 12px; /* Botones más grandes */
+  font-size: 1rem;
+}
+.register-link { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; }
+
 .error-message {
   color: var(--danger);
   text-align: center;
