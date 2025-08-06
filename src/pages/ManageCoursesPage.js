@@ -2,18 +2,19 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
+import { useNavigate } from 'react-router-dom'; // 1. Importa useNavigate
 import CourseFormModal from '../components/CourseFormModal';
-import '../styles/AdminPages.css'
+import '../styles/AdminPages.css';
 
 const ManageCoursesPage = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const navigate = useNavigate(); // 2. Inicializa useNavigate
 
   const fetchMyCourses = () => {
     setLoading(true);
-    // CORRECCIÓN: Llama a 'getMyTaughtCourses' en lugar de 'getMyCourses'
     api.getMyTaughtCourses()
       .then(setCourses)
       .catch(console.error)
@@ -32,6 +33,11 @@ const ManageCoursesPage = () => {
   const handleEdit = (course) => {
     setSelectedCourse(course);
     setIsModalOpen(true);
+  };
+
+  // 3. Nueva función para ir al detalle del curso
+  const handleManage = (courseId) => {
+    navigate(`/course/${courseId}`);
   };
 
   const handleSave = () => {
@@ -53,7 +59,7 @@ const ManageCoursesPage = () => {
     <div className="page-container">
       <div className="page-header">
         <h1>Administrar Cursos</h1>
-        <button className="btn btn-success" onClick={handleCreate}>
+        <button className="btn btn-primary" onClick={handleCreate}>
           + Crear Nuevo Curso
         </button>
       </div>
@@ -64,16 +70,17 @@ const ManageCoursesPage = () => {
             <tr>
               <th>Título del Curso</th>
               <th>Descripción</th>
-              <th>Acciones</th>
+              <th style={{ width: '250px' }}>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {courses.map(course => ( // La variable aquí es 'course'
+            {courses.map(course => (
               <tr key={course.id}>
                 <td>{course.title}</td>
                 <td>{course.description}</td>
                 <td className="actions-cell">
-                   {/* CORRECCIÓN: Usa 'course' en lugar de 'item' */}
+                  {/* 4. Nuevo Botón "Gestionar" */}
+                  <button onClick={() => handleManage(course.id)} className="btn btn-success">Gestionar</button>
                   <button onClick={() => handleEdit(course)} className="btn btn-secondary">Editar</button>
                   <button onClick={() => handleDelete(course.id, course.title)} className="btn btn-danger delete">Borrar</button>
                 </td>

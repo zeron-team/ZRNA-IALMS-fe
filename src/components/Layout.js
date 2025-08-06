@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '../auth/AuthContext';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import WhatsAppButton from './WhatsAppButton';
@@ -13,16 +13,17 @@ import '../styles/Layout.css';
 const Layout = ({ children }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
+
 
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Oculta el layout principal en la vista de lección para una experiencia inmersiva
-  if (location.pathname.startsWith('/module/')) {
-    return <main>{children}</main>;
-  }
+  // --- LÓGICA CLAVE PARA LA VISTA DE LECCIÓN ---
+  // Si la ruta actual empieza con '/module/', renderiza solo los hijos (la página del módulo)
+  //if (location.pathname.startsWith('/module/')) {
+  //  return <main>{children}</main>;
+  //}
 
   const handleLogout = () => {
     logout();
@@ -52,18 +53,17 @@ const Layout = ({ children }) => {
             <div className="header-user-menu">
               <div className="notification-icon" title="Notificaciones">
                 <FaBell />
-                <div className="badge">3</div>
+                {/* <div className="badge">3</div> */}
               </div>
-              {/* Se elimina la sección de perfil del header */}
               <button onClick={handleLogout} className="btn-logout">
-                <FaSignOutAlt/>
+                <FaSignOutAlt />
                 <span className="logout-text">Cerrar Sesión</span>
               </button>
             </div>
           ) : (
-              <>
-                <div className="header-public-menu">
-                  <Link to="/login" className="btn btn-secondary">Iniciar Sesión</Link>
+            <>
+              <div className="header-public-menu">
+                <Link to="/login" className="btn btn-secondary">Iniciar Sesión</Link>
                 <Link to="/register" className="btn btn-primary">Registrarse</Link>
               </div>
               <button className="hamburger-btn public" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
@@ -81,6 +81,7 @@ const Layout = ({ children }) => {
         )}
 
         <main className="main-content">{children}</main>
+
         <Footer />
       </div>
 

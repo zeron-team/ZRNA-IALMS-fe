@@ -1,13 +1,15 @@
 /* frontend/src/styles/global.css */
+/* ==========================================================================
+   1. VARIABLES Y ESTILOS GLOBALES (TEMA "TECH LMS")
+   ========================================================================== */
 :root {
   --sidebar-bg: #111827;
   --background: #F3F4F6;
   --panel-bg: #FFFFFF;
-  --text-primary: #6e788d;
-  --text-secondary: #6e788d;
-  --accent: #5e62b6; /* Indigo */
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --accent: #4F46E5;
   --accent-hover: #4338CA;
-  --accent-light: #EEF2FF;
   --border-color: #E5E7EB;
   --danger: #EF4444;
   --success: #10B981;
@@ -18,15 +20,68 @@ body {
   background-color: var(--background);
   margin: 0;
   color: var(--text-primary);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: var(--accent);
-  text-decoration: none;
-  transition: color 0.2s;
+/* ==========================================================================
+   2. LAYOUT, SIDEBAR Y HEADER
+   ========================================================================== */
+.main-view {
+  margin-left: 260px;
+  width: calc(100% - 260px);
 }
-a:hover {
-  color: var(--accent-hover);
+.main-view-logged-out { margin-left: 0; width: 100%; }
+.layout-header {
+  height: 70px; padding: 0 2rem; background-color: var(--panel-bg);
+  border-bottom: 1px solid var(--border-color); display: flex;
+  align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 10;
+}
+/* ... (otros estilos de layout y sidebar que ya funcionan bien) ... */
+
+/* ==========================================================================
+   3. PANELES, TARJETAS Y TABLAS
+   ========================================================================== */
+.page-header h1 { font-weight: 700; font-size: 1.8rem; }
+.page-panel, .course-card {
+  background-color: var(--panel-bg); border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+.courses-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.courses-table th, .courses-table td {
+  padding: 0.9rem 1rem; text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+.courses-table th { background-color: #F9FAFB; font-size: 0.8rem; text-transform: uppercase; }
+
+/* ==========================================================================
+   4. BOTONES Y ELEMENTOS INTERACTIVOS
+   ========================================================================== */
+.btn {
+  border: 1px solid transparent; padding: 0.6rem 1.2rem; border-radius: 8px;
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all 0.2s;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.btn-primary { background-color: var(--accent); color: white; }
+.btn-primary:hover { background-color: var(--accent-hover); }
+.btn-secondary { background-color: var(--panel-bg); color: var(--text-primary); border-color: var(--border-color); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ==========================================================================
+   5. RESPONSIVIDAD
+   ========================================================================== */
+@media (max-width: 992px) {
+  .main-view { margin-left: 0; width: 100%; }
+  .header-public-menu, .header-user-menu .user-info span { display: none; }
+  .hamburger-btn { display: block; }
+  .course-list, .dashboard-grid, .stats-grid { grid-template-columns: 1fr; }
+  .hero-section { flex-direction: column; text-align: center; padding: 4rem 2rem; }
+  .hero-visual { display: none; }
 }

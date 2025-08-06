@@ -6,7 +6,7 @@ import { useAuth } from '../auth/AuthContext';
 import '../styles/Sidebar.css';
 import {
   FaHome, FaThLarge, FaBookOpen, FaUserGraduate,
-  FaUserShield, FaRoute
+  FaUserShield, FaRoute, FaPlusCircle
 } from 'react-icons/fa'; // Se elimina FaUserCircle que ya no se usa aquí
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -17,6 +17,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { label: 'Inicio', path: '/dashboard', icon: <FaHome />, roles: ['student', 'instructor', 'admin'] },
     { label: 'Galería de Cursos', path: '/courses', icon: <FaThLarge />, roles: ['student', 'instructor', 'admin'] },
     { label: 'Mis Cursos', path: '/my-courses', icon: <FaBookOpen />, roles: ['student'] },
+    { label: 'Crear Curso', path: '/create-course', icon: <FaPlusCircle />, roles: ['student'] },
     { label: 'Administrar Cursos', path: '/manage-courses', icon: <FaUserGraduate />, roles: ['instructor', 'admin'] },
     { label: 'Admin. Usuarios', path: '/admin/users', icon: <FaUserShield />, roles: ['instructor', 'admin'] },
     { label: 'Rutas de Conocimiento', path: '/learning-paths', icon: <FaRoute />, roles: ['student', 'instructor', 'admin'] },

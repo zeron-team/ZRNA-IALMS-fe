@@ -1,4 +1,54 @@
-.lesson-layout { display: flex; height: calc(100vh - 65px); }
+/* Contenedor principal que ocupa toda la pantalla */
+.lesson-view-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background);
+}
+
+/* Header de la Lección */
+.lesson-header {
+  height: 65px;
+  background-color: var(--panel-bg);
+  border-bottom: 1px solid var(--border-color);
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  padding: 0 2rem;
+  flex-shrink: 0; /* Evita que el header se encoja */
+}
+.back-link {
+  font-weight: 500;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.lesson-progress {
+  text-align: center;
+}
+.lesson-progress span {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.course-title-header {
+  text-align: right;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Layout de dos columnas para la lección */
+.lesson-layout {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden; /* Evita el doble scroll */
+}
+
+/* Sidebar de la Lección (lista de módulos) */
 .lesson-sidebar {
   flex: 0 0 300px;
   background-color: var(--panel-bg);
@@ -6,32 +56,55 @@
   border-right: 1px solid var(--border-color);
   overflow-y: auto;
 }
-.back-to-curriculum { display: block; margin-bottom: 2rem; font-weight: 500; }
 .lesson-sidebar h4 {
   text-transform: uppercase;
   font-size: 0.8rem;
   color: var(--text-secondary);
   letter-spacing: 0.05em;
-  margin-bottom: 1rem;
+  margin: 0 0 1rem 0;
 }
 .lesson-nav ul { list-style: none; padding: 0; margin: 0; }
 .lesson-nav a {
-  display: block; padding: 0.75rem 1rem; border-radius: 8px;
-  text-decoration: none; color: var(--text-secondary);
-  font-weight: 500; transition: all 0.2s ease;
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
-.lesson-nav a:hover { background-color: var(--accent-light); color: var(--accent-hover); }
-.lesson-nav a.active { background-color: var(--accent-light); color: var(--accent); font-weight: 600; }
+.lesson-nav a:hover {
+  background-color: var(--accent-light);
+  color: var(--accent-hover);
+}
+.lesson-nav a.active {
+  background-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
 
+/* Contenido Principal de la Lección */
 .lesson-content {
-  flex-grow: 1; padding: 2.5rem 4rem;
-  overflow-y: auto; display: flex; flex-direction: column;
+  flex-grow: 1;
+  padding: 2.5rem 4rem;
+  overflow-y: auto;
 }
-.lesson-description { font-size: 1.1rem; color: var(--text-secondary); }
-.lesson-footer-nav { display: flex; justify-content: space-between; margin-top: auto; padding-top: 2rem; border-top: 1px solid var(--border-color); }
-.warning-text { color: var(--danger); font-weight: 500; font-size: 0.9rem; }
+.lesson-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-top: 0;
+}
+.warning-text {
+  color: var(--danger);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
 
-/* Estilos para el contenido Markdown */
-.lesson-content h2 { border-bottom: 2px solid var(--accent-light); padding-bottom: 0.5rem; margin-top: 2rem; }
-.lesson-content code { background-color: var(--accent-light); color: var(--accent-hover); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: 'Courier New', Courier, monospace; }
-.lesson-content pre { display: block; background-color: var(--sidebar-bg); color: #e5e7eb; padding: 1rem; border-radius: 8px; white-space: pre-wrap; }
+/* Navegación al final de la lección */
+.lesson-footer-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
