@@ -123,4 +123,19 @@ export const api = {
   }),
   getDashboardStats: () => request('/admin/dashboard-stats'),
   getDetailedEnrollments: () => request('/admin/enrollments'),
+
+  createRoom: (roomData) => request('/rooms/', {
+        method: 'POST',
+        body: JSON.stringify(roomData)
+    }),
+  getMyRooms: () => request('/rooms/'),
+  getRoomDetail: (roomId) => request(`/rooms/${roomId}`),
+  addCourseToRoom: (roomId, courseId) => request(`/rooms/${roomId}/courses/${courseId}`, { method: 'POST' }),
+  addMemberToRoom: (roomId, userId) => request(`/rooms/${roomId}/members/${userId}`, { method: 'POST' }),
+  getNotifications: () => request('/notifications/'),
+  markNotificationAsRead: (notificationId) => request(`/notifications/${notificationId}/read`, { method: 'POST' }),
+  getInstructorDashboard: () => request('/dashboard/instructor/'),
+  getInstructorStudentProgress: () => request('/dashboard/instructor/student-progress'),
+  getInstructorDetailedProgress: () => request('/dashboard/instructor/student-progress-detailed'),
+
 };

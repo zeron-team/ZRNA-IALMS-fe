@@ -1,0 +1,68 @@
+/*  frontend/src/components/NotificationPanel.css */
+
+.notification-panel {
+  position: absolute;
+  top: 65px; /* Ajustado para el header */
+  right: 0;
+  width: 380px; /* Un poco más ancho */
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  z-index: 100;
+  overflow: hidden; /* Para los bordes redondeados */
+}
+
+.panel-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.panel-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.notification-list {
+  max-height: 400px; /* Evita que la lista sea demasiado larga */
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease;
+}
+.notification-item:last-child {
+  border-bottom: none;
+}
+.notification-item:hover {
+  background-color: var(--background);
+}
+
+.notification-item.unread {
+  background-color: var(--accent-light);
+}
+.notification-item.unread p {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.notification-item p {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.no-notifications {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+}

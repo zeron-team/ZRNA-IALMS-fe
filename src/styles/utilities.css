@@ -59,3 +59,30 @@
   color: var(--accent);
   box-shadow: none; /* El estilo ghost no necesita sombra */
 }
+
+/* --- Paneles de Llamada a la Acción (CTA) --- */
+.call-to-action-panel {
+  text-align: center;
+  padding: 3rem;
+  background-color: var(--background);
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+.cta-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.call-to-action-panel h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+.call-to-action-panel p {
+  color: var(--text-secondary);
+  max-width: 50ch;
+  margin: 0 auto 1.5rem auto;
+}

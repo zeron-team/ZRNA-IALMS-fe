@@ -1,0 +1,48 @@
+/*  frontend/src/pages/RoomDetailPage.css */
+
+.room-detail-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+}
+.room-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.panel-header h2 { margin: 0; }
+.item-selection-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.item-selection-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; border-bottom: 1px solid var(--border-color); }
+.item-list { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.item-card { padding: 0.8rem 1rem; background-color: var(--background); border-radius: 8px; font-weight: 500; }
+.room-course-item { display: flex; justify-content: space-between; align-items: center; }
+.join-code-box {
+  background-color: var(--background);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn-icon { background: none; border: none; font-size: 1.2rem; color: var(--text-secondary); cursor: pointer; }
+.share-buttons { display: flex; gap: 1rem; font-size: 2rem; margin-top: 1rem; }
+.share-buttons a { color: var(--text-secondary); }
+.share-buttons a:hover { color: var(--accent); }
+
+@media (max-width: 992px) {
+  .room-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

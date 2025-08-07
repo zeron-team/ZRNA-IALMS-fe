@@ -1,0 +1,50 @@
+/* frontend/src/pages/MyRoomsPage.css */
+
+.room-creation-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+.room-creation-panel input,
+.room-creation-panel textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+.room-creation-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.room-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.room-card {
+  background-color: var(--panel-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.room-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+.room-card h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--accent);
+}
+.room-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}

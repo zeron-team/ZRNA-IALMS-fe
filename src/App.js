@@ -4,7 +4,6 @@ import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute from './auth/ProtectedRoute';
 import InstructorRoute from './auth/InstructorRoute';
 import AdminRoute from './auth/AdminRoute';
-import AdminUsersPage from './pages/AdminUsersPage';
 import Layout from './components/Layout';
 import CourseList from './components/CourseList';
 import CourseDetail from './components/CourseDetail';
@@ -21,6 +20,9 @@ import LandingPage from './pages/LandingPage';
 import CheckEmailPage from './pages/CheckEmailPage';
 import EmailVerifiedPage from './pages/EmailVerifiedPage';
 import CreateCoursePage from './pages/CreateCoursePage';
+import MyRoomsPage from './pages/MyRoomsPage';
+import RoomDetailPage from './pages/RoomDetailPage';
+import AdminUsersPage from './pages/AdminUsersPage';
 
 function App() {
   return (
@@ -34,7 +36,6 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/check-email" element={<CheckEmailPage />} />
             <Route path="/verify-email" element={<EmailVerifiedPage />} />
-            <Route path="/admin/users" element={<InstructorRoute><AdminUsersPage /></InstructorRoute>} />
             {/* Rutas Protegidas */}
             <Route path="/dashboard" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
             <Route path="/courses" element={<ProtectedRoute><CourseList /></ProtectedRoute>} />
@@ -44,9 +45,11 @@ function App() {
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
             <Route path="/learning-paths" element={<ProtectedRoute><LearningPathsPage /></ProtectedRoute>} />
             <Route path="/create-course" element={<ProtectedRoute><CreateCoursePage /></ProtectedRoute>} />
-
+            <Route path="/my-rooms" element={<ProtectedRoute><MyRoomsPage /></ProtectedRoute>} />
+            <Route path="/rooms/:id" element={<ProtectedRoute><RoomDetailPage /></ProtectedRoute>} />
             {/* Rutas de Admin/Instructor */}
             <Route path="/manage-courses" element={<InstructorRoute><ManageCoursesPage /></InstructorRoute>} />
+            <Route path="/admin/users" element={<InstructorRoute><AdminUsersPage /></InstructorRoute>} />
             <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
           </Routes>
         </Layout>

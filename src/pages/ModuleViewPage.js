@@ -26,7 +26,6 @@ const ModuleViewPage = () => {
       setLoading(false); return;
     }
     setLoading(true);
-    // Hacemos las llamadas en paralelo para más eficiencia
     Promise.all([
       api.getModuleDetail(moduleId),
       api.getModuleDetail(moduleId).then(mod => api.getCourseDetail(mod.course_id))
@@ -44,7 +43,7 @@ const ModuleViewPage = () => {
     setIsGenerating(true);
     try {
       await api.generateModuleContent(moduleId);
-      fetchModuleData(); // Recarga los datos para mostrar el nuevo contenido
+      fetchModuleData();
     } catch (error) {
       alert("Error al generar el contenido.");
     } finally {
@@ -78,7 +77,6 @@ const ModuleViewPage = () => {
     }
   };
 
-  // Hook unificado para calcular todos los valores derivados
   const {
     prevModule,
     nextModule,
@@ -92,15 +90,12 @@ const ModuleViewPage = () => {
     const modules = course.modules || [];
     const currentIndex = modules.findIndex(m => m.id === parseInt(moduleId));
 
-    // Navegación
     const prev = currentIndex > 0 ? modules[currentIndex - 1] : null;
     const next = currentIndex < modules.length - 1 ? modules[currentIndex + 1] : null;
 
-    // Progreso del curso
     const completedCount = modules.filter(m => m.status === 'completed').length;
     const progress = Math.round((completedCount / modules.length) * 100);
 
-    // Permisos de generación
     const canEdit = user.role.name === 'admin' || user.role.name === 'instructor' || user.id === course.creator_id;
     let allowed = false;
     let incomplete = false;
@@ -123,7 +118,6 @@ const ModuleViewPage = () => {
     };
   }, [course, moduleData, user, moduleId]);
 
-  // Vistas de carga y error
   if (loading || !course) return <div className="page-container"><p>Cargando lección...</p></div>;
   if (!moduleData) return <div className="page-container"><p>No se encontró el módulo.</p></div>;
 

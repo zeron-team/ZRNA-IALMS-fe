@@ -31,7 +31,7 @@ const CourseDetail = () => {
     setIsGenerating(true);
     try {
       await api.generateCurriculum(id);
-      fetchDetails();
+      fetchDetails(); // Recarga los detalles para mostrar los nuevos módulos
     } catch (error) {
       alert("Hubo un error al generar la currícula.");
     } finally {
@@ -39,13 +39,13 @@ const CourseDetail = () => {
     }
   };
 
-  if (loading) return <p>Cargando detalles del curso...</p>;
-  if (!course) return <p>Curso no encontrado.</p>;
-  // --- LÓGICA DE PERMISOS CORREGIDA ---
+  if (loading) return <div className="page-container"><p>Cargando detalles del curso...</p></div>;
+  if (!course) return <div className="page-container"><p>Curso no encontrado.</p></div>;
+
   const canEdit = user && (
     user.role.name === 'admin' ||
     user.role.name === 'instructor' ||
-    user.id === course.creator_id // Comprueba si el usuario es el creador
+    user.id === course.creator_id
   );
 
   return (
@@ -58,7 +58,7 @@ const CourseDetail = () => {
         <p className="course-description">{course.description}</p>
         <h3 className="curriculum-header">Currícula del Curso</h3>
 
-        {course.modules.length > 0 ? (
+        {course.modules && course.modules.length > 0 ? (
           <div className="curriculum-list">
             {course.modules.map(module => (
               <div key={module.id} className={`module-step ${module.status} ${module.is_locked ? 'locked' : ''}`}>
@@ -68,8 +68,9 @@ const CourseDetail = () => {
                       module.status === 'completed' ? <FaCheck /> : <span>{String(module.order_index).padStart(2, '0')}</span>
                     )}
                   </div>
+                  <div className="indicator-line"></div>
                 </div>
-                <div className="module-step-content">
+                <div className="module-step-content page-panel">
                   <h4>{module.title}</h4>
                   <p>{module.description}</p>
                   {!module.is_locked ? (
@@ -84,15 +85,14 @@ const CourseDetail = () => {
             ))}
           </div>
         ) : (
-            <div className="curriculum-generator">
-              <p>Este curso aún no tiene una currícula definida.</p>
-              {/* Ahora usamos la variable 'canEdit' que incluye al creador */}
-              {canEdit && (
-                  <button onClick={handleGenerateCurriculum} disabled={isGenerating} className="btn btn-primary">
-                    {isGenerating ? 'Generando...' : '✨ Generar Currícula con IA'}
-                  </button>
-              )}
-            </div>
+          <div className="curriculum-generator">
+            <p>Este curso aún no tiene una currícula definida.</p>
+            {canEdit && (
+              <button onClick={handleGenerateCurriculum} disabled={isGenerating} className="btn btn-primary">
+                {isGenerating ? 'Generando...' : '✨ Generar Currícula con IA'}
+              </button>
+            )}
+          </div>
         )}
       </div>
     </div>

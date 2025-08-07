@@ -4,8 +4,8 @@ import { useAuth } from '../auth/AuthContext';
 import '../styles/LoginPage.css'
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('instructor_pro'); // Precargado para pruebas
-  const [password, setPassword] = useState('admin123');     // Precargado para pruebas
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
