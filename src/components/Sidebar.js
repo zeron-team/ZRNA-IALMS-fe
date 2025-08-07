@@ -23,8 +23,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     // --- CORRECCIÓN AQUÍ ---
     // Se elimina 'instructor' de la lista de roles para este enlace.
     { label: 'Admin. Usuarios', path: '/admin/users', icon: <FaUserShield />, roles: ['admin'] },
-
-    { label: 'Rutas de Conocimiento', path: '/learning-paths', icon: <FaRoute />, roles: ['student', 'instructor', 'admin'] },
+    //{ label: 'Rutas de Conocimiento', path: '/learning-paths', icon: <FaRoute />, roles: ['student', 'instructor', 'admin'] },
   ];
 
   return (
