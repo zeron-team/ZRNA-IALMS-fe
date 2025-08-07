@@ -1,39 +1,106 @@
-/* frontend/src/pages/LandingPage.css  */
-
 /* --- HERO SECTION --- */
 .hero-section {
-  position: relative; display: flex; align-items: center;
-  padding: 8rem 4rem; background-color: var(--sidebar-bg);
-  color: #fff; overflow: hidden;
+  position: relative; display: flex; align-items: center; padding: 8rem 4rem;
+  background-color: var(--sidebar-bg); color: #fff; overflow: hidden;
 }
-.hero-content { max-width: 600px; z-index: 2; }
-.hero-content h1 { font-size: 3.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 1.5rem; }
-.hero-subtitle { font-size: 1.2rem; color: #9CA3AF; margin-bottom: 2.5rem; }
-.hero-cta { display: flex; gap: 1rem; }
-.btn-lg { padding: 1rem 2rem; font-size: 1.1rem; }
-.hero-visual { position: absolute; top: 50%; left: 60%; transform: translateY(-50%); z-index: 1; }
+/* ... (otros estilos de la sección hero que ya funcionan) ... */
 
-/* --- WHY AI SECTION --- */
-.why-ai-section { padding: 6rem 4rem; text-align: center; }
-.why-ai-section h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1.5rem; }
-.why-ai-section .section-subtitle { font-size: 1.2rem; color: var(--text-secondary); max-width: 70ch; margin: 0 auto 4rem auto; }
-.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; }
-/* ... (estilos de feature-card) */
+/* --- FEATURES CAROUSEL SECTION --- */
+.features-carousel-section {
+  padding: 6rem 4rem;
+  background-color: var(--background);
+  text-align: center;
+}
+.features-carousel-section h2 {
+  font-size: 2.5rem; font-weight: 700; margin-bottom: 4rem;
+}
+.feature-carousel {
+  /* Aquí irían los estilos para tu librería de carrusel preferida (ej. Swiper.js, react-slick) */
+  /* Por ahora, usaremos un grid simple como placeholder */
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+  max-width: 1200px; margin: 0 auto;
+}
+.feature-slide {
+  background-color: var(--panel-bg); padding: 2rem; border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+.feature-slide-icon { font-size: 3rem; color: var(--accent); margin-bottom: 1.5rem; }
+.feature-slide h3 { font-size: 1.25rem; font-weight: 600; }
+.feature-slide p { color: var(--text-secondary); line-height: 1.6; }
 
-/* --- FEATURED COURSES SECTION --- */
-.featured-courses-section { padding: 6rem 4rem; }
-.featured-courses-section > h2 { text-align: center; font-size: 2.5rem; margin-bottom: 4rem; }
-.category-row { margin-bottom: 4rem; max-width: 1200px; margin-left: auto; margin-right: auto; }
-.category-row h3 { font-size: 1.8rem; margin-bottom: 2rem; border-bottom: 2px solid var(--accent-light); padding-bottom: 1rem; }
+/* --- ROLES SECTION --- */
+.roles-section {
+  padding: 6rem 4rem;
+  background-color: var(--panel-bg);
+}
+.roles-section h2 { text-align: center; font-size: 2.5rem; font-weight: 700; margin-bottom: 4rem; }
+.roles-container {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+  max-width: 1200px; margin: 0 auto; align-items: center;
+}
+.role-description h3 { font-size: 1.8rem; font-weight: 600; color: var(--accent); }
+.role-description p { color: var(--text-secondary); line-height: 1.7; }
+.role-description ul { list-style: none; padding: 0; margin-top: 1.5rem; }
+.role-description li { margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+.role-description li .icon { color: var(--success); }
+.role-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
 
-/* --- Media Queries para Responsividad (ÚNICO Y CORREGIDO) --- */
+/* --- RESPONSIVIDAD --- */
 @media (max-width: 992px) {
-  .hero-section { flex-direction: column; text-align: center; padding: 4rem 2rem; min-height: auto; }
-  .hero-content { max-width: 100%; order: 2; }
-  .hero-visual { display: none; }
-  .hero-content h1 { font-size: 2.5rem; }
+  .roles-container { grid-template-columns: 1fr; }
+  .feature-carousel { grid-template-columns: 1fr; }
+  .hero-section { flex-direction: column; text-align: center; }
+  /* ... (otros estilos responsivos) */
+}
 
-  .features-grid, .course-list {
-    grid-template-columns: 1fr;
-  }
+.roles-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+  margin-bottom: 5rem; /* Espacio entre la sección de instructor y estudiante */
+}
+
+/* Invierte el orden de las columnas para la segunda sección */
+.roles-container.reverse .role-description {
+  order: 2;
+}
+.roles-container.reverse .role-image {
+  order: 1;
+}
+
+.role-description h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+.role-description p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.role-description ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+.role-description li {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.role-description li .icon {
+  color: var(--success);
+  font-weight: bold;
+}
+.role-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }

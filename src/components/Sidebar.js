@@ -5,14 +5,8 @@ import { NavLink, Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import '../styles/Sidebar.css';
 import {
-  FaHome,
-  FaThLarge,
-  FaBookOpen,
-  FaUserGraduate,
-  FaUserShield,
-  FaRoute,
-  FaPlusCircle,
-  FaUsers
+  FaHome, FaThLarge, FaBookOpen, FaUserGraduate,
+  FaUserShield, FaRoute, FaPlusCircle, FaUsers
 } from 'react-icons/fa';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -23,9 +17,13 @@ const Sidebar = ({ isOpen, onClose }) => {
     { label: 'Galería de Cursos', path: '/courses', icon: <FaThLarge />, roles: ['student', 'instructor', 'admin'] },
     { label: 'Mis Cursos', path: '/my-courses', icon: <FaBookOpen />, roles: ['student'] },
     { label: 'Crear Curso', path: '/create-course', icon: <FaPlusCircle />, roles: ['student'] },
-    { label: 'Mis Salas', path: '/my-rooms', icon: <FaUsers />, roles: ['student', 'instructor'] },
+    { label: 'Mis Salas', path: '/my-rooms', icon: <FaUsers />, roles: ['student', 'instructor', 'admin'] },
     { label: 'Administrar Cursos', path: '/manage-courses', icon: <FaUserGraduate />, roles: ['instructor', 'admin'] },
-    { label: 'Admin. Usuarios', path: '/admin/users', icon: <FaUserShield />, roles: ['instructor', 'admin'] },
+
+    // --- CORRECCIÓN AQUÍ ---
+    // Se elimina 'instructor' de la lista de roles para este enlace.
+    { label: 'Admin. Usuarios', path: '/admin/users', icon: <FaUserShield />, roles: ['admin'] },
+
     { label: 'Rutas de Conocimiento', path: '/learning-paths', icon: <FaRoute />, roles: ['student', 'instructor', 'admin'] },
   ];
 
@@ -40,6 +38,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           <h3 className="sidebar-username">{user.profile?.first_name || user.username}</h3>
           <p className="sidebar-role">{user.role.name}</p>
         </Link>
+
         <nav className="sidebar-nav">
           <ul>
             {user && navLinks.map(link => (
