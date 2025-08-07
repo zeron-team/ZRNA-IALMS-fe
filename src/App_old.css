@@ -2,15 +2,15 @@
 
 /* --- 1. VARIABLES Y ESTILOS GLOBALES --- */
 :root {
-  --sidebar-bg: #111827;
+  --sidebar-bg: #000000;
   --background: #F9FAFB;
-  --panel-bg: #FFFFFF;
+  --panel-bg: #ffffff;
   --text-primary: #6e788d;
-  --text-secondary: #6e788d;
-  --accent: #4F46E5; /* Índigo vibrante */
-  --accent-hover: #4338CA;
-  --accent-light: #EEF2FF;
-  --border-color: #E5E7EB;
+  --text-secondary: #000000;
+  --accent: #1e3460; /* Índigo vibrante */
+  --accent-hover: #2b364a;
+  --accent-light: #0c3ddc;
+  --border-color: #ffffff;
   --danger: #EF4444;
   --danger-hover: #DC2626;
   --success: #10B981;

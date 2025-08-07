@@ -120,3 +120,9 @@
 .course-enrollment-section li {
   color: var(--text-secondary);
 }
+
+.stat-icon.rooms { background-color: #be185d; } /* Nuevo color para el KPI de salas */
+
+.rooms-summary-panel {
+  margin-top: 2rem;
+}

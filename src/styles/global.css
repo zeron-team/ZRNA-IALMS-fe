@@ -3,14 +3,14 @@
    1. VARIABLES Y ESTILOS GLOBALES (TEMA "TECH LMS")
    ========================================================================== */
 :root {
-  --sidebar-bg: #111827;
+  --sidebar-bg: #50679a;
   --background: #F3F4F6;
-  --panel-bg: #FFFFFF;
+  --panel-bg: #ffffff;
   --text-primary: #1F2937;
-  --text-secondary: #6B7280;
-  --accent: #4F46E5;
-  --accent-hover: #4338CA;
-  --border-color: #E5E7EB;
+  --text-secondary: #000000;
+  --accent: #6e788d;
+  --accent-hover: #2b364a;
+  --border-color: #ffffff;
   --danger: #EF4444;
   --success: #10B981;
 }
