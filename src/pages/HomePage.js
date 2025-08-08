@@ -22,7 +22,7 @@ const HomePage = () => {
     case 'admin':
       return <AdminDashboardPage />;
     default:
-      return <div className="page-container"><p>Bienvenido a Zeron Academy.</p></div>;
+      return <div className="page-container"><p>Bienvenido a Zeron AcademIA.</p></div>;
   }
 };
 

@@ -53,7 +53,7 @@ const LandingPage = () => {
             Nuestra plataforma crea rutas de conocimiento y cursos a tu medida, generados por inteligencia artificial para acelerar tu carrera profesional.
           </p>
           <div className="hero-cta">
-            <Link to="/register" className="btn btn-primary btn-lg">Comienza a Aprender Gratis</Link>
+            <Link to="/register" className="btn btn-primary btn-lg">Comienza a Aprender</Link>
           </div>
         </div>
       </header>
