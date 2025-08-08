@@ -61,7 +61,7 @@ const Layout = ({ children }) => {
               </button>
             )}
             <Link to={user ? "/dashboard" : "/"} className="header-brand-text">
-               Zeron Academy
+               Zeron AcademIA
             </Link>
           </div>
           {user ? (
