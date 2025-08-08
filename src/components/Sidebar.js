@@ -6,7 +6,7 @@ import { useAuth } from '../auth/AuthContext';
 import '../styles/Sidebar.css';
 import {
   FaHome, FaThLarge, FaBookOpen, FaUserGraduate,
-  FaUserShield, FaRoute, FaPlusCircle, FaUsers
+  FaUserShield, FaPlusCircle, FaUsers
 } from 'react-icons/fa';
 
 const Sidebar = ({ isOpen, onClose }) => {

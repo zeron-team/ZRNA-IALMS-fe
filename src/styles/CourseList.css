@@ -1,9 +1,68 @@
 /* frontend/src/styles/CourseList.css  */
 
+/* --- ESTILOS PARA LOS FILTROS DE CURSOS --- */
+.course-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem; /* Se añade padding para separar */
+  background-color: var(--panel-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-group h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: var(--accent-light);
+}
+
+.filter-btn.active {
+  background-color: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+}
+
+/* --- ESTILOS PARA LA LISTA Y TARJETAS DE CURSO --- */
 .course-list {
   display: grid;
-  /* CORRECCIÓN: Se reduce el tamaño mínimo para que quepan más tarjetas */
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
 }
 
@@ -14,7 +73,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
   transition: all 0.3s ease;
 }
 
@@ -24,15 +83,12 @@
 }
 
 .course-card-image {
-  height: 140px; /* Un poco más pequeña para balancear */
-  background-color: var(--sidebar-bg);
-  background-image:
-    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0);
-  background-size: 20px 20px;
+  height: 160px;
+  background-image: linear-gradient(45deg, var(--sidebar-bg), var(--accent));
 }
 
 .course-card-content {
-  padding: 1.25rem;
+  padding: 1.5rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -43,7 +99,6 @@
   gap: 0.5rem;
   margin-bottom: 0.75rem;
 }
-
 .course-card-tags span {
   padding: 0.25rem 0.75rem;
   font-size: 0.7rem;
@@ -51,21 +106,19 @@
   font-weight: 600;
   text-transform: uppercase;
 }
-
 .tag-category { background-color: var(--accent-light); color: var(--accent-hover); }
 .tag-level.level-basico { background-color: #D1FAE5; color: #065F46; }
 .tag-level.level-intermedio { background-color: #FEF3C7; color: #92400E; }
 .tag-level.level-avanzado { background-color: #FEE2E2; color: #991B1B; }
 
-/* CORRECCIÓN: Se reduce el tamaño del título */
 .course-card h2 {
   margin: 0 0 0.5rem 0;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
 }
 .course-card p {
   color: var(--text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   flex-grow: 1;
   margin: 0;
   line-height: 1.5;
@@ -75,7 +128,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
-  padding: 1rem 1.25rem;
+  padding: 1rem 1.5rem;
   background-color: #F9FAFB;
   border-top: 1px solid var(--border-color);
 }

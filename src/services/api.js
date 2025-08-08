@@ -138,5 +138,6 @@ export const api = {
   getInstructorStudentProgress: () => request('/dashboard/instructor/student-progress'),
   getInstructorDetailedProgress: () => request('/dashboard/instructor/student-progress-detailed'),
   getAllRoomsSummary: () => request('/admin/rooms-summary'),
+  getEnrollmentsWithProgress: () => request('/admin/enrollments-detailed'),
 
 };
