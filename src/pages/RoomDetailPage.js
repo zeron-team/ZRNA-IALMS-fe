@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { useAuth } from '../auth/AuthContext';
-import { FaWhatsapp, FaTelegram, FaClipboard, FaPlusCircle } from 'react-icons/fa';
+import { FaWhatsapp, FaTelegram, FaClipboard, FaPlusCircle, FaTrash, FaEdit } from 'react-icons/fa';
 import '../styles/RoomDetailPage.css';
 
 const AddCourseModal = ({ availableCourses, onAdd, onClose }) => (
@@ -45,6 +45,34 @@ const AddMemberModal = ({ availableUsers, onAdd, onClose }) => (
     </div>
 );
 
+const EditRoomModal = ({ room, onSave, onClose }) => {
+    const [name, setName] = useState(room.name);
+    const [description, setDescription] = useState(room.description);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSave({ name, description });
+    };
+
+    return (
+        <div className="modal-backdrop">
+            <div className="modal-content">
+                <h2>Editar Sala</h2>
+                <form onSubmit={handleSubmit}>
+                    <label>Nombre de la Sala</label>
+                    <input value={name} onChange={e => setName(e.target.value)} required />
+                    <label>Descripción</label>
+                    <textarea value={description} onChange={e => setDescription(e.target.value)} rows="4" />
+                    <div className="modal-actions">
+                        <button type="button" className="btn btn-secondary" onClick={onClose}>Cancelar</button>
+                        <button type="submit" className="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
+
 const RoomDetailPage = () => {
     const { user } = useAuth();
     const [room, setRoom] = useState(null);
@@ -52,6 +80,7 @@ const RoomDetailPage = () => {
     const [allUsers, setAllUsers] = useState([]);
     const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
     const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -93,6 +122,34 @@ const RoomDetailPage = () => {
         } catch (error) { alert(`Error al añadir miembro: ${error.message}`); }
     };
 
+    const handleUpdateRoom = async (roomData) => {
+        try {
+            await api.updateRoom(id, roomData);
+            setIsEditModalOpen(false);
+            fetchDetails();
+        } catch (error) {
+            alert(`Error al actualizar la sala: ${error.message}`);
+        }
+    };
+
+    const handleRemoveCourse = async (courseId) => {
+        if (window.confirm("¿Seguro que quieres desasociar este curso de la sala?")) {
+            try {
+                await api.removeCourseFromRoom(id, courseId);
+                fetchDetails();
+            } catch (error) { alert(`Error: ${error.message}`); }
+        }
+    };
+
+    const handleRemoveMember = async (userId) => {
+        if (window.confirm("¿Seguro que quieres eliminar a este miembro de la sala?")) {
+            try {
+                await api.removeMemberFromRoom(id, userId);
+                fetchDetails();
+            } catch (error) { alert(`Error: ${error.message}`); }
+        }
+    };
+
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
         alert('¡Copiado al portapapeles!');
@@ -112,7 +169,12 @@ const RoomDetailPage = () => {
         <div className="page-container">
             <div className="page-header">
                 <h1>{room.name}</h1>
-                <Link to="/my-rooms" className="btn btn-secondary">&larr; Volver a Mis Salas</Link>
+                <div className="header-actions">
+                    {isInstructor && (
+                        <button onClick={() => setIsEditModalOpen(true)} className="btn btn-secondary"><FaEdit /> Editar Sala</button>
+                    )}
+                    <Link to="/my-rooms" className="btn btn-secondary">&larr; Volver a Mis Salas</Link>
+                </div>
             </div>
             <div className="room-detail-grid">
                 <div className="room-main-content">
@@ -127,8 +189,10 @@ const RoomDetailPage = () => {
                             {room.courses.map(course => (
                                 <div key={course.id} className="item-card room-course-item">
                                     <span>{course.title}</span>
-                                    {!isInstructor && (
+                                    {!isInstructor ? (
                                         <button onClick={() => navigate(`/course/${course.id}`)} className="btn btn-secondary">Empezar</button>
+                                    ) : (
+                                        <button onClick={() => handleRemoveCourse(course.id)} className="btn-icon delete-icon"><FaTrash /></button>
                                     )}
                                 </div>
                             ))}
@@ -141,7 +205,12 @@ const RoomDetailPage = () => {
                                 <button onClick={() => setIsMemberModalOpen(true)} className="btn btn-primary"><FaPlusCircle /> Invitar Usuario</button>
                             </div>
                             <div className="item-list">
-                                {room.members.map(member => <div key={member.id} className="item-card">{member.profile?.first_name || member.username}</div>)}
+                                {room.members.map(member => (
+                                    <div key={member.id} className="item-card">
+                                        <span>{member.profile?.first_name || member.username}</span>
+                                        <button onClick={() => handleRemoveMember(member.id)} className="btn-icon delete-icon"><FaTrash /></button>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     )}
@@ -165,6 +234,7 @@ const RoomDetailPage = () => {
             </div>
             {isCourseModalOpen && <AddCourseModal availableCourses={availableCourses} onAdd={handleAddCourse} onClose={() => setIsCourseModalOpen(false)} />}
             {isMemberModalOpen && <AddMemberModal availableUsers={availableUsers} onAdd={handleAddMember} onClose={() => setIsMemberModalOpen(false)} />}
+            {isEditModalOpen && <EditRoomModal room={room} onSave={handleUpdateRoom} onClose={() => setIsEditModalOpen(false)} />}
         </div>
     );
 };

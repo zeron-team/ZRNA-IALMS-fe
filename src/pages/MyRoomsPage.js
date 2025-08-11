@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../auth/AuthContext';
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import InfoModal from '../components/InfoModal';
 import '../styles/MyRoomPage.css';
 
 const MyRoomsPage = () => {
@@ -12,10 +13,10 @@ const MyRoomsPage = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    // Estados para el formulario de creación
     const [isCreating, setIsCreating] = useState(false);
     const [roomName, setRoomName] = useState('');
     const [roomDescription, setRoomDescription] = useState('');
+    const [modalInfo, setModalInfo] = useState({ isOpen: false, title: '', message: '' });
 
     const fetchRooms = () => {
         setLoading(true);
@@ -32,18 +33,21 @@ const MyRoomsPage = () => {
     const handleCreateRoom = async (e) => {
         e.preventDefault();
         if (!roomName) {
-            alert('El nombre de la sala es obligatorio.');
+            setModalInfo({ isOpen: true, title: 'Campo Requerido', message: 'El nombre de la sala es obligatorio.' });
             return;
         }
         try {
             await api.createRoom({ name: roomName, description: roomDescription });
-            alert('¡Sala creada con éxito!');
             setIsCreating(false);
             setRoomName('');
             setRoomDescription('');
-            fetchRooms(); // Recarga la lista de salas
+            fetchRooms();
         } catch (error) {
-            alert(`Error al crear la sala: ${error.message}`);
+            setModalInfo({
+                isOpen: true,
+                title: 'Límite Alcanzado',
+                message: error.message
+            });
         }
     };
 
@@ -97,6 +101,14 @@ const MyRoomsPage = () => {
                     !isCreating && <div className="page-panel"><p>Aún no has creado ninguna sala o no eres miembro de ninguna.</p></div>
                 )}
             </div>
+
+            {modalInfo.isOpen && (
+                <InfoModal
+                    title={modalInfo.title}
+                    message={modalInfo.message}
+                    onClose={() => setModalInfo({ isOpen: false, title: '', message: '' })}
+                />
+            )}
         </div>
     );
 };

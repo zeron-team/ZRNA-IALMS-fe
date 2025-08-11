@@ -23,6 +23,7 @@ import CreateCoursePage from './pages/CreateCoursePage';
 import MyRoomsPage from './pages/MyRoomsPage';
 import RoomDetailPage from './pages/RoomDetailPage';
 import AdminUsersPage from './pages/AdminUsersPage';
+import PaymentStatusPage from './pages/PaymentStatusPage';
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
             <Route path="/manage-courses" element={<InstructorRoute><ManageCoursesPage /></InstructorRoute>} />
             <Route path="/admin/users" element={<InstructorRoute><AdminUsersPage /></InstructorRoute>} />
             <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
+            <Route path="/payment-status" element={<PaymentStatusPage />} />
           </Routes>
         </Layout>
       </Router>

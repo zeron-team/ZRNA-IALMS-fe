@@ -5,7 +5,7 @@ import { api } from '../services/api';
 import '../styles/Quiz.css';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import StarRating from './StarRating';
-import { useNavigate } from 'react-router-dom'; // Se necesita para la navegación
+import { useNavigate } from 'react-router-dom';
 
 const Quiz = ({ quizData, moduleId, onQuizComplete }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -13,17 +13,14 @@ const Quiz = ({ quizData, moduleId, onQuizComplete }) => {
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate(); // Se declara para usarlo en los botones
+  const navigate = useNavigate();
 
-  // Resetea el estado si el quiz cambia
   useEffect(() => {
     setCurrentQuestionIndex(0);
     setSelectedOption(null);
     setAnswers({});
     setResult(null);
   }, [quizData]);
-
-  // Se elimina la línea duplicada: const { moduleId } = useParams();
 
   const currentQuestion = quizData.questions[currentQuestionIndex];
 
@@ -75,7 +72,6 @@ const Quiz = ({ quizData, moduleId, onQuizComplete }) => {
           <button className="btn btn-secondary" onClick={() => navigate(`/course/${quizData.course_id}`)}>
             Volver a la Currícula
           </button>
-          {/* Aquí podrías añadir la lógica para el siguiente módulo */}
         </div>
       </div>
     );

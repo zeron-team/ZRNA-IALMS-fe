@@ -5,8 +5,13 @@ import { NavLink, Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import '../styles/Sidebar.css';
 import {
-  FaHome, FaThLarge, FaBookOpen, FaUserGraduate,
-  FaUserShield, FaPlusCircle, FaUsers
+  FaHome,
+  FaThLarge,
+  FaBookOpen,
+  FaUserGraduate,
+  FaUserShield,
+  //FaPlusCircle,
+  FaUsers
 } from 'react-icons/fa';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -15,8 +20,8 @@ const Sidebar = ({ isOpen, onClose }) => {
   const navLinks = [
     { label: 'Inicio', path: '/dashboard', icon: <FaHome />, roles: ['student', 'instructor', 'admin'] },
     { label: 'Galería de Cursos', path: '/courses', icon: <FaThLarge />, roles: ['student', 'instructor', 'admin'] },
-    { label: 'Mis Cursos', path: '/my-courses', icon: <FaBookOpen />, roles: ['student'] },
-    { label: 'Crear Curso', path: '/create-course', icon: <FaPlusCircle />, roles: ['student'] },
+    { label: 'Mis Cursos', path: '/my-courses', icon: <FaBookOpen />, roles: ['student', 'instructor'] },
+    //{ label: 'Crear Curso', path: '/create-course', icon: <FaPlusCircle />, roles: ['student'] },
     { label: 'Mis Salas', path: '/my-rooms', icon: <FaUsers />, roles: ['student', 'instructor', 'admin'] },
     { label: 'Administrar Cursos', path: '/manage-courses', icon: <FaUserGraduate />, roles: ['instructor', 'admin'] },
 

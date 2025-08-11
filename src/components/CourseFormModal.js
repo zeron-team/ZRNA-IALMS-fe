@@ -13,6 +13,8 @@ const CourseFormModal = ({ course, onClose, onSave }) => {
     description: course?.description || '',
     category_id: course?.category?.id || '',
     level: course?.level || 'basico',
+    is_free: course?.is_free ?? true, // Por defecto, el curso es gratuito
+    price: course?.price || '',
   });
 
   const [categories, setCategories] = useState([]);
@@ -26,7 +28,11 @@ const CourseFormModal = ({ course, onClose, onSave }) => {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -39,6 +45,8 @@ const CourseFormModal = ({ course, onClose, onSave }) => {
       description: formData.description,
       category_id: parseInt(formData.category_id),
       level: formData.level,
+      price: formData.is_free ? 0 : parseFloat(formData.price) || 0,
+
     };
 
     try {
@@ -86,7 +94,31 @@ const CourseFormModal = ({ course, onClose, onSave }) => {
           </div>
 
           {error && <p className="error-message">{error}</p>}
+          {/* --- NUEVA LÓGICA DE PRECIO --- */}
+          <div className="form-group-checkbox">
+            <input
+              type="checkbox"
+              id="is_free"
+              name="is_free"
+              checked={formData.is_free}
+              onChange={handleChange}
+            />
+            <label htmlFor="is_free">Este curso es gratuito</label>
+          </div>
 
+          {!formData.is_free && (
+            <div className="form-group">
+              <label>Precio del Curso (USD)</label>
+              <input
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                placeholder="Ej: 19.99"
+                step="0.01"
+              />
+            </div>
+          )}
           <div className="modal-actions">
             <button type="button" className="btn btn-secondary" onClick={onClose}>Cancelar</button>
             <button type="submit" className="btn btn-primary">Guardar</button>

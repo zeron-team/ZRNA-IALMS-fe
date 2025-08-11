@@ -41,6 +41,19 @@
 .share-buttons a { color: var(--text-secondary); }
 .share-buttons a:hover { color: var(--accent); }
 
+
+.item-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.delete-icon {
+    color: var(--text-secondary);
+}
+.delete-icon:hover {
+    color: var(--danger);
+}
+
 @media (max-width: 992px) {
   .room-detail-grid {
     grid-template-columns: 1fr;

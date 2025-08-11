@@ -139,5 +139,11 @@ export const api = {
   getInstructorDetailedProgress: () => request('/dashboard/instructor/student-progress-detailed'),
   getAllRoomsSummary: () => request('/admin/rooms-summary'),
   getEnrollmentsWithProgress: () => request('/admin/enrollments-detailed'),
+  // Pago de Mercado Pago (actualizacion 20250810)
+  createPaymentPreference: (planId) => request(`/payments/create-preference/${planId}`, { method: 'POST' }),
+  // actualizacion 20250810
+  removeCourseFromRoom: (roomId, courseId) => request(`/rooms/${roomId}/courses/${courseId}`, { method: 'DELETE' }),
+  removeMemberFromRoom: (roomId, userId) => request(`/rooms/${roomId}/members/${userId}`, { method: 'DELETE' }),
+  updateRoom: (roomId, roomData) => request(`/rooms/${roomId}`, { method: 'PUT', body: JSON.stringify(roomData)}),
 
 };

@@ -1,7 +1,7 @@
 // frontend/src/components/ProgressBar.js
 
 import React from 'react';
-import './ProgressBar.css';
+import '../styles/ProgressBar.css';
 
 const ProgressBar = ({ percentage }) => {
   // Aseguramos que el porcentaje sea un número válido entre 0 y 100

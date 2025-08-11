@@ -133,7 +133,6 @@ const ModuleViewPage = () => {
           <span>Progreso del Curso</span>
           <ProgressBar percentage={courseProgress} />
         </div>
-        {/* <div className="course-title-header">{course.title}</div> */}
       </header>
 
       <div className="lesson-layout">
@@ -180,17 +179,27 @@ const ModuleViewPage = () => {
             </div>
           )}
 
-          {moduleData.content_data && user.role.name === 'student' && (
+          {moduleData.content_data && (
             <div className="quiz-section">
               <hr />
-              {!showQuiz ? (
-                <div className="start-quiz-section">
-                  <h3>Prueba tus Conocimientos</h3>
-                  <p>Aprueba el quiz para desbloquear el siguiente módulo.</p>
-                  <button className="btn btn-success" onClick={handleStartQuiz}>Realizar Quiz</button>
-                </div>
+              {user.role.name === 'student' ? (
+                // Vista para el Estudiante
+                !showQuiz ? (
+                  <div className="start-quiz-section">
+                    <h3>Prueba tus Conocimientos</h3>
+                    <p>Aprueba el quiz para desbloquear el siguiente módulo.</p>
+                    <button className="btn btn-success" onClick={handleStartQuiz}>Realizar Quiz</button>
+                  </div>
+                ) : (
+                  quizData && <Quiz quizData={quizData} moduleId={moduleId} onQuizComplete={handleQuizCompletion} />
+                )
               ) : (
-                quizData && <Quiz quizData={quizData} moduleId={moduleId} onQuizComplete={handleQuizCompletion} />
+                // Vista para el Instructor/Admin
+                <div className="quiz-preview-section">
+                  <h3>Vista Previa del Quiz</h3>
+                  <p>Este es el quiz que verán los estudiantes al final de esta lección.</p>
+                  {/* Aquí podrías añadir un botón para editar el quiz en el futuro */}
+                </div>
               )}
             </div>
           )}

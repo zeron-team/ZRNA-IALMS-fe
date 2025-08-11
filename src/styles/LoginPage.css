@@ -88,6 +88,35 @@
   font-size: 0.9rem;
 }
 
+.role-selector {
+  margin-bottom: 1rem;
+}
+.role-selector label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.role-selector div {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.role-selector button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.role-selector button.active {
+  background-color: var(--accent);
+  color: white;
+}
+
 /* --- Responsividad --- */
 @media (max-width: 920px) {
   .login-promo { display: none; }

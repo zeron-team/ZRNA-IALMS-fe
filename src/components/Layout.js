@@ -23,15 +23,13 @@ const Layout = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
 
-  // Se envuelve en useCallback para evitar re-creaciones innecesarias
-  const fetchNotifications = useCallback(() => {
+  const fetchNotifications = useCallback(() => { // <-- Define la función aquí
     if (user) {
       api.getNotifications().then(setNotifications).catch(console.error);
     }
   }, [user]);
 
-  // Se añade la dependencia que faltaba para corregir el warning
-  useEffect(() => {
+  useEffect(() => { // <-- Usa la función después de definirla
     fetchNotifications();
   }, [fetchNotifications]);
 
