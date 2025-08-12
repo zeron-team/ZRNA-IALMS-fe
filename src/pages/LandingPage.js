@@ -13,6 +13,7 @@ import {
   FaUserGraduate,
 
 } from 'react-icons/fa';
+import CourseCard from '../components/CourseCard';
 import '../styles/LandingPage.css';
 import '../styles/PricingPage.css';
 
@@ -306,6 +307,8 @@ const LandingPage = () => {
                   ))}
                 </div>
               </div>
+            </div>
+            <div className="filter-row">
               <div className="filter-group">
                 <h4>Categorías:</h4>
                 <div className="filter-buttons">
@@ -321,24 +324,13 @@ const LandingPage = () => {
                 </div>
               </div>
             </div>
-
-            <div className="course-list">
-              {filteredCourses.map(course => (
-                  <div key={course.id} className="course-card" onClick={() => navigate(`/login`)}>
-                    <div className="course-card-image">
-                      {/* --- ETIQUETA DE PRECIO AÑADIDA --- */}
-                      <div className={`price-tag ${course.price > 0 ? 'paid' : 'free'}`}>
-                        {course.price > 0 ? 'Pago' : 'Gratis'}
-                      </div>
-                    </div>
-                    <div className="course-card-content">
-                      <h2>{course.title}</h2>
-                      <p>{course.description}</p>
-                    </div>
-                  </div>
-              ))}
-            </div>
           </div>
+          <div className="course-list">
+          {filteredCourses.map(course => (
+            <CourseCard key={course.id} course={course} />
+          ))}
+        </div>
+
         </section>
       </div>
   );
