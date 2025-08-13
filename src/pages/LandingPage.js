@@ -1,7 +1,7 @@
 // frontend/src/pages/LandingPage.js
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 import {
   FaBrain,
@@ -20,7 +20,7 @@ import '../styles/PricingPage.css';
 const LandingPage = () => {
   const [categories, setCategories] = useState([]);
   const [allCourses, setAllCourses] = useState([]);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [activePlanFilter, setActivePlanFilter] = useState('Estudiante');
 
   const [selectedLevel, setSelectedLevel] = useState(null);
