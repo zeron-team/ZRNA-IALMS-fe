@@ -2,6 +2,10 @@
 /* ==========================================================================
    1. VARIABLES Y ESTILOS GLOBALES (TEMA "TECH LMS")
    ========================================================================== */
+* {
+  box-sizing: border-box;
+}
+
 :root {
   --sidebar-bg: #50679a;
   --background: #F3F4F6;
@@ -52,7 +56,7 @@ body {
   transform: translateY(-5px);
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
-.courses-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.courses-table { width: 100%; border-collapse: separate; border-spacing: 0; overflow-x: auto; }
 .courses-table th, .courses-table td {
   padding: 0.9rem 1rem; text-align: left;
   border-bottom: 1px solid var(--border-color);

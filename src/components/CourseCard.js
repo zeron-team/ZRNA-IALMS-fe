@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material'; // Import Button from Material UI
 import '../styles/CourseCard.css'; // Asegúrate de que este archivo exista
 
 const CourseCard = ({ course }) => {
@@ -28,12 +29,12 @@ const CourseCard = ({ course }) => {
         <p className={isExpanded ? 'expanded' : ''}>{course.description}</p>
       </div>
       <div className="course-card-actions">
-        <button className="btn btn-secondary" onClick={handleToggleExpand}>
+        <Button variant="outlined" onClick={handleToggleExpand} sx={{ mr: 1 }}>
           {isExpanded ? 'Ver menos' : 'Ver más...'}
-        </button>
-        <button className="btn btn-primary" onClick={(e) => { e.stopPropagation(); handleCardClick(); }}>
+        </Button>
+        <Button variant="contained" onClick={(e) => { e.stopPropagation(); handleCardClick(); }}>
           Inscribirme
-        </button>
+        </Button>
       </div>
     </div>
   );

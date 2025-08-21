@@ -1,76 +1,345 @@
-/* --- frontend/src/pages/LandingPage.css --- */
+.landing-container {
+  background-color: #f8f9fa;
+  overflow-x: hidden;
+}
 
-/* --- frontend/src/pages/LandingPage.css --- */
-
-
-/* --- HERO SECTION --- */
 .hero-section {
-  position: relative; padding: 10rem 4rem; color: #fff; text-align: center;
-  display: flex; flex-direction: column; justify-content: center; align-items: center;
-  min-height: 80vh; box-sizing: border-box;
+  background: linear-gradient(45deg, #001E3C 30%, #004E89 90%);
+  color: white;
+  padding: 8rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
+
 .hero-section::before {
-  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  background-image: linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.8)),
-                    url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071');
-  background-size: cover; background-position: center; z-index: 1;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(https://www.transparenttextures.com/patterns/cubes.png);
+  opacity: 0.1;
 }
-.hero-content { max-width: 800px; z-index: 2; position: relative; }
-.hero-content h1 { font-size: 3.8rem; }
-.hero-subtitle { font-size: 1.2rem; color: #D1D5DB; }
 
-/* --- SECCIÓN DE BENEFICIOS --- */
-.features-section { padding: 6rem 4rem; text-align: center; }
-.features-section h2 { font-size: 2.5rem; margin-bottom: 4rem; }
-.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; }
-.feature-card { background-color: var(--panel-bg); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color); }
-.feature-icon { font-size: 3rem; color: var(--accent); margin-bottom: 1.5rem; }
+.hero-section h1 {
+  font-weight: 700;
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
 
-/* --- ROLES SECTION --- */
-.roles-section { padding: 6rem 4rem; }
-.roles-section h2 { text-align: center; font-size: 2.5rem; margin-bottom: 4rem; }
-.roles-container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1200px; margin: 0 auto 5rem auto; align-items: center; }
-.roles-container.reverse .role-description { order: 2; }
-.roles-container.reverse .role-image { order: 1; }
-.role-image img { width: 100%; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+.hero-section p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
 
-/* --- FEATURED COURSES SECTION --- */
-.featured-courses-section { padding: 6rem 4rem; }
-.featured-courses-section > h2 { text-align: center; font-size: 2.5rem; margin-bottom: 4rem; }
-.course-filters {
-  display: flex;
-  flex-direction: column; /* Cambiado a columna para apilar las filas */
-  align-items: center; /* Centra las filas */
-  gap: 1.5rem;
+.hero-section .cta-button {
+  background-color: #FFD700;
+  color: #001E3C;
+  font-weight: bold;
+  box-shadow: 0 3px 5px 2px rgba(0, 30, 60, 0.2);
+  transition: transform 0.3s ease-in-out;
+}
+
+.hero-section .cta-button:hover {
+  background-color: #FFC700;
+  transform: scale(1.05);
+}
+
+.featured-courses-section {
+  padding: 4rem 2rem;
+  background-color: #ffffff;
+}
+
+.featured-courses-section h2 {
+  text-align: center;
   margin-bottom: 3rem;
+  font-weight: bold;
+  color: #001E3C;
+  letter-spacing: -0.02em;
 }
-.filter-row {
+
+.course-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.pricing-section {
+  padding: 4rem 2rem;
+  background-color: #f8f9fa;
+}
+
+.pricing-section h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #001E3C;
+  letter-spacing: -0.02em;
+}
+
+.pricing-section .section-subtitle {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #6c757d;
+}
+
+.role-filter-container {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  gap: 1rem;
 }
-.filter-group { display: flex; align-items: center; gap: 0.8rem; }
-.filter-btn { background-color: var(--panel-bg); border: 1px solid var(--border-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
-.filter-btn.active { background-color: var(--sidebar-bg); color: #ffffff; border-color: var(--sidebar-bg); }
 
-.price-tag {
+.role-filter-card {
+  padding: 1.5rem;
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  max-width: 250px;
+  width: 100%;
+  text-align: center;
+}
+
+.role-filter-card.active {
+  border-color: #007bff;
+  background-color: #e7f3ff;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.role-filter-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-weight: bold;
+  color: #001E3C;
+}
+
+.role-filter-card p {
+  margin: 0;
+  color: #6c757d;
+}
+
+.pricing-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.plan-card {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 12px -4px rgba(0,0,0,0.1);
+}
+
+.plan-card.highlight {
+  border: 2px solid #007bff;
+  position: relative;
+}
+
+.plan-card.highlight .popular-badge {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  font-weight: 700;
+  top: -15px;
+  right: 20px;
+  background-color: #007bff;
   color: white;
-  font-size: 0.9rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
-.price-tag.free { background-color: var(--success); }
-.price-tag.paid { background-color: var(--accent); }
 
+.plan-card h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #001E3C;
+}
 
-/* --- RESPONSIVIDAD --- */
+.plan-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: #001E3C;
+}
+
+.plan-price span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6c757d;
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+  flex-grow: 1;
+}
+
+.plan-features li {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.feature-icon {
+  color: #28a745;
+}
+
+.feature-limitation {
+  color: #dc3545;
+}
+
+.filters-section {
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.filters-section h3 {
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.footer {
+  background-color: #001E3C;
+  color: white;
+  padding: 3rem 2rem;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #FFD700;
+}
+
+/* Responsive Styles */
+
 @media (max-width: 992px) {
-  .hero-section { padding: 6rem 2rem; }
-  .hero-content h1 { font-size: 2.5rem; }
-  .features-grid, .roles-container { grid-template-columns: 1fr; }
+  .hero-section h1 {
+    font-size: 3rem;
+  }
+
+  .hero-section p {
+    font-size: 1.1rem;
+  }
+
+  .role-filter-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pricing-table {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-section p {
+    font-size: 1rem;
+  }
+
+  .course-list {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-table {
+    grid-template-columns: 1fr;
+  }
+
+  .role-filter-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .role-filter-card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-section {
+    padding: 6rem 0;
+  }
+
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+
+  .hero-section p {
+    font-size: 0.9rem;
+  }
+
+  .landing-container {
+    padding: 0 0;
+  }
+
+  .featured-courses-section {
+    padding: 2rem 0;
+  }
+
+  .pricing-section {
+    padding: 2rem 0;
+  }
+
+  .plan-card {
+    padding: 1.5rem;
+  }
+
+  .plan-price {
+    font-size: 2rem;
+  }
+
+  .plan-card h3 {
+    font-size: 1.25rem;
+  }
+
+  .filters-section {
+    padding: 1rem;
+  }
+
+  .footer {
+    padding: 3rem 0;
+  }
+}
+
+.feature-card {
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
