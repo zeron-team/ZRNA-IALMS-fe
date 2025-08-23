@@ -5,44 +5,54 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { useAuth } from '../auth/AuthContext';
 import { FaWhatsapp, FaTelegram, FaClipboard, FaPlusCircle, FaTrash, FaEdit } from 'react-icons/fa';
-import '../styles/RoomDetailPage.css';
+import { 
+    Box, Typography, Container, Grid, Button, Paper, TextField, 
+    Dialog, DialogTitle, DialogContent, DialogActions, List, ListItem, ListItemText, IconButton, Card, CardContent
+} from '@mui/material';
+import '../styles/InternalPageHeader.css'; // Corrected import path
 
 const AddCourseModal = ({ availableCourses, onAdd, onClose }) => (
-    <div className="modal-backdrop">
-        <div className="modal-content">
-            <h2>Añadir Curso a la Sala</h2>
-            <div className="item-selection-list">
+    <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
+        <DialogTitle>Añadir Curso a la Sala</DialogTitle>
+        <DialogContent dividers>
+            <List>
                 {availableCourses.length > 0 ? availableCourses.map(course => (
-                    <div key={course.id} className="item-selection-item">
-                        <span>{course.title}</span>
-                        <button onClick={() => onAdd(course.id)} className="btn btn-primary">+</button>
-                    </div>
-                )) : <p>No tienes más cursos para añadir.</p>}
-            </div>
-            <div className="modal-actions">
-                <button onClick={onClose} className="btn btn-secondary">Cerrar</button>
-            </div>
-        </div>
-    </div>
+                    <ListItem key={course.id} secondaryAction={
+                        <IconButton edge="end" onClick={() => onAdd(course.id)}>
+                            <FaPlusCircle />
+                        </IconButton>
+                    }>
+                        <ListItemText primary={course.title} />
+                    </ListItem>
+                )) : <Typography>No tienes más cursos para añadir.</Typography>}
+            </List>
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={onClose}>Cerrar</Button>
+        </DialogActions>
+    </Dialog>
 );
 
 const AddMemberModal = ({ availableUsers, onAdd, onClose }) => (
-    <div className="modal-backdrop">
-        <div className="modal-content">
-            <h2>Invitar Estudiante a la Sala</h2>
-            <div className="item-selection-list">
+    <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
+        <DialogTitle>Invitar Estudiante a la Sala</DialogTitle>
+        <DialogContent dividers>
+            <List>
                 {availableUsers.length > 0 ? availableUsers.map(user => (
-                    <div key={user.id} className="item-selection-item">
-                        <span>{user.username} ({user.email})</span>
-                        <button onClick={() => onAdd(user.id)} className="btn btn-primary">+</button>
-                    </div>
-                )) : <p>No hay más estudiantes para invitar.</p>}
-            </div>
-            <div className="modal-actions">
-                <button onClick={onClose} className="btn btn-secondary">Cerrar</button>
-            </div>
-        </div>
-    </div>
+                    <ListItem key={user.id} secondaryAction={
+                        <IconButton edge="end" onClick={() => onAdd(user.id)}>
+                            <FaPlusCircle />
+                        </IconButton>
+                    }>
+                        <ListItemText primary={`${user.username} (${user.email})`} />
+                    </ListItem>
+                )) : <Typography>No hay más estudiantes para invitar.</Typography>}
+            </List>
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={onClose}>Cerrar</Button>
+        </DialogActions>
+    </Dialog>
 );
 
 const EditRoomModal = ({ room, onSave, onClose }) => {
@@ -55,21 +65,41 @@ const EditRoomModal = ({ room, onSave, onClose }) => {
     };
 
     return (
-        <div className="modal-backdrop">
-            <div className="modal-content">
-                <h2>Editar Sala</h2>
+        <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
+            <DialogTitle>Editar Sala</DialogTitle>
+            <DialogContent dividers>
                 <form onSubmit={handleSubmit}>
-                    <label>Nombre de la Sala</label>
-                    <input value={name} onChange={e => setName(e.target.value)} required />
-                    <label>Descripción</label>
-                    <textarea value={description} onChange={e => setDescription(e.target.value)} rows="4" />
-                    <div className="modal-actions">
-                        <button type="button" className="btn btn-secondary" onClick={onClose}>Cancelar</button>
-                        <button type="submit" className="btn btn-primary">Guardar Cambios</button>
-                    </div>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Nombre de la Sala"
+                        type="text"
+                        fullWidth
+                        variant="outlined"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                        required
+                        sx={{ mb: 2 }}
+                    />
+                    <TextField
+                        margin="dense"
+                        label="Descripción"
+                        type="text"
+                        fullWidth
+                        multiline
+                        rows={4}
+                        variant="outlined"
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                        sx={{ mb: 2 }}
+                    />
                 </form>
-            </div>
-        </div>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onClose}>Cancelar</Button>
+                <Button onClick={handleSubmit} variant="contained">Guardar Cambios</Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 
@@ -155,8 +185,8 @@ const RoomDetailPage = () => {
         alert('¡Copiado al portapapeles!');
     };
 
-    if (loading) return <div className="page-container"><p>Cargando sala...</p></div>;
-    if (!room) return <div className="page-container"><p>Sala no encontrada.</p></div>;
+    if (loading) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando sala...</Typography>;
+    if (!room) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Sala no encontrada.</Typography>;
 
     const isInstructor = user && user.id === room.instructor_id;
     const availableCourses = myCourses.filter(mc => !room.courses.some(rc => rc.id === mc.id));
@@ -166,72 +196,115 @@ const RoomDetailPage = () => {
     const shareText = `¡Te invito a mi sala de aprendizaje "${room.name}" en Zeron Academy! Código: ${room.join_code}`;
 
     return (
-        <div className="page-container">
-            <div className="page-header">
-                <h1>{room.name}</h1>
-                <div className="header-actions">
+        <div className="landing-container">
+            <div className="internal-hero-section"> {/* Changed class name */}
+                <Container maxWidth="md">
+                    <Typography variant="h4" component="h1" sx={{ fontSize: { xs: '1.8rem', sm: '2.5rem' }, fontWeight: 'bold' }}>
+                        {room.name}
+                    </Typography>
+                    <p>{room.description}</p>
                     {isInstructor && (
-                        <button onClick={() => setIsEditModalOpen(true)} className="btn btn-secondary"><FaEdit /> Editar Sala</button>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            className="cta-button"
+                            startIcon={<FaEdit />}
+                            onClick={() => setIsEditModalOpen(true)}
+                        >
+                            Editar Sala
+                        </Button>
                     )}
-                    <Link to="/my-rooms" className="btn btn-secondary">&larr; Volver a Mis Salas</Link>
-                </div>
+                </Container>
             </div>
-            <div className="room-detail-grid">
-                <div className="room-main-content">
-                    <div className="page-panel">
-                        <div className="panel-header">
-                            <h2>Cursos en esta Sala</h2>
-                            {isInstructor && (
-                                <button onClick={() => setIsCourseModalOpen(true)} className="btn btn-primary"><FaPlusCircle /> Añadir Curso</button>
-                            )}
-                        </div>
-                        <div className="item-list">
-                            {room.courses.map(course => (
-                                <div key={course.id} className="item-card room-course-item">
-                                    <span>{course.title}</span>
-                                    {!isInstructor ? (
-                                        <button onClick={() => navigate(`/course/${course.id}`)} className="btn btn-secondary">Empezar</button>
-                                    ) : (
-                                        <button onClick={() => handleRemoveCourse(course.id)} className="btn-icon delete-icon"><FaTrash /></button>
+
+            <Box sx={{ py: 8 }}>
+                <Container maxWidth="lg">
+                    <Grid container spacing={4}>
+                        <Grid item xs={12} md={8}>
+                            <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                                    <Typography variant="h5" component="h2" gutterBottom>Cursos en esta Sala</Typography>
+                                    {isInstructor && (
+                                        <Button variant="contained" startIcon={<FaPlusCircle />} onClick={() => setIsCourseModalOpen(true)}>
+                                            Añadir Curso
+                                        </Button>
                                     )}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    {isInstructor && (
-                        <div className="page-panel">
-                            <div className="panel-header">
-                                <h2>Miembros</h2>
-                                <button onClick={() => setIsMemberModalOpen(true)} className="btn btn-primary"><FaPlusCircle /> Invitar Usuario</button>
-                            </div>
-                            <div className="item-list">
-                                {room.members.map(member => (
-                                    <div key={member.id} className="item-card">
-                                        <span>{member.profile?.first_name || member.username}</span>
-                                        <button onClick={() => handleRemoveMember(member.id)} className="btn-icon delete-icon"><FaTrash /></button>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
-                {isInstructor && (
-                    <div className="room-side-panel">
-                        <div className="page-panel">
-                            <h3>Código de Invitación</h3>
-                            <div className="join-code-box">
-                              <span>{room.join_code}</span>
-                              <button onClick={() => copyToClipboard(room.join_code)} className="btn-icon"><FaClipboard /></button>
-                            </div>
-                            <p>Comparte este código para que los estudiantes se unan.</p>
-                            <div className="share-buttons">
-                              <a href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer"><FaWhatsapp /></a>
-                              <a href={`https://t.me/share/url?url=${encodeURIComponent(joinLink)}&text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer"><FaTelegram /></a>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
+                                </Box>
+                                <Grid container spacing={2}>
+                                    {room.courses.length > 0 ? (
+                                        room.courses.map(course => (
+                                            <Grid item xs={12} sm={6} md={4} key={course.id}>
+                                                <Card sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
+                                                    <Typography>{course.title}</Typography>
+                                                    {!isInstructor ? (
+                                                        <Button onClick={() => navigate(`/course/${course.id}`)} variant="outlined" size="small">Empezar</Button>
+                                                    ) : (
+                                                        <IconButton edge="end" onClick={() => handleRemoveCourse(course.id)} color="error">
+                                                            <FaTrash />
+                                                        </IconButton>
+                                                    )}
+                                                </Card>
+                                            </Grid>
+                                        ))
+                                    ) : (
+                                        <Grid item xs={12}><Typography>No hay cursos en esta sala.</Typography></Grid>
+                                    )}
+                                </Grid>
+                            </Paper>
+
+                            {isInstructor && (
+                                <Paper elevation={3} sx={{ p: 3 }}>
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                                        <Typography variant="h5" component="h2" gutterBottom>Miembros</Typography>
+                                        <Button variant="contained" startIcon={<FaPlusCircle />} onClick={() => setIsMemberModalOpen(true)}>
+                                            Invitar Usuario
+                                        </Button>
+                                    </Box>
+                                    <List>
+                                        {room.members.length > 0 ? (
+                                            room.members.map(member => (
+                                                <ListItem key={member.id} secondaryAction={(
+                                                    <IconButton edge="end" onClick={() => handleRemoveMember(member.id)} color="error">
+                                                        <FaTrash />
+                                                    </IconButton>
+                                                )}>
+                                                    <ListItemText primary={member.profile?.first_name || member.username} secondary={member.email} />
+                                                </ListItem>
+                                            ))
+                                        ) : (
+                                            <Typography>No hay miembros en esta sala.</Typography>
+                                        )}
+                                    </List>
+                                </Paper>
+                            )}
+                        </Grid>
+
+                        {isInstructor && (
+                            <Grid item xs={12} md={4}>
+                                <Paper elevation={3} sx={{ p: 3 }}>
+                                    <Typography variant="h6" component="h3" gutterBottom>Código de Invitación</Typography>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, border: '1px solid #ccc', borderRadius: 1, p: 1 }}>
+                                        <Typography variant="h6" sx={{ flexGrow: 1 }}>{room.join_code}</Typography>
+                                        <IconButton onClick={() => copyToClipboard(room.join_code)} color="primary">
+                                            <FaClipboard />
+                                        </IconButton>
+                                    </Box>
+                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Comparte este código para que los estudiantes se unan.</Typography>
+                                    <Box sx={{ display: 'flex', gap: 1 }}>
+                                        <IconButton href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer" color="success">
+                                            <FaWhatsapp />
+                                        </IconButton>
+                                        <IconButton href={`https://t.me/share/url?url=${encodeURIComponent(joinLink)}&text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer" color="info">
+                                            <FaTelegram />
+                                        </IconButton>
+                                    </Box>
+                                </Paper>
+                            </Grid>
+                        )}
+                    </Grid>
+                </Container>
+            </Box>
+
             {isCourseModalOpen && <AddCourseModal availableCourses={availableCourses} onAdd={handleAddCourse} onClose={() => setIsCourseModalOpen(false)} />}
             {isMemberModalOpen && <AddMemberModal availableUsers={availableUsers} onAdd={handleAddMember} onClose={() => setIsMemberModalOpen(false)} />}
             {isEditModalOpen && <EditRoomModal room={room} onSave={handleUpdateRoom} onClose={() => setIsEditModalOpen(false)} />}

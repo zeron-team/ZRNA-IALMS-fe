@@ -1,9 +1,10 @@
-// frontend/src/pages/CreateCoursePage.css
+// frontend/src/pages/CreateCoursePage.js
 
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
-import '../styles/CreateCoursePage.css';
+import { Box, Typography, TextField, Button, Container, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import '../styles/InternalPageHeader.css'; // Corrected import path
 
 const CreateCoursePage = () => {
   const [formData, setFormData] = useState({
@@ -39,41 +40,86 @@ const CreateCoursePage = () => {
   };
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Crea tu Propio Curso</h1>
+    <div className="landing-container">
+      <div className="internal-hero-section"> {/* Changed class name */}
+        <Container maxWidth="md">
+          <Typography variant="h4" component="h1" sx={{ fontSize: { xs: '1.8rem', sm: '2.5rem' }, fontWeight: 'bold' }}>
+            Crea tu Propio Curso
+          </Typography>
+          <p>Comparte tu conocimiento con el mundo.</p>
+        </Container>
       </div>
-      <div className="page-panel">
-        <form onSubmit={handleSubmit} className="create-course-form">
-          <div className="form-group">
-            <label>Título del Curso</label>
-            <p>Dale un nombre atractivo que describa tu curso.</p>
-            <input name="title" onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label>Descripción</label>
-            <p>Describe de qué trata tu curso y qué aprenderán los estudiantes.</p>
-            <textarea name="description" rows="4" onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label>Categoría</label>
-            <p>Elige la categoría que mejor se adapte a tu curso.</p>
-            <select name="category_id" value={formData.category_id} onChange={handleChange} required>
-              <option value="" disabled>Selecciona una categoría...</option>
-              {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Nivel de Dificultad</label>
-            <select name="level" value={formData.level} onChange={handleChange}>
-              <option value="basico">Básico</option>
-              <option value="intermedio">Intermedio</option>
-              <option value="avanzado">Avanzado</option>
-            </select>
-          </div>
-          <button type="submit" className="btn btn-primary">Crear Curso y Continuar</button>
-        </form>
-      </div>
+
+      <Box sx={{ py: 8, display: 'flex', justifyContent: 'center' }}>
+        <Container component="main" maxWidth="md">
+          <Paper elevation={6} sx={{ p: 4, borderRadius: 3 }}>
+            <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>
+              Detalles del Curso
+            </Typography>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="title"
+                label="Título del Curso"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="description"
+                label="Descripción"
+                name="description"
+                multiline
+                rows={4}
+                value={formData.description}
+                onChange={handleChange}
+                sx={{ mb: 2 }}
+              />
+              <FormControl fullWidth margin="normal" sx={{ mb: 2 }}>
+                <InputLabel id="category-label">Categoría</InputLabel>
+                <Select
+                  labelId="category-label"
+                  id="category_id"
+                  name="category_id"
+                  value={formData.category_id}
+                  label="Categoría"
+                  onChange={handleChange}
+                  required
+                >
+                  <MenuItem value="" disabled>Selecciona una categoría...</MenuItem>
+                  {categories.map(cat => (
+                    <MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth margin="normal" sx={{ mb: 3 }}>
+                <InputLabel id="level-label">Nivel de Dificultad</InputLabel>
+                <Select
+                  labelId="level-label"
+                  id="level"
+                  name="level"
+                  value={formData.level}
+                  label="Nivel de Dificultad"
+                  onChange={handleChange}
+                >
+                  <MenuItem value="basico">Básico</MenuItem>
+                  <MenuItem value="intermedio">Intermedio</MenuItem>
+                  <MenuItem value="avanzado">Avanzado</MenuItem>
+                </Select>
+              </FormControl>
+              <Button type="submit" variant="contained" size="large" fullWidth>
+                Crear Curso y Continuar
+              </Button>
+            </form>
+          </Paper>
+        </Container>
+      </Box>
     </div>
   );
 };

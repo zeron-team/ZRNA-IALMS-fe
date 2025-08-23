@@ -248,7 +248,7 @@ const LandingPage = () => {
                     <p className="plan-price">Gratis</p>
                     <ul className="plan-features">
                         <li><FaCheck className="feature-icon" /> Acceso a cursos gratuitos</li>
-                        <li><FaTimes className="feature-limitation" /> Límite de 3 inscripciones</li>
+                  
                         <li><FaTimes className="feature-limitation" /> Sin certificados</li>
                         <li><FaTimes className="feature-limitation" /> Con publicidad</li>
                     </ul>

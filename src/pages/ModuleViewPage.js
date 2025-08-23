@@ -9,7 +9,8 @@ import Quiz from '../components/Quiz';
 import ProgressBar from '../components/ProgressBar';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { useAuth } from '../auth/AuthContext';
-import '../styles/ModuleViewPage.css';
+import { Box, Typography, Container, Grid, Button, Paper, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
+import { FaBookOpen, FaCheckCircle } from 'react-icons/fa';
 
 const ModuleViewPage = () => {
   const { user } = useAuth();
@@ -118,106 +119,121 @@ const ModuleViewPage = () => {
     };
   }, [course, moduleData, user, moduleId]);
 
-  if (loading || !course) return <div className="page-container"><p>Cargando lección...</p></div>;
-  if (!moduleData) return <div className="page-container"><p>No se encontró el módulo.</p></div>;
+  if (loading || !course) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando lección...</Typography>;
+  if (!moduleData) return <Typography sx={{ textAlign: 'center', mt: 4 }}>No se encontró el módulo.</Typography>;
 
   const canEdit = user && (user.role.name === 'admin' || user.role.name === 'instructor' || user.id === course.creator_id);
 
   return (
-    <div className="lesson-view-container">
-      <header className="lesson-header">
-        <Link to={`/course/${course.id}`} className="back-link">
-          <FaArrowLeft /> Volver a la currícula
-        </Link>
-        <div className="lesson-progress">
-          <span>Progreso del Curso</span>
+    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+      <Paper elevation={3} sx={{ p: 2, mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Button component={Link} to={`/course/${course.id}`} startIcon={<FaArrowLeft />}>
+          Volver a la currícula
+        </Button>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant="body2" sx={{ mr: 1 }}>Progreso del Curso:</Typography>
           <ProgressBar percentage={courseProgress} />
-        </div>
-      </header>
+        </Box>
+      </Paper>
 
-      <div className="lesson-layout">
-        <aside className="lesson-sidebar">
-          <h4>Módulos del curso</h4>
-          <nav className="lesson-nav">
-            <ul>
+      <Grid container spacing={3} sx={{ flexGrow: 1 }}>
+        <Grid item xs={12} md={3}>
+          <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
+            <Typography variant="h6" gutterBottom>Módulos del curso</Typography>
+            <List>
               {course.modules.map(module => (
-                <li key={module.id}>
-                  <Link to={`/module/${module.id}`} className={module.id === parseInt(moduleId) ? 'active' : ''}>
-                    {module.title}
-                  </Link>
-                </li>
+                <ListItem 
+                  button 
+                  key={module.id} 
+                  component={Link} 
+                  to={`/module/${module.id}`}
+                  selected={module.id === parseInt(moduleId)}
+                >
+                  <ListItemIcon>
+                    {module.status === 'completed' ? <FaCheckCircle color="green" /> : <FaBookOpen />}
+                  </ListItemIcon>
+                  <ListItemText primary={module.title} />
+                </ListItem>
               ))}
-            </ul>
-          </nav>
-        </aside>
+            </List>
+          </Paper>
+        </Grid>
 
-        <main className="lesson-content">
-          <h1>{moduleData.title}</h1>
-          <p className="lesson-description">{moduleData.description}</p>
-          <hr />
-
-          {moduleData.content_data ? (
-            <ReactMarkdown children={moduleData.content_data} />
-          ) : (
-            <div className="content-generator">
-              {canEdit ? (
-                isGenerating ? <NeuralLoader /> : (
-                  <>
-                    {prevModuleIncomplete && <p className="warning-text">Debes generar el contenido del módulo anterior primero.</p>}
-                    <button
-                      onClick={handleGenerateContent}
-                      disabled={isGenerating || !isGenerationAllowed}
-                      className="btn btn-primary"
-                    >
-                      ✨ Generar Contenido con IA
-                    </button>
-                  </>
-                )
-              ) : (
-                <p>El contenido de esta lección estará disponible pronto.</p>
-              )}
-            </div>
-          )}
-
-          {moduleData.content_data && (
-            <div className="quiz-section">
-              <hr />
-              {user.role.name === 'student' ? (
-                // Vista para el Estudiante
-                !showQuiz ? (
-                  <div className="start-quiz-section">
-                    <h3>Prueba tus Conocimientos</h3>
-                    <p>Aprueba el quiz para desbloquear el siguiente módulo.</p>
-                    <button className="btn btn-success" onClick={handleStartQuiz}>Realizar Quiz</button>
-                  </div>
+        <Grid item xs={12} md={9}>
+          <Paper elevation={3} sx={{ p: 3, height: '100%' }}>
+            <Typography variant="h4" component="h1" gutterBottom>{moduleData.title}</Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>{moduleData.description}</Typography>
+            
+            {moduleData.content_data ? (
+              <Box sx={{ '& img': { maxWidth: '100%', height: 'auto' } }}>
+                <ReactMarkdown children={moduleData.content_data} />
+              </Box>
+            ) : (
+              <Box sx={{ my: 4, p: 3, border: '1px dashed grey', borderRadius: 2, textAlign: 'center' }}>
+                {canEdit ? (
+                  isGenerating ? <NeuralLoader /> : (
+                    <>
+                      {prevModuleIncomplete && <Typography color="error" sx={{ mb: 2 }}>Debes generar el contenido del módulo anterior primero.</Typography>}
+                      <Button
+                        variant="contained"
+                        onClick={handleGenerateContent}
+                        disabled={isGenerating || !isGenerationAllowed}
+                      >
+                        ✨ Generar Contenido con IA
+                      </Button>
+                    </>
+                  )
                 ) : (
-                  quizData && <Quiz quizData={quizData} moduleId={moduleId} onQuizComplete={handleQuizCompletion} />
-                )
-              ) : (
-                // Vista para el Instructor/Admin
-                <div className="quiz-preview-section">
-                  <h3>Vista Previa del Quiz</h3>
-                  <p>Este es el quiz que verán los estudiantes al final de esta lección.</p>
-                  {/* Aquí podrías añadir un botón para editar el quiz en el futuro */}
-                </div>
-              )}
-            </div>
-          )}
-
-          <div className="lesson-footer-nav">
-            {prevModule ? <Link to={`/module/${prevModule.id}`} className="btn btn-secondary"><FaArrowLeft/> Módulo Anterior</Link> : <div></div>}
-            {nextModule && (
-              <Link
-                to={`/module/${nextModule.id}`}
-                className={`btn btn-primary ${moduleData.status !== 'completed' ? 'disabled' : ''}`}
-              >
-                Siguiente Módulo <FaArrowRight/>
-              </Link>
+                  <Typography variant="body1">El contenido de esta lección estará disponible pronto.</Typography>
+                )}
+              </Box>
             )}
-          </div>
-        </main>
-      </div>
-    </div>
+
+            {moduleData.content_data && (
+              <Box sx={{ mt: 4, pt: 3, borderTop: '1px solid #eee' }}>
+                {user.role.name === 'student' ? (
+                  !showQuiz ? (
+                    <Box sx={{ textAlign: 'center' }}>
+                      <Typography variant="h5" gutterBottom>Prueba tus Conocimientos</Typography>
+                      <Typography variant="body1" sx={{ mb: 2 }}>Aprueba el quiz para desbloquear el siguiente módulo.</Typography>
+                      <Button variant="contained" color="success" onClick={handleStartQuiz}>Realizar Quiz</Button>
+                    </Box>
+                  ) : (
+                    quizData && <Quiz quizData={quizData} moduleId={moduleId} onQuizComplete={handleQuizCompletion} />
+                  )
+                ) : (
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Typography variant="h5" gutterBottom>Vista Previa del Quiz</Typography>
+                    <Typography variant="body1">Este es el quiz que verán los estudiantes al final de esta lección.</Typography>
+                  </Box>
+                )}
+              </Box>
+            )}
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4, pt: 3, borderTop: '1px solid #eee' }}>
+              {prevModule ? (
+                <Button component={Link} to={`/module/${prevModule.id}`} startIcon={<FaArrowLeft />}>
+                  Módulo Anterior
+                </Button>
+              ) : (
+                <div />
+              )}
+              {nextModule && (
+                <Button
+                  component={Link}
+                  to={`/module/${nextModule.id}`}
+                  endIcon={<FaArrowRight />}
+                  variant="contained"
+                  disabled={moduleData.status !== 'completed'}
+                >
+                  Siguiente Módulo
+                </Button>
+              )}
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 

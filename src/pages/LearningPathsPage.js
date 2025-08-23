@@ -5,7 +5,9 @@ import { api } from '../services/api';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaCheckCircle, FaPlusCircle, FaLightbulb, FaTools } from 'react-icons/fa';
 import ThinkingIndicator from '../components/ThinkingIndicator';
-import '../styles/LearningPathsPage.css';
+import LearningPathCard from '../components/LearningPathCard';
+import { Box, Typography, Container, Grid, Button, Select, MenuItem, FormControl, InputLabel, Card, CardContent } from '@mui/material';
+import '../styles/InternalPageHeader.css'; // Corrected import path
 
 const LearningPathsPage = () => {
   const [paths, setPaths] = useState([]);
@@ -53,34 +55,33 @@ const LearningPathsPage = () => {
     switch (course.user_status) {
       case 'no_inscrito':
         return (
-          <>
-            <button className="btn btn-secondary" onClick={() => alert('Resumen del curso pendiente.')}>Ver Resumen</button>
-            <button className="btn btn-primary" onClick={() => handleEnroll(course.id)}>
-              <FaPlusCircle /> Inscribirme
-            </button>
-          </>
+          <Button variant="contained" onClick={() => handleEnroll(course.id)} startIcon={<FaPlusCircle />}>
+            Inscribirme
+          </Button>
         );
       case 'cursando':
         return (
-          <Link to={`/course/${course.id}`} className="btn btn-success">
-            Continuar Curso <FaArrowRight />
-          </Link>
+          <Button component={Link} to={`/course/${course.id}`} variant="contained" color="success" endIcon={<FaArrowRight />}>
+            Continuar Curso
+          </Button>
         );
       case 'terminado':
         return (
-          <div className="status-badge completed"><FaCheckCircle /> Terminado</div>
+          <Button variant="outlined" disabled startIcon={<FaCheckCircle />}>
+            Terminado
+          </Button>
         );
       case 'en_desarrollo':
         return (
-          <button className="btn btn-secondary" disabled>
-            <FaTools style={{marginRight: '8px'}} /> Próximamente
-          </button>
+          <Button variant="outlined" disabled startIcon={<FaTools />}>
+            Próximamente
+          </Button>
         );
       case 'missing':
         return (
-          <button className="btn btn-primary" disabled>
-            <FaLightbulb style={{marginRight: '8px'}} /> Sugerencia IA
-          </button>
+          <Button variant="outlined" disabled startIcon={<FaLightbulb />}>
+            Sugerencia IA
+          </Button>
         );
       default:
         return null;
@@ -88,53 +89,89 @@ const LearningPathsPage = () => {
   };
 
   const renderCourseStep = (course) => {
-    const stepClass = `timeline-step status-${course.user_status}`;
-
     return (
-      <div key={`${course.status}-${course.id}-${course.step}`} className={stepClass}>
-        <div className="timeline-indicator">
-          <div className="indicator-circle">
-            {course.user_status === 'terminado' ? <FaCheckCircle /> : <span>{String(course.step).padStart(2, '0')}</span>}
-          </div>
-          <div className="indicator-line"></div>
-        </div>
-        <div className="timeline-content page-panel">
-          <h4>{course.title}</h4>
-          <p>{course.description}</p>
-        <div className="step-actions">
+      <Card key={`${course.status}-${course.id}-${course.step}`} sx={{ mb: 2, p: 2 }}>
+        <CardContent>
+          <Typography variant="h6" component="h4" gutterBottom>
+            {course.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            {course.description}
+          </Typography>
           <ActionButtons course={course} />
-        </div>
-      </div>
-    </div>
-  );
+        </CardContent>
+      </Card>
+    );
   };
 
-  if (loadingPaths) return <p>Cargando rutas de conocimiento...</p>;
+  if (loadingPaths) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando rutas de conocimiento...</Typography>;
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Rutas de Conocimiento</h1>
-      </div>
-      <div className="page-panel">
-        <p>Selecciona una carrera para ver la ruta de cursos recomendada para convertirte en un experto.</p>
-        <select onChange={(e) => handleSelectPath(e.target.value)} className="path-selector">
-          <option value="">-- Elige tu carrera --</option>
-          {paths.map(path => (
-            <option key={path.id} value={path.id}>{path.title}</option>
-          ))}
-        </select>
+    <div className="landing-container">
+      <div className="internal-hero-section"> {/* Changed class name */}
+        <Container maxWidth="md">
+          <Typography variant="h4" component="h1" sx={{ fontSize: { xs: '1.8rem', sm: '2.5rem' }, fontWeight: 'bold' }}>
+            Rutas de Conocimiento
+          </Typography>
+          <p>Descubre el camino para convertirte en un experto.</p>
+        </Container>
       </div>
 
-      {loadingDetails && <ThinkingIndicator />}
+      <Box sx={{ py: 8 }}>
+        <Container maxWidth="lg">
+          <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold', mb: 4 }}>
+            Explora Nuestras Rutas
+          </Typography>
 
-      {!loadingDetails && selectedPath && (
-        <div className="curriculum-list">
-          <h2>Ruta Sugerida para: {selectedPath.title}</h2>
-          <p>{selectedPath.description}</p>
-          {selectedPath.courses.map(course => renderCourseStep(course))}
-        </div>
-      )}
+          <Grid container spacing={4}>
+            {paths.map(path => (
+              <Grid item key={path.id} xs={12} sm={6} md={4}>
+                <LearningPathCard path={path} />
+              </Grid>
+            ))}
+          </Grid>
+
+          <Box sx={{ my: 4 }}>
+            <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
+              O Elige una Ruta Específica
+            </Typography>
+            <FormControl fullWidth>
+              <InputLabel id="path-select-label">-- Elige tu carrera --</InputLabel>
+              <Select
+                labelId="path-select-label"
+                value={selectedPath ? selectedPath.id : ''}
+                label="-- Elige tu carrera --"
+                onChange={(e) => handleSelectPath(e.target.value)}
+              >
+                <MenuItem value="">-- Elige tu carrera --</MenuItem>
+                {paths.map(path => (
+                  <MenuItem key={path.id} value={path.id}>{path.title}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+
+          {loadingDetails && <ThinkingIndicator />}
+
+          {!loadingDetails && selectedPath && (
+            <Box sx={{ mt: 4 }}>
+              <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
+                Ruta Sugerida para: {selectedPath.title}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                {selectedPath.description}
+              </Typography>
+              <Grid container spacing={2}>
+                {selectedPath.courses.map(course => (
+                  <Grid item xs={12} key={course.id}>
+                    {renderCourseStep(course)}
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          )}
+        </Container>
+      </Box>
     </div>
   );
 };

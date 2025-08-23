@@ -5,7 +5,10 @@ import { useAuth } from '../auth/AuthContext';
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import InfoModal from '../components/InfoModal';
-import '../styles/MyRoomPage.css';
+import RoomCard from '../components/RoomCard';
+import { Box, Typography, Container, Grid, Button, TextField, Paper } from '@mui/material';
+import { FaPlusCircle } from 'react-icons/fa';
+import '../styles/InternalPageHeader.css'; // Corrected import path
 
 const MyRoomsPage = () => {
     const { user } = useAuth();
@@ -51,56 +54,92 @@ const MyRoomsPage = () => {
         }
     };
 
-    if (loading) return <div className="page-container"><p>Cargando tus salas...</p></div>;
+    if (loading) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando tus salas...</Typography>;
 
     return (
-        <div className="page-container">
-            <div className="page-header">
-                <h1>Mis Salas</h1>
-                {user.role.name === 'instructor' && !isCreating && (
-                    <button className="btn btn-primary" onClick={() => setIsCreating(true)}>
-                        + Crear Nueva Sala
-                    </button>
-                )}
+        <div className="landing-container">
+            <div className="internal-hero-section"> {/* Changed class name */}
+                <Container maxWidth="md">
+                    <Typography variant="h4" component="h1" sx={{ fontSize: { xs: '1.8rem', sm: '2.5rem' }, fontWeight: 'bold' }}>
+                        Mis Salas
+                    </Typography>
+                    <p>Gestiona tus salas de aprendizaje.</p>
+                    {user.role.name === 'instructor' && !isCreating && (
+                        <Button
+                            variant="contained"
+                            size="large"
+                            className="cta-button"
+                            startIcon={<FaPlusCircle />}
+                            onClick={() => setIsCreating(true)}
+                        >
+                            Crear Nueva Sala
+                        </Button>
+                    )}
+                </Container>
             </div>
 
-            {isCreating && (
-                <div className="page-panel room-creation-panel">
-                    <form onSubmit={handleCreateRoom}>
-                        <h2>Nueva Sala</h2>
-                        <input
-                            type="text"
-                            placeholder="Nombre de la Sala"
-                            value={roomName}
-                            onChange={e => setRoomName(e.target.value)}
-                            required
-                        />
-                        <textarea
-                            placeholder="Descripción de la Sala"
-                            value={roomDescription}
-                            onChange={e => setRoomDescription(e.target.value)}
-                            rows="3"
-                        />
-                        <div className="room-creation-actions">
-                            <button type="submit" className="btn btn-success">Guardar Sala</button>
-                            <button type="button" onClick={() => setIsCreating(false)} className="btn btn-secondary">Cancelar</button>
-                        </div>
-                    </form>
-                </div>
-            )}
+            <Box sx={{ py: 8 }}>
+                <Container maxWidth="lg">
+                    {isCreating && (
+                        <Paper elevation={6} sx={{ p: 4, mb: 4, borderRadius: 3}}>
+                            <Box> {/* Added Box to wrap Typography and form */}
+                                <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>
+                                    Nueva Sala
+                                </Typography>
+                                <form onSubmit={handleCreateRoom}>
+                                    <TextField
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        id="roomName"
+                                        label="Nombre de la Sala"
+                                        value={roomName}
+                                        onChange={e => setRoomName(e.target.value)}
+                                        sx={{ mb: 2 }}
+                                    />
+                                    <TextField
+                                        margin="normal"
+                                        fullWidth
+                                        id="roomDescription"
+                                        label="Descripción de la Sala"
+                                        multiline
+                                        rows={3}
+                                        value={roomDescription}
+                                        onChange={e => setRoomDescription(e.target.value)}
+                                        sx={{ mb: 3 }}
+                                    />
+                                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+                                        <Button type="submit" variant="contained" color="primary">
+                                            Guardar Sala
+                                        </Button>
+                                        <Button type="button" variant="outlined" onClick={() => setIsCreating(false)}>
+                                            Cancelar
+                                        </Button>
+                                    </Box>
+                                </form>
+                            </Box>
+                        </Paper>
+                    )}
 
-            <div className="room-list">
-                {rooms.length > 0 ? (
-                    rooms.map(room => (
-                        <div key={room.id} className="room-card" onClick={() => navigate(`/rooms/${room.id}`)}>
-                            <h3>{room.name}</h3>
-                            <p>{room.description}</p>
-                        </div>
-                    ))
-                ) : (
-                    !isCreating && <div className="page-panel"><p>Aún no has creado ninguna sala o no eres miembro de ninguna.</p></div>
-                )}
-            </div>
+                    {rooms.length > 0 ? (
+                        <Grid container spacing={4}>
+                            {rooms.map(room => (
+                                <Grid item key={room.id} xs={12} sm={6} md={4}>
+                                    <RoomCard room={room} />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    ) : (
+                        !isCreating && (
+                            <Paper sx={{ p: 3, textAlign: 'center', mt: 4 }}>
+                                <Typography variant="h6">
+                                    Aún no has creado ninguna sala o no eres miembro de ninguna.
+                                </Typography>
+                            </Paper>
+                        )
+                    )}
+                </Container>
+            </Box>
 
             {modalInfo.isOpen && (
                 <InfoModal

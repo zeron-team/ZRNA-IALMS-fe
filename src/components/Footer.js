@@ -7,7 +7,7 @@ const Footer = () => {
 
   return (
     <footer className="app-footer">
-      <p>&copy; {currentYear} IA LMS Platform. Todos los derechos reservados.</p>
+      <p>&copy; {currentYear} ZeRoN AcademIA Platform. Todos los derechos reservados.</p>
     </footer>
   );
 };

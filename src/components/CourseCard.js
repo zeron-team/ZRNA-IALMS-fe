@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material'; // Import Button from Material UI
+import { Button, Card, CardContent, Typography, Box } from '@mui/material'; // Import Card, CardContent, Typography, Box
 import '../styles/CourseCard.css'; // Asegúrate de que este archivo exista
 
-const CourseCard = ({ course }) => {
+const CourseCard = ({ course, children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const navigate = useNavigate();
 
@@ -17,26 +17,28 @@ const CourseCard = ({ course }) => {
   };
 
   return (
-    <div className="course-card" onClick={handleCardClick}>
-      <div className="course-card-image">
+    <Card className="course-card" onClick={handleCardClick} sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Box className="course-card-image">
         {/* --- LÓGICA DE LA ETIQUETA DE PRECIO AÑADIDA --- */}
         <div className={`price-tag ${course.price > 0 ? 'paid' : 'free'}`}>
           {course.price > 0 ? 'Pago' : 'Gratis'}
         </div>
-      </div>
-      <div className="course-card-content">
-        <h2>{course.title}</h2>
-        <p className={isExpanded ? 'expanded' : ''}>{course.description}</p>
-      </div>
-      <div className="course-card-actions">
+      </Box>
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="h3" sx={{ fontSize: '1.1rem', fontWeight: 'bold', mb: 1 }}>{course.title}</Typography>
+        <Typography variant="body2" color="text.secondary" className={isExpanded ? 'expanded' : ''}>{course.description}</Typography>
+      </CardContent>
+      <Box className="course-card-actions" sx={{ p: 2, pt: 0 }}>
         <Button variant="outlined" onClick={handleToggleExpand} sx={{ mr: 1 }}>
           {isExpanded ? 'Ver menos' : 'Ver más...'}
         </Button>
-        <Button variant="contained" onClick={(e) => { e.stopPropagation(); handleCardClick(); }}>
-          Inscribirme
-        </Button>
-      </div>
-    </div>
+        {children ? children : (
+          <Button variant="contained" onClick={(e) => { e.stopPropagation(); handleCardClick(); }}>
+            Inscribirme
+          </Button>
+        )}
+      </Box>
+    </Card>
   );
 };
 

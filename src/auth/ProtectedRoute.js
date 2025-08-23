@@ -2,16 +2,15 @@
 
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-// Asegúrate de que AuthContext se importe correctamente si lo usas aquí.
-// import { useAuth } from './AuthContext';
+import { useAuth } from './AuthContext';
 
 const ProtectedRoute = ({ children }) => {
-  // Lógica de autenticación simplificada
-  const isAuthenticated = true; // Reemplazar con la lógica real del Context
+  const { user } = useAuth();
 
-  if (!isAuthenticated) {
+  if (!user) {
     return <Navigate to="/login" />;
   }
+
   return children;
 };
 

@@ -1,23 +1,34 @@
 // frontend/src/pages/ManageCoursesPage.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { api } from '../services/api';
-import { useNavigate } from 'react-router-dom'; // 1. Importa useNavigate
+import { useNavigate } from 'react-router-dom';
 import CourseFormModal from '../components/CourseFormModal';
-import '../styles/AdminPages.css';
+import CourseCard from '../components/CourseCard';
+import { Box, Typography, Container, Grid, Button, Drawer, Chip, Stack, IconButton } from '@mui/material';
+import { FaFilter, FaPlusCircle, FaTimes } from 'react-icons/fa';
+import '../styles/InternalPageHeader.css'; // Corrected import path
 
 const ManageCoursesPage = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const navigate = useNavigate(); // 2. Inicializa useNavigate
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [selectedLevel, setSelectedLevel] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const fetchMyCourses = () => {
     setLoading(true);
-    api.getMyTaughtCourses()
-      .then(setCourses)
-      .catch(console.error)
+    Promise.all([
+      api.getMyTaughtCourses(),
+      api.getCategories()
+    ]).then(([coursesData, categoriesData]) => {
+      setCourses(coursesData);
+      setCategories(categoriesData);
+    }).catch(console.error)
       .finally(() => setLoading(false));
   };
 
@@ -35,9 +46,8 @@ const ManageCoursesPage = () => {
     setIsModalOpen(true);
   };
 
-  // 3. Nueva función para ir al detalle del curso
   const handleManage = (courseId) => {
-    navigate(`/course/${courseId}`);
+    navigate(`/course/${course.id}`);
   };
 
   const handleSave = () => {
@@ -53,42 +63,154 @@ const ManageCoursesPage = () => {
     }
   };
 
-  if (loading) return <p>Cargando tus cursos...</p>;
+  const handleCategoryToggle = (categoryId) => {
+    setSelectedCategories(prev =>
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const handleLevelSelect = (level) => {
+    setSelectedLevel(prev => prev === level ? null : level);
+  };
+
+  const clearFilters = () => {
+    setSelectedLevel(null);
+    setSelectedCategories([]);
+  };
+
+  const filteredCourses = useMemo(() => {
+    return courses.filter(course => {
+      const levelMatch = selectedLevel ? course.level === selectedLevel : true;
+      const categoryMatch = selectedCategories.length > 0 ? selectedCategories.includes(course.category.id) : true;
+      return levelMatch && categoryMatch;
+    });
+  }, [courses, selectedLevel, selectedCategories]);
+
+  const renderFilters = () => (
+    <div className="filters-section" style={{ overflowY: 'auto' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography variant="h6" component="h3">Filtros</Typography>
+        <IconButton onClick={() => setMobileFiltersOpen(false)} aria-label="close filters">
+          <FaTimes />
+        </IconButton>
+      </Box>
+
+      <Box mb={2}>
+        <Typography variant="subtitle1">Nivel</Typography>
+        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
+          {['basico', 'intermedio', 'avanzado'].map(level => (
+            <Chip 
+              key={level}
+              label={level.charAt(0).toUpperCase() + level.slice(1)}
+              onClick={() => handleLevelSelect(level)}
+              color={selectedLevel === level ? 'primary' : 'default'}
+              clickable
+              sx={{ mb: 1 }}
+            />
+          ))}
+        </Stack>
+      </Box>
+
+      <Box mb={2}>
+        <Typography variant="subtitle1">Categorías</Typography>
+        {categories.length > 0 ? (
+          <Stack direction="row" spacing={{ xs: 0.5, sm: 1 }} sx={{ flexWrap: 'wrap', width: '100%' }}>
+            {categories.map(category => (
+              <Chip
+                key={category.id}
+                label={category.name}
+                onClick={() => handleCategoryToggle(category.id)}
+                color={selectedCategories.includes(category.id) ? 'primary' : 'default'}
+                clickable
+                size="small"
+                sx={{ mb: 1, display: 'inline-flex', backgroundColor: 'purple', color: 'white' }}
+              />
+            ))}
+          </Stack>
+        ) : (
+          <Typography variant="body2" color="text.secondary">Cargando categorías o no hay categorías disponibles.</Typography>
+        )}
+      </Box>
+
+      <Button onClick={() => { clearFilters(); setMobileFiltersOpen(false); }} variant="outlined">Limpiar Filtros</Button>
+    </div>
+  );
+
+  if (loading) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando tus cursos...</Typography>;
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Administrar Cursos</h1>
-        <button className="btn btn-primary" onClick={handleCreate}>
-          + Crear Nuevo Curso
-        </button>
+    <div className="landing-container">
+      <div className="internal-hero-section"> {/* Changed class name */}
+        <Container maxWidth="md">
+          <Typography variant="h4" component="h1" sx={{ fontSize: { xs: '1.8rem', sm: '2.5rem' }, fontWeight: 'bold' }}>
+            Administrar Cursos
+          </Typography>
+          <p>Crea, edita y gestiona tus cursos.</p>
+          <Button
+            variant="contained"
+            size="large"
+            className="cta-button"
+            startIcon={<FaPlusCircle />}
+            onClick={handleCreate}
+          >
+            Crear Nuevo Curso
+          </Button>
+        </Container>
       </div>
 
-      <div className="page-panel">
-        <table className="courses-table">
-          <thead>
-            <tr>
-              <th>Título del Curso</th>
-              <th>Descripción</th>
-              <th style={{ width: '250px' }}>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {courses.map(course => (
-              <tr key={course.id}>
-                <td>{course.title}</td>
-                <td>{course.description}</td>
-                <td className="actions-cell">
-                  {/* 4. Nuevo Botón "Gestionar" */}
-                  <button onClick={() => handleManage(course.id)} className="btn btn-success">Gestionar</button>
-                  <button onClick={() => handleEdit(course)} className="btn btn-secondary">Editar</button>
-                  <button onClick={() => handleDelete(course.id, course.title)} className="btn btn-danger delete">Borrar</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Box sx={{ py: 8 }}>
+        <Container maxWidth="lg">
+          {/* Mobile Filter Button */}
+          <Box sx={{ display: { xs: 'block', md: 'none' }, textAlign: 'center', mb: 2 }}>
+            <Button 
+              variant="contained" 
+              startIcon={<FaFilter />}
+              onClick={() => setMobileFiltersOpen(true)}
+            >
+              Filtros
+            </Button>
+          </Box>
+
+          {/* Mobile Filter Drawer */}
+          <Drawer
+            anchor="left"
+            open={mobileFiltersOpen}
+            onClose={() => setMobileFiltersOpen(false)}
+            sx={{ width: { xs: '100%', sm: '60%', md: '40%' } }}
+          >
+            {renderFilters()}
+          </Drawer>
+
+          {/* Desktop Filters */}
+          <Box sx={{ display: { xs: 'none', md: 'block' }, mb: 4 }}>
+            {renderFilters()}
+          </Box>
+
+          <Grid container spacing={4}>
+            {filteredCourses.length > 0 ? (
+              <React.Fragment> {/* Wrapped in React.Fragment */}
+                {filteredCourses.map(course => (
+                  <Grid item key={course.id} xs={12} sm={6} md={4}>
+                    <CourseCard course={course}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-around', p: 1 }}>
+                        <Button onClick={() => handleManage(course.id)} size="small" variant="outlined">Gestionar</Button>
+                        <Button onClick={() => handleEdit(course)} size="small" variant="outlined">Editar</Button>
+                        <Button onClick={() => handleDelete(course.id, course.title)} size="small" variant="outlined" color="error">Borrar</Button>
+                      </Box>
+                    </CourseCard>
+                  </Grid>
+                ))}
+              </React.Fragment>
+            ) : (
+              <Grid item xs={12}>
+                <Typography>No tienes cursos que coincidan con los filtros seleccionados.</Typography>
+              </Grid>
+            )}
+          </Grid>
+        </Container>
+      </Box>
 
       {isModalOpen && (
         <CourseFormModal

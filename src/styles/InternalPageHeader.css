@@ -1,0 +1,57 @@
+.internal-hero-section {
+  background-color: #f8f9fa; /* Light background */
+  color: #333; /* Dark text for contrast */
+  padding: 2rem 1rem; /* Reduced padding */
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #eee; /* Subtle separator */
+}
+
+.internal-hero-section h1 {
+  font-weight: 700;
+  font-size: 2.5rem; /* Smaller default font size */
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.internal-hero-section p {
+  font-size: 1rem; /* Smaller default font size */
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+/* Responsive Styles for internal-hero-section */
+@media (max-width: 992px) {
+  .internal-hero-section h1 {
+    font-size: 2rem; /* Further reduction for smaller screens */
+  }
+
+  .internal-hero-section p {
+    font-size: 0.9rem; /* Further reduction for smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .internal-hero-section h1 {
+    font-size: 1.8rem;
+  }
+
+  .internal-hero-section p {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .internal-hero-section {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .internal-hero-section h1 {
+    font-size: 1.5rem;
+  }
+
+  .internal-hero-section p {
+    font-size: 0.8rem;
+  }
+}

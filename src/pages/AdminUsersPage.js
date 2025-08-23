@@ -3,7 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import UserFormModal from '../components/UserFormModal';
-import '../styles/AdminPages.css';
+import { Box, Typography, Container, Grid, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { FaPlusCircle } from 'react-icons/fa';
+import '../styles/InternalPageHeader.css'; // Corrected import path
 
 const AdminUsersPage = () => {
   const [users, setUsers] = useState([]);
@@ -48,7 +50,6 @@ const AdminUsersPage = () => {
     fetchUsers();
   };
 
-  // --- Objeto de Opciones para el Formato de Fecha y Hora ---
   const dateTimeOptions = {
     year: 'numeric',
     month: 'numeric',
@@ -56,61 +57,77 @@ const AdminUsersPage = () => {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
-    hour12: false // <-- Esta es la clave para el formato de 24 horas
+    hour12: false
   };
 
-  if (loading) return <div className="page-container"><p>Cargando usuarios...</p></div>;
+  if (loading) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando usuarios...</Typography>;
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Administración de Usuarios</h1>
-        <button className="btn btn-primary" onClick={handleCreate}>+ Añadir Usuario</button>
+    <div className="landing-container">
+      <div className="internal-hero-section"> {/* Changed class name */}
+        <Container maxWidth="md">
+          <Typography variant="h4" component="h1" sx={{ fontSize: { xs: '1.8rem', sm: '2.5rem' }, fontWeight: 'bold' }}>
+            Administración de Usuarios
+          </Typography>
+          <p>Gestiona los usuarios de la plataforma.</p>
+          <Button
+            variant="contained"
+            size="large"
+            className="cta-button"
+            startIcon={<FaPlusCircle />}
+            onClick={handleCreate}
+          >
+            Añadir Usuario
+          </Button>
+        </Container>
       </div>
 
-      <div className="page-panel">
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Rol</th>
-              <th>Última Conexión</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(user => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.username}</td>
-                  <td>{user.email}</td>
-                  <td>{user.role.name}</td>
-                  <td>
-                    {user.last_login
-                        // Se usan las nuevas opciones de formato
-                        ? new Date(user.last_login).toLocaleString('es-AR', dateTimeOptions)
-                        : 'Nunca'}
-                  </td>
-                  <td className="actions-cell">
-                    <button onClick={() => handleEdit(user)} className="btn btn-secondary">Editar</button>
-                    <button onClick={() => handleDelete(user.id, user.username)}
-                            className="btn btn-danger delete">Borrar
-                    </button>
-                  </td>
-                </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Box sx={{ py: 8 }}>
+        <Container maxWidth="lg">
+          <Paper>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell>Username</TableCell>
+                    <TableCell>Email</TableCell>
+                    <TableCell>Rol</TableCell>
+                    <TableCell>Última Conexión</TableCell>
+                    <TableCell>Acciones</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {users.map(user => (
+                    <TableRow key={user.id}>
+                      <TableCell>{user.id}</TableCell>
+                      <TableCell>{user.username}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>{user.role.name}</TableCell>
+                      <TableCell>
+                        {user.last_login
+                          ? new Date(user.last_login).toLocaleString('es-AR', dateTimeOptions)
+                          : 'Nunca'}
+                      </TableCell>
+                      <TableCell>
+                        <Button onClick={() => handleEdit(user)} variant="outlined" size="small" sx={{ mr: 1 }}>Editar</Button>
+                        <Button onClick={() => handleDelete(user.id, user.username)} variant="outlined" size="small" color="error">Borrar</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </Container>
+      </Box>
 
       {isModalOpen && (
-          <UserFormModal
-              user={selectedUser}
-              onClose={() => setIsModalOpen(false)}
-              onSave={handleSaveUser}
-          />
+        <UserFormModal
+          user={selectedUser}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleSaveUser}
+        />
       )}
     </div>
   );

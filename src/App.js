@@ -15,7 +15,6 @@ import MyCoursesPage from './pages/MyCoursesPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import LearningPathsPage from './pages/LearningPathsPage';
-import HomePage from './pages/HomePage';
 import LandingPage from './pages/LandingPage';
 import CheckEmailPage from './pages/CheckEmailPage';
 import EmailVerifiedPage from './pages/EmailVerifiedPage';
@@ -24,7 +23,9 @@ import MyRoomsPage from './pages/MyRoomsPage';
 import RoomDetailPage from './pages/RoomDetailPage';
 import AdminUsersPage from './pages/AdminUsersPage';
 import PaymentStatusPage from './pages/PaymentStatusPage';
-
+import DashboardRouter from './components/DashboardRouter';
+import StudentDashboardPage from './pages/StudentDashboardPage';
+import InstructorDashboardPage from './pages/InstructorDashboardPage'; // Added import
 
 function App() {
   return (
@@ -39,7 +40,9 @@ function App() {
             <Route path="/check-email" element={<CheckEmailPage />} />
             <Route path="/verify-email" element={<EmailVerifiedPage />} />
             {/* Rutas Protegidas */}
-            <Route path="/dashboard" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
+            <Route path="/student-dashboard" element={<ProtectedRoute><StudentDashboardPage /></ProtectedRoute>} />
+            <Route path="/instructor-dashboard" element={<ProtectedRoute><InstructorDashboardPage /></ProtectedRoute>} /> {/* New Instructor Dashboard Route */}
             <Route path="/courses" element={<ProtectedRoute><CourseList /></ProtectedRoute>} />
             <Route path="/course/:id" element={<ProtectedRoute><CourseDetail /></ProtectedRoute>} />
             <Route path="/module/:moduleId" element={<ProtectedRoute><ModuleViewPage /></ProtectedRoute>} />

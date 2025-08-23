@@ -4,13 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { useAuth } from '../auth/AuthContext';
 import { FaUser } from 'react-icons/fa';
-import '../styles/ProfilePage.css';
+import { Box, Typography, TextField, Button, Container, Paper, Grid, Avatar, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import '../styles/InternalPageHeader.css'; // Corrected import path
 
 const ProfilePage = () => {
   const { user, setUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
 
-  // --- CORRECCIÓN AQUÍ: Inicializa todos los campos ---
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -23,7 +23,6 @@ const ProfilePage = () => {
   });
 
   useEffect(() => {
-    // Cuando el usuario se carga, llena el formulario con los datos existentes
     if (user && user.profile) {
       setFormData({
         first_name: user.profile.first_name || '',
@@ -46,7 +45,7 @@ const ProfilePage = () => {
     e.preventDefault();
     try {
       const updatedUser = await api.updateUser(user.id, { profile: formData });
-      setUser(updatedUser); // Actualiza el usuario en el contexto global
+      setUser(updatedUser); 
       setIsEditing(false);
       alert('¡Perfil actualizado con éxito!');
     } catch (error) {
@@ -54,79 +53,140 @@ const ProfilePage = () => {
     }
   };
 
-  if (!user) return <p>Cargando perfil...</p>;
+  if (!user) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando perfil...</Typography>;
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Mi Perfil</h1>
+    <div className="landing-container">
+      <div className="internal-hero-section"> {/* Changed class name */}
+        <Container maxWidth="md">
+          <Typography variant="h4" component="h1" sx={{ fontSize: { xs: '1.8rem', sm: '2.5rem' }, fontWeight: 'bold' }}>
+            Mi Perfil
+          </Typography>
+          <p>Gestiona tu información personal.</p>
+        </Container>
       </div>
-      <div className="page-panel">
-        <form onSubmit={handleSubmit}>
-          <div className="profile-grid">
-            <div className="profile-avatar-section">
-              <div className="profile-avatar"><FaUser /></div>
-              {/* Lógica para subir foto podría ir aquí */}
-            </div>
 
-            <div className="profile-details-section">
-              <div className="form-grid">
-                {/* Nombres */}
-                <div className="form-group">
-                  <label>Nombres</label>
-                  <input type="text" name="first_name" value={formData.first_name} onChange={handleChange} disabled={!isEditing} />
-                </div>
-                {/* Apellidos */}
-                <div className="form-group">
-                  <label>Apellidos</label>
-                  <input type="text" name="last_name" value={formData.last_name} onChange={handleChange} disabled={!isEditing} />
-                </div>
-                {/* Tipo de Documento */}
-                <div className="form-group">
-                  <label>Tipo de Documento</label>
-                  <select name="document_type" value={formData.document_type} onChange={handleChange} disabled={!isEditing}>
-                    <option value="DNI">DNI</option>
-                    <option value="Pasaporte">Pasaporte</option>
-                  </select>
-                </div>
-                {/* Número de Documento */}
-                <div className="form-group">
-                  <label>Número de Documento</label>
-                  <input type="text" name="document_number" value={formData.document_number} onChange={handleChange} disabled={!isEditing} />
-                </div>
-                 {/* País Emisor */}
-                <div className="form-group">
-                  <label>País Emisor</label>
-                  <input type="text" name="document_country" value={formData.document_country} onChange={handleChange} disabled={!isEditing} />
-                </div>
-                {/* Fecha de Nacimiento */}
-                <div className="form-group">
-                  <label>Fecha de Nacimiento</label>
-                  <input type="date" name="birth_date" value={formData.birth_date} onChange={handleChange} disabled={!isEditing} />
-                </div>
-                {/* Teléfono Celular */}
-                <div className="form-group" style={{gridColumn: 'span 2'}}>
-                  <label>Teléfono Celular</label>
-                  <div className="phone-group">
-                    <input type="text" name="phone_country_code" value={formData.phone_country_code} onChange={handleChange} placeholder="+54" disabled={!isEditing} />
-                    <input type="text" name="phone_number" value={formData.phone_number} onChange={handleChange} placeholder="911..." disabled={!isEditing} />
-                  </div>
-                </div>
-              </div>
-              <div className="profile-actions">
-                {isEditing ? (
-                  <>
-                    <button type="button" className="btn btn-secondary" onClick={() => setIsEditing(false)}>Cancelar</button>
-                    <button type="submit" className="btn btn-primary">Guardar Cambios</button>
-                  </>
-                ) : (
-                  <button type="button" className="btn btn-primary" onClick={() => setIsEditing(true)}>Editar Perfil</button>
-                )}
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
+      <Box sx={{ py: 8, display: 'flex', justifyContent: 'center' }}>
+        <Container component="main" maxWidth="md">
+          <Paper elevation={6} sx={{ p: 4, borderRadius: 3 }}>
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+                  <Avatar sx={{ width: 100, height: 100, bgcolor: 'primary.main' }}>
+                    <FaUser size={60} />
+                  </Avatar>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Nombres"
+                    name="first_name"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Apellidos"
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth disabled={!isEditing}>
+                    <InputLabel>Tipo de Documento</InputLabel>
+                    <Select
+                      label="Tipo de Documento"
+                      name="document_type"
+                      value={formData.document_type}
+                      onChange={handleChange}
+                    >
+                      <MenuItem value="DNI">DNI</MenuItem>
+                      <MenuItem value="Pasaporte">Pasaporte</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Número de Documento"
+                    name="document_number"
+                    value={formData.document_number}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="País Emisor"
+                    name="document_country"
+                    value={formData.document_country}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Fecha de Nacimiento"
+                    name="birth_date"
+                    type="date"
+                    value={formData.birth_date}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Código de País (Teléfono)"
+                    name="phone_country_code"
+                    value={formData.phone_country_code}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Número de Teléfono"
+                    name="phone_number"
+                    value={formData.phone_number}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3 }}>
+                  {isEditing ? (
+                    <>
+                      <Button variant="outlined" onClick={() => setIsEditing(false)}>
+                        Cancelar
+                      </Button>
+                      <Button type="submit" variant="contained">
+                        Guardar Cambios
+                      </Button>
+                    </>
+                  ) : (
+                    <Button variant="contained" onClick={() => setIsEditing(true)}>
+                      Editar Perfil
+                    </Button>
+                  )}
+                </Grid>
+              </Grid>
+            </form>
+          </Paper>
+        </Container>
+      </Box>
     </div>
   );
 };
