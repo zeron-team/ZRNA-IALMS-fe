@@ -69,9 +69,29 @@ const MyCoursesPage = () => {
               key={level}
               label={level.charAt(0).toUpperCase() + level.slice(1)}
               onClick={() => handleLevelSelect(level)}
-              color={selectedLevel === level ? 'primary' : 'default'}
+              variant={selectedLevel === level ? 'filled' : 'outlined'} // Changed variant
+              sx={{
+                mb: 1,
+                // Custom styles for selected state
+                ...(selectedLevel === level && {
+                  backgroundColor: '#4CAF50', // A modern green
+                  color: 'white',
+                  fontWeight: 'bold',
+                  '&:hover': {
+                    backgroundColor: '#388E3C', // Darker green on hover
+                  },
+                }),
+                // Custom styles for unselected state
+                ...(!(selectedLevel === level) && {
+                  borderColor: '#BDBDBD', // Light grey border
+                  color: '#616161', // Dark grey text
+                  '&:hover': {
+                    backgroundColor: '#EEEEEE', // Lighter grey on hover
+                  },
+                }),
+              }}
               clickable
-              sx={{ mb: 1 }}
+              size="medium"
             />
           ))}
         </Stack>
@@ -86,10 +106,30 @@ const MyCoursesPage = () => {
                 key={category.id}
                 label={category.name}
                 onClick={() => handleCategoryToggle(category.id)}
-                color={selectedCategories.includes(category.id) ? 'primary' : 'default'}
+                variant={selectedCategories.includes(category.id) ? 'filled' : 'outlined'} // Changed variant
+                sx={{
+                  mb: 1,
+                  display: 'inline-flex',
+                  // Custom styles for selected state
+                  ...(selectedCategories.includes(category.id) && {
+                    backgroundColor: '#2196F3', // A modern blue
+                    color: 'white',
+                    fontWeight: 'bold',
+                    '&:hover': {
+                      backgroundColor: '#1976D2', // Darker blue on hover
+                    },
+                  }),
+                  // Custom styles for unselected state
+                  ...(!selectedCategories.includes(category.id) && {
+                    borderColor: '#BDBDBD', // Light grey border
+                    color: '#616161', // Dark grey text
+                    '&:hover': {
+                      backgroundColor: '#EEEEEE', // Lighter grey on hover
+                    },
+                  }),
+                }}
                 clickable
-                size="small"
-                sx={{ mb: 1, display: 'inline-flex', backgroundColor: 'purple', color: 'white' }}
+                size="medium"
               />
             ))}
           </Stack>
