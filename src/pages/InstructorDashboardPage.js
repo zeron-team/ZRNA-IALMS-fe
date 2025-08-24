@@ -61,7 +61,7 @@ const StudentRow = ({ student }) => {
 };
 
 const InstructorDashboardPage = () => {
-    const [dashboardData, setDashboardData] = useState({ courses: [], room_summary: [] }); // Initialize with empty courses array
+    const [dashboardData, setDashboardData] = useState({ personal_progress: [], room_summary: [] }); // Initialize with empty courses array
     const [detailedProgress, setDetailedProgress] = useState([]);
     const [loading, setLoading] = useState(true);
     const { user } = useAuth();
@@ -117,10 +117,10 @@ const InstructorDashboardPage = () => {
                             Mis Cursos
                         </Typography>
                         <Grid container spacing={4}>
-                            {dashboardData.courses && dashboardData.courses.length > 0 ? (
-                                dashboardData.courses.map(course => (
+                            {dashboardData.personal_progress && dashboardData.personal_progress.length > 0 ? (
+                                dashboardData.personal_progress.map(course => (
                                     <Grid item key={course.id} xs={12} sm={6} md={4}>
-                                        <CourseCard course={course} />
+                                        <CourseCard course={course} showEnterButton={true} progress={course.completion_percentage} />
                                     </Grid>
                                 ))
                             ) : (

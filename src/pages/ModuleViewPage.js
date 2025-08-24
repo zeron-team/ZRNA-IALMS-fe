@@ -7,7 +7,7 @@ import { api } from '../services/api';
 import NeuralLoader from '../components/NeuralLoader';
 import Quiz from '../components/Quiz';
 import ProgressBar from '../components/ProgressBar';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight, FaFilePdf } from 'react-icons/fa'; // Added FaFilePdf
 import { useAuth } from '../auth/AuthContext';
 import { Box, Typography, Container, Grid, Button, Paper, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
 import { FaBookOpen, FaCheckCircle } from 'react-icons/fa';
@@ -78,6 +78,14 @@ const ModuleViewPage = () => {
     }
   };
 
+  const handleDownloadPdf = async () => {
+    try {
+      await api.downloadModulePdf(moduleId);
+    } catch (error) {
+      alert(`Error al descargar el PDF: ${error.message}`);
+    }
+  };
+
   const {
     prevModule,
     nextModule,
@@ -97,7 +105,7 @@ const ModuleViewPage = () => {
     const completedCount = modules.filter(m => m.status === 'completed').length;
     const progress = Math.round((completedCount / modules.length) * 100);
 
-    const canEdit = user.role.name === 'admin' || user.role.name === 'instructor' || user.id === course.creator_id;
+    const canEdit = user.id === course.creator_id;
     let allowed = false;
     let incomplete = false;
     if (canEdit) {
@@ -122,7 +130,7 @@ const ModuleViewPage = () => {
   if (loading || !course) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando lección...</Typography>;
   if (!moduleData) return <Typography sx={{ textAlign: 'center', mt: 4 }}>No se encontró el módulo.</Typography>;
 
-  const canEdit = user && (user.role.name === 'admin' || user.role.name === 'instructor' || user.id === course.creator_id);
+  const canEdit = user && user.id === course.creator_id;
 
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
@@ -161,7 +169,18 @@ const ModuleViewPage = () => {
 
         <Grid item xs={12} md={9}>
           <Paper elevation={3} sx={{ p: 3, height: '100%' }}>
-            <Typography variant="h4" component="h1" gutterBottom>{moduleData.title}</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+              <Typography variant="h4" component="h1" gutterBottom>{moduleData.title}</Typography>
+              {moduleData.content_data && (
+                <Button 
+                  variant="outlined" 
+                  startIcon={<FaFilePdf />} 
+                  onClick={handleDownloadPdf}
+                >
+                  Descargar PDF
+                </Button>
+              )}
+            </Box>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>{moduleData.description}</Typography>
             
             {moduleData.content_data ? (

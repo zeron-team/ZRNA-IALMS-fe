@@ -124,6 +124,38 @@ export const api = {
   getDashboardStats: () => request('/admin/dashboard-stats'),
   getDetailedEnrollments: () => request('/admin/enrollments'),
 
+  downloadModulePdf: async (moduleId) => {
+    const token = localStorage.getItem('token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    const response = await fetch(`${API_URL}/modules/${moduleId}/download-pdf`, { headers });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ detail: 'Error al descargar el PDF' }));
+      throw new Error(errorData.detail);
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const contentDisposition = response.headers.get('content-disposition');
+    let filename = `module_${moduleId}.pdf`;
+    if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
+        if (filenameMatch.length > 1) {
+            filename = filenameMatch[1];
+        }
+    }
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  },
+
   createRoom: (roomData) => request('/rooms/', {
         method: 'POST',
         body: JSON.stringify(roomData)

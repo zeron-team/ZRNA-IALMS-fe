@@ -30,7 +30,7 @@ import InstructorDashboardPage from './pages/InstructorDashboardPage'; // Added 
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Layout>
           <Routes>
             {/* Rutas Públicas */}

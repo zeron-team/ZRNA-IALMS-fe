@@ -49,7 +49,7 @@ const StudentDashboardPage = () => {
                 <Grid container spacing={4}>
                   {dashboardData.enrolled_courses.map(course => (
                     <Grid item key={course.id} xs={12} sm={6} md={6}>
-                      <CourseCard course={course} />
+                      <CourseCard course={course} showEnterButton={true} progress={course.completion_percentage} />
                     </Grid>
                   ))}
                 </Grid>
