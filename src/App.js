@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute from './auth/ProtectedRoute';
@@ -29,6 +30,11 @@ import InstructorDashboardPage from './pages/InstructorDashboardPage'; // Added 
 
 function App() {
   return (
+        <>
+        <Helmet>
+        <title>Zeron AcademIA | El Futuro del Aprendizaje con IA</title>
+        <meta name="description" content="Acelera tu carrera profesional con cursos y rutas de conocimiento generados por Inteligencia Artificial. Aprende sobre Desarrollo, DevOps, IA, Blockchain y más." />
+    </Helmet>
     <AuthProvider>
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Layout>
@@ -61,6 +67,7 @@ function App() {
         </Layout>
       </Router>
     </AuthProvider>
+    </>
   );
 }
 
