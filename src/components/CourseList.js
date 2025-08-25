@@ -1,12 +1,10 @@
-// frontend/src/components/CourseList.js
-
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { useAuth } from '../auth/AuthContext';
 import SummaryModal from '../components/SummaryModal';
 import StarRating from '../components/StarRating';
-import '../styles/CourseList.css';
+import { Box, Typography, Grid, Button, Chip, Stack, Paper, Card, CardContent, CardActions } from '@mui/material';
 
 const CourseList = () => {
   const { user } = useAuth();
@@ -16,10 +14,9 @@ const CourseList = () => {
   const [modalState, setModalState] = useState({ isOpen: false, content: '', title: '', isLoading: false });
   const navigate = useNavigate();
 
-  // --- ESTADOS PARA LOS FILTROS ---
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedPrice, setSelectedPrice] = useState(null); // <-- Nuevo estado para el filtro de precio
+  const [selectedPrice, setSelectedPrice] = useState(null);
 
   const fetchCourses = useCallback(() => {
     setLoading(true);
@@ -48,21 +45,17 @@ const CourseList = () => {
     );
   };
 
-  // Nueva función para manejar el filtro de precio
   const handlePriceSelect = (priceType) => {
     setSelectedPrice(prev => prev === priceType ? null : priceType);
   };
 
-  // Lógica de filtrado actualizada
   const filteredCourses = useMemo(() => {
     return allCourses.filter(course => {
       const levelMatch = selectedLevel ? course.level === selectedLevel : true;
       const categoryMatch = selectedCategories.length > 0 ? selectedCategories.includes(course.category.id) : true;
-
       const priceMatch = selectedPrice
         ? (selectedPrice === 'free' ? course.price === 0 : course.price > 0)
         : true;
-
       return levelMatch && categoryMatch && priceMatch;
     });
   }, [allCourses, selectedLevel, selectedCategories, selectedPrice]);
@@ -91,107 +84,84 @@ const CourseList = () => {
 
   const closeModal = () => setModalState({ isOpen: false, content: '', title: '', isLoading: false });
 
-  if (loading) return <div className="page-container"><p>Cargando cursos...</p></div>;
+  if (loading) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando cursos...</Typography>;
 
   const userPlan = user?.plan || 'Estudiante Básico';
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Catálogo de Cursos</h1>
-      </div>
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Catálogo de Cursos
+      </Typography>
 
-      <div className="page-panel course-filters">
-        <div className="filter-row">
-          <div className="filter-group">
-            <h4>Tipo:</h4>
-            <div className="filter-buttons">
-              <button
-                  onClick={() => handlePriceSelect('free')}
-                  className={`filter-btn ${selectedPrice === 'free' ? 'active' : ''}`}
-              >
-                Gratis
-              </button>
-              <button
-                  onClick={() => handlePriceSelect('paid')}
-                  className={`filter-btn ${selectedPrice === 'paid' ? 'active' : ''}`}
-              >
-                Pago
-              </button>
-            </div>
-          </div>
-          <div className="filter-group">
-            <h4>Nivel:</h4>
-            <div className="filter-buttons">
-              {['basico', 'intermedio', 'avanzado'].map(level => (
-                  <button
-                      key={level}
-                      onClick={() => handleLevelSelect(level)}
-                      className={`filter-btn ${selectedLevel === level ? 'active' : ''}`}
-                  >
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                  </button>
-              ))}
-            </div>
-          </div>
-          <div className="filter-group">
-            <h4>Categorías:</h4>
-            <div className="filter-buttons">
-              {categories.map(category => (
-                  <button
-                      key={category.id}
-                      onClick={() => handleCategoryToggle(category.id)}
-                      className={`filter-btn ${selectedCategories.includes(category.id) ? 'active' : ''}`}
-                  >
-                    {category.name}
-                  </button>
-              ))}
-            </div>
-          </div>
-        </div>
+      <Paper elevation={2} sx={{ p: 2, mb: 4 }}>
+        <Stack spacing={2}>
+          <FilterGroup title="Tipo:">
+            <Chip label="Gratis" onClick={() => handlePriceSelect('free')} variant={selectedPrice === 'free' ? 'filled' : 'outlined'} clickable />
+            <Chip label="Pago" onClick={() => handlePriceSelect('paid')} variant={selectedPrice === 'paid' ? 'filled' : 'outlined'} clickable />
+          </FilterGroup>
+          <FilterGroup title="Nivel:">
+            {['basico', 'intermedio', 'avanzado'].map(level => (
+              <Chip key={level} label={level.charAt(0).toUpperCase() + level.slice(1)} onClick={() => handleLevelSelect(level)} variant={selectedLevel === level ? 'filled' : 'outlined'} clickable />
+            ))}
+          </FilterGroup>
+          <FilterGroup title="Categorías:">
+            {categories.map(category => (
+              <Chip key={category.id} label={category.name} onClick={() => handleCategoryToggle(category.id)} variant={selectedCategories.includes(category.id) ? 'filled' : 'outlined'} clickable />
+            ))}
+          </FilterGroup>
+        </Stack>
+      </Paper>
 
-        <div className="course-list">
-          {filteredCourses.map(course => (
-              <div key={course.id} className="course-card" onClick={() => navigate(`/course/${course.id}`)}>
-                <div className="course-card-image">
-                  <div className={`price-tag ${course.price > 0 ? 'paid' : 'free'}`}>
-                    {course.price > 0 ? 'Pago' : 'Gratis'}
-                  </div>
-                </div>
-                <div className="course-card-content">
-                  <div className="course-card-tags">
-                    <span className="tag-category">{course.category?.name || 'General'}</span>
-                    <span className={`tag-level level-${course.level}`}>{course.level}</span>
-                  </div>
-                  <h2>{course.title}</h2>
-                  <p>{course.description}</p>
-                  <StarRating total={course.total_stars} earned={course.earned_stars}/>
-                </div>
-                <div className="course-card-actions">
-                  <button className="btn btn-secondary" onClick={(e) => handleSeeMore(e, course)}>Ver más...</button>
-                  <button
-                      className="btn btn-primary"
-                      onClick={(e) => handleEnroll(e, course.id, course.title)}
-                      disabled={userPlan === 'Estudiante Básico' && course.price > 0}
-                  >
-                    Inscribirme
-                  </button>
-                </div>
-              </div>
-          ))}
-        </div>
+      <Grid container spacing={4}>
+        {filteredCourses.map(course => (
+          <Grid item key={course.id} xs={12} sm={6} md={4}>
+            <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                  <Chip label={course.category?.name || 'General'} size="small" />
+                  <Chip label={course.price > 0 ? 'Pago' : 'Gratis'} size="small" color={course.price > 0 ? 'secondary' : 'success'} />
+                </Stack>
+                <Typography variant="h5" component="div" sx={{ mt: 1 }}>
+                  {course.title}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                  {course.level}
+                </Typography>
+                <Typography variant="body2">
+                  {course.description}
+                </Typography>
+                <StarRating total={course.total_stars} earned={course.earned_stars} />
+              </CardContent>
+              <CardActions>
+                <Button size="small" onClick={(e) => handleSeeMore(e, course)}>Ver más...</Button>
+                <Button size="small" variant="contained" onClick={(e) => handleEnroll(e, course.id, course.title)} disabled={userPlan === 'Estudiante Básico' && course.price > 0}>
+                  Inscribirme
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
-        {modalState.isOpen && (
-            <SummaryModal
-                title={modalState.title}
-                content={modalState.content}
-                isLoading={modalState.isLoading}
-                onClose={closeModal}
-            />
-        )}
-      </div>
-      </div>
-      );
-      };
+      <SummaryModal
+        open={modalState.isOpen}
+        title={modalState.title}
+        content={modalState.content}
+        isLoading={modalState.isLoading}
+        onClose={closeModal}
+      />
+    </Box>
+  );
+};
 
-      export default CourseList;
+const FilterGroup = ({ title, children }) => (
+  <Box>
+    <Typography variant="subtitle1" gutterBottom>{title}</Typography>
+    <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+      {children}
+    </Stack>
+  </Box>
+);
+
+export default CourseList;

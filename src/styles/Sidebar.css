@@ -1,26 +1,27 @@
 .sidebar {
   width: 260px; height: 100vh; position: fixed; top: 0; left: 0;
-  background-color: var(--sidebar-bg); color: #E5E7EB;
+  background-color: #1A2634; /* primary.dark from theme */
+  color: #E0E0E0; /* Lighter text for contrast */
   padding: 1.5rem; box-sizing: border-box; z-index: 20;
-  border-right: 1px solid #30363D;
+  border-right: 1px solid #34495E; /* Darker border */
   transition: transform 0.3s ease-in-out;
-  display: flex; /* Añadido para alinear el footer */
-  flex-direction: column; /* Añadido para alinear el footer */
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-profile {
   text-align: center;
   margin-bottom: 2.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #30363D;
-  text-decoration: none; /* <-- Añadido */
-  cursor: pointer; /* <-- Añadido */
+  border-bottom: 1px solid #34495E; /* Darker border */
+  text-decoration: none;
+  cursor: pointer;
 }
 .sidebar-avatar {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: var(--accent);
+  background-color: #1ABC9C; /* secondary.main from theme */
   color: white;
   display: grid;
   place-items: center;
@@ -31,13 +32,13 @@
 .sidebar-username {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #fff;
+  color: #FFFFFF; /* White for username */
   margin: 0;
 }
 
 .sidebar-role {
   font-size: 0.8rem;
-  color: #9CA3AF;
+  color: #BDC3C7; /* Lighter gray for role */
   text-transform: capitalize;
 }
 .sidebar-overlay { display: none; }
@@ -46,7 +47,7 @@
 .sidebar-title {
   margin: 0; font-size: 1.8rem; text-align: center; color: #fff;
   font-weight: 700;
-  background: linear-gradient(90deg, #fff, var(--accent));
+  background: linear-gradient(90deg, #fff, #1ABC9C); /* secondary.main for accent */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -54,18 +55,19 @@
 .sidebar-nav a {
   display: flex; align-items: center; gap: 15px; padding: 0.9rem 1rem;
   margin-bottom: 0.5rem; border-radius: 8px; text-decoration: none;
-  color: #9CA3AF; font-weight: 500; transition: all 0.2s ease;
+  color: #BDC3C7; /* Lighter gray for links */
+  font-weight: 500; transition: all 0.2s ease;
 }
-.sidebar-nav a:hover { background-color: rgba(99, 102, 241, 0.1); color: #fff; }
-.sidebar-nav a.active { background-color: var(--accent); color: #fff; }
+.sidebar-nav a:hover { background-color: rgba(26, 188, 156, 0.1); /* secondary.main with opacity */ color: #FFFFFF; }
+.sidebar-nav a.active { background-color: #1ABC9C; /* secondary.main */ color: #FFFFFF; }
 .sidebar-nav svg { font-size: 1.2rem; }
 
 @media (max-width: 992px) {
   .sidebar {
-    transform: translateX(-100%); /* Por defecto, está oculto fuera de la pantalla */
+    transform: translateX(-100%);
   }
   .sidebar.open {
-    transform: translateX(0); /* La clase 'open' lo hace visible */
+    transform: translateX(0);
   }
   .sidebar-overlay {
     display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%;

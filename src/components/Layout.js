@@ -1,5 +1,3 @@
-// frontend/src/components/Layout.js
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../auth/AuthContext';
 import { api } from '../services/api';
@@ -9,8 +7,8 @@ import Footer from './Footer';
 import WhatsAppButton from './WhatsAppButton';
 import ContactModal from './ContactModal';
 import NotificationPanel from './NotificationPanel';
-import { FaBell, FaBars, FaTimes, FaSignOutAlt } from 'react-icons/fa';
-import '../styles/Layout.css';
+import { AppBar, Toolbar, Typography, Button, IconButton, Badge, Box } from '@mui/material';
+import { FaBell, FaBars, FaSignOutAlt, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 
 const Layout = ({ children }) => {
   const { user, logout } = useAuth();
@@ -20,58 +18,85 @@ const Layout = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
 
-  const fetchNotifications = useCallback(() => { // <-- Define la función aquí
+  const fetchNotifications = useCallback(() => {
     if (user) {
       api.getNotifications().then(setNotifications).catch(console.error);
     }
   }, [user]);
 
-  useEffect(() => { // <-- Usa la función después de definirla
+  useEffect(() => {
     fetchNotifications();
   }, [fetchNotifications]);
 
-  // Esta lógica oculta el Layout principal en la vista de lección
   if (location.pathname.startsWith('/module/')) {
     return <main>{children}</main>;
   }
 
-  // Se define la función handleLogout
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
-  const mainViewClass = user ? "main-view" : "main-view main-view-logged-out";
   const unreadCount = notifications.filter(n => !n.is_read).length;
+  const drawerWidth = 260;
 
+  // Landing Page Layout
+  if (location.pathname === '/') {
+    return (
+      <Box>
+        <AppBar position="static" color="transparent" elevation={0}>
+          <Toolbar>
+            <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, color: 'inherit', textDecoration: 'none' }}>
+              Zeron AcademIA
+            </Typography>
+            <Button color="inherit" component={Link} to="/login" startIcon={<FaSignInAlt />}>Iniciar Sesión</Button>
+            <Button color="inherit" component={Link} to="/register" startIcon={<FaUserPlus />}>Registrarse</Button>
+          </Toolbar>
+        </AppBar>
+        <main>{children}</main>
+        <Footer />
+        <WhatsAppButton onClick={() => setIsContactModalOpen(true)} />
+        <ContactModal open={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
+      </Box>
+    );
+  }
+
+  // App Layout for logged-in users
   return (
-    <div className="app-container">
-      {user && <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />}
-      <div className={mainViewClass}>
-        <header className="layout-header">
-          <div className="header-left">
-            {user && (
-              <button className="hamburger-btn" onClick={() => setIsSidebarOpen(true)}>
-                <FaBars />
-              </button>
-            )}
-            <Link to={user ? "/dashboard" : "/"} className="header-brand-text">
-               Zeron AcademIA
-            </Link>
-          </div>
+    <Box>
+      <AppBar
+        position="fixed"
+        sx={{
+          '@media (min-width: 993px)': {
+            width: `calc(100% - ${drawerWidth}px)`,
+            ml: `${drawerWidth}px`,
+          }
+        }}
+      >
+        <Toolbar>
+          {user && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              sx={{ mr: 2, '@media (min-width: 993px)': { display: 'none' } }}
+            >
+              <FaBars />
+            </IconButton>
+          )}
+          <Typography variant="h6" component={Link} to={user ? "/dashboard" : "/"} sx={{ flexGrow: 1, color: 'inherit', textDecoration: 'none' }}>
+            Zeron AcademIA
+          </Typography>
           {user ? (
-            <div className="header-user-menu">
-              <div
-                className="notification-icon"
-                title="Notificaciones"
-                onClick={() => setIsNotificationPanelOpen(prev => !prev)}
-              >
-                <FaBell />
-                {unreadCount > 0 && <div className="badge">{unreadCount}</div>}
-              </div>
+            <Box>
+              <IconButton color="inherit" onClick={() => setIsNotificationPanelOpen(prev => !prev)}>
+                <Badge badgeContent={unreadCount} color="error">
+                  <FaBell />
+                </Badge>
+              </IconButton>
               {isNotificationPanelOpen && (
                 <NotificationPanel
                   notifications={notifications}
@@ -79,35 +104,43 @@ const Layout = ({ children }) => {
                   onRefresh={fetchNotifications}
                 />
               )}
-              <button onClick={handleLogout} className="btn-logout">
-                <FaSignOutAlt />
-                <span className="logout-text">Cerrar Sesión</span>
-              </button>
-            </div>
+              <Button color="inherit" startIcon={<FaSignOutAlt />} onClick={handleLogout}>
+                Cerrar Sesión
+              </Button>
+            </Box>
           ) : (
-            <>
-              <div className="header-public-menu">
-                <Link to="/login" className="btn btn-secondary">Iniciar Sesión</Link>
-                <Link to="/register" className="btn btn-primary">Registrarse</Link>
-              </div>
-              <button className="hamburger-btn public" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-              </button>
-            </>
+            <Box>
+              <Button color="inherit" component={Link} to="/login" startIcon={<FaSignInAlt />}>Iniciar Sesión</Button>
+              <Button color="inherit" component={Link} to="/register" startIcon={<FaUserPlus />}>Registrarse</Button>
+            </Box>
           )}
-        </header>
-        {!user && isMobileMenuOpen && (
-          <div className="mobile-menu">
-            <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>Iniciar Sesión</Link>
-            <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>Registrarse</Link>
-          </div>
-        )}
-        <main className="main-content">{children}</main>
+        </Toolbar>
+      </AppBar>
+      {user && <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />}
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        '@media (min-width: 993px)': {
+          width: `calc(100% - ${drawerWidth}px)`,
+          ml: `${drawerWidth}px`,
+        }
+      }}>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            mt: '64px', // AppBar height
+          }}
+        >
+          {children}
+        </Box>
         <Footer />
-      </div>
+      </Box>
       <WhatsAppButton onClick={() => setIsContactModalOpen(true)} />
-      {isContactModalOpen && <ContactModal onClose={() => setIsContactModalOpen(false)} />}
-    </div>
+      <ContactModal open={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
+    </Box>
   );
 };
 

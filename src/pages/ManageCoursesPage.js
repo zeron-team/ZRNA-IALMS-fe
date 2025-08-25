@@ -252,13 +252,12 @@ const ManageCoursesPage = () => {
         </Container>
       </Box>
 
-      {isModalOpen && (
-        <CourseFormModal
-          course={selectedCourse}
-          onClose={() => setIsModalOpen(false)}
-          onSave={handleSave}
-        />
-      )}
+      <CourseFormModal
+        open={isModalOpen}
+        course={selectedCourse}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSave}
+      />
     </div>
   );
 };

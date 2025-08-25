@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api'; // Fixed syntax error
 import { FaUsers, FaBook, FaUserCheck, FaLayerGroup, FaChalkboard, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { 
-    Box, Typography, Grid, Card, Paper, Table, TableBody, 
+    Box, Typography, Grid, Card, Table, TableBody, 
     TableCell, TableContainer, TableHead, TableRow, Collapse, IconButton, Container, Button
 } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -105,10 +105,25 @@ const AdminDashboardPage = () => {
                 <Grid container spacing={4}>
                     {statItems.map((item, index) => (
                         <Grid item xs={12} sm={6} md={4} lg={2.4} key={index}>
-                            <Card className="feature-card" sx={{ height: '100%' }}>
+                            <Card sx={{ 
+                                height: '100%', 
+                                p: 3, 
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                alignItems: 'center', 
+                                justifyContent: 'center', 
+                                textAlign: 'center',
+                                boxShadow: 3, 
+                                borderRadius: 2, 
+                                transition: 'transform 0.3s ease-in-out',
+                                '&:hover': {
+                                    transform: 'translateY(-5px)', 
+                                    boxShadow: 6,
+                                }
+                            }}>
                                 {item.icon}
                                 <Typography variant="h4" component="h2" sx={{ mt: 2, mb: 1, fontWeight: 'bold'}}>{item.value}</Typography>
-                                <Typography variant="h6" color="text.secondary">{item.label}</Typography>
+                                <Typography variant="subtitle1" color="text.secondary">{item.label}</Typography>
                             </Card>
                         </Grid>
                     ))}

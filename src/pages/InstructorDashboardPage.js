@@ -5,7 +5,7 @@ import { api } from '../services/api';
 import { useAuth } from '../auth/AuthContext';
 import { FaChalkboardTeacher, FaUsers, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { 
-    Box, Typography, Grid, Card, Paper, Table, TableBody, 
+    Box, Typography, Grid, Card, Table, TableBody, 
     TableCell, TableContainer, TableHead, TableRow, Collapse, IconButton, Container
 } from '@mui/material';
 import CourseCard from '../components/CourseCard';
@@ -64,7 +64,7 @@ const InstructorDashboardPage = () => {
     const [dashboardData, setDashboardData] = useState({ personal_progress: [], room_summary: [] }); // Initialize with empty courses array
     const [detailedProgress, setDetailedProgress] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { user } = useAuth();
+    const { } = useAuth();
 
     useEffect(() => {
         Promise.all([
@@ -97,10 +97,25 @@ const InstructorDashboardPage = () => {
                 <Container maxWidth="lg">
                     <Grid container spacing={4}>
                         <Grid item xs={12} sm={6}>
-                            <Card className="feature-card" sx={{ height: '100%' }}>
-                                <FaChalkboardTeacher size={40} color="#2196F3" />
-                                <Typography variant="h5">{totalRooms}</Typography>
-                                <Typography color="text.secondary">Salas Creadas</Typography>
+                            <Card sx={{ 
+                                height: '100%', 
+                                p: 3, 
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                alignItems: 'center', 
+                                justifyContent: 'center', 
+                                textAlign: 'center',
+                                boxShadow: 3, 
+                                borderRadius: 2, 
+                                transition: 'transform 0.3s ease-in-out',
+                                '&:hover': {
+                                    transform: 'translateY(-5px)', 
+                                    boxShadow: 6,
+                                }
+                            }}>
+                                <FaChalkboardTeacher size={40} color="primary.main" />
+                                <Typography variant="h4" component="h2" sx={{ mt: 2, mb: 1, fontWeight: 'bold'}}>{totalRooms}</Typography>
+                                <Typography variant="subtitle1" color="text.secondary">Salas Creadas</Typography>
                             </Card>
                         </Grid>
                         <Grid item xs={12} sm={6}>

@@ -144,7 +144,7 @@ export const api = {
     const contentDisposition = response.headers.get('content-disposition');
     let filename = `module_${moduleId}.pdf`;
     if (contentDisposition) {
-        const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
+        const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
         if (filenameMatch.length > 1) {
             filename = filenameMatch[1];
         }

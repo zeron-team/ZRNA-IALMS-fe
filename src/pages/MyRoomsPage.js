@@ -141,13 +141,12 @@ const MyRoomsPage = () => {
                 </Container>
             </Box>
 
-            {modalInfo.isOpen && (
-                <InfoModal
-                    title={modalInfo.title}
-                    message={modalInfo.message}
-                    onClose={() => setModalInfo({ isOpen: false, title: '', message: '' })}
-                />
-            )}
+            <InfoModal
+                open={modalInfo.isOpen}
+                title={modalInfo.title}
+                message={modalInfo.message}
+                onClose={() => setModalInfo({ isOpen: false, title: '', message: '' })}
+            />
         </div>
     );
 };

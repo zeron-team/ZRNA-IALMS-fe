@@ -1,11 +1,9 @@
-// frontend/src/components/Quiz.js
-
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
-import '../styles/Quiz.css';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import StarRating from './StarRating';
 import { useNavigate } from 'react-router-dom';
+import { Box, Typography, Button, Paper, Radio, RadioGroup, FormControlLabel, FormControl, LinearProgress } from '@mui/material';
 
 const Quiz = ({ quizData, moduleId, onQuizComplete }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -24,8 +22,8 @@ const Quiz = ({ quizData, moduleId, onQuizComplete }) => {
 
   const currentQuestion = quizData.questions[currentQuestionIndex];
 
-  const handleOptionChange = (optionId) => {
-    setSelectedOption(optionId);
+  const handleOptionChange = (event) => {
+    setSelectedOption(Number(event.target.value));
   };
 
   const handleNextQuestion = () => {
@@ -55,59 +53,66 @@ const Quiz = ({ quizData, moduleId, onQuizComplete }) => {
 
   if (result) {
     return (
-      <div className="quiz-result-panel">
-        <div className={`icon ${result.passed ? 'passed' : 'failed'}`}>
-          {result.passed ? <FaCheckCircle /> : <FaTimesCircle />}
-        </div>
-        <h2 className={result.passed ? 'passed' : 'failed'}>
+      <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
+        <Box sx={{ color: result.passed ? 'success.main' : 'error.main', mb: 2 }}>
+          {result.passed ? <FaCheckCircle size={50} /> : <FaTimesCircle size={50} />}
+        </Box>
+        <Typography variant="h4" component="h2" sx={{ color: result.passed ? 'success.main' : 'error.main' }}>
           {result.passed ? '¡Módulo Superado!' : 'Debes Repasar'}
-        </h2>
-        <p className="score">Tu calificación: <strong>{result.score}%</strong></p>
-        <p className="feedback-text">"{result.motivational_phrase}"</p>
-        <div className="course-progress-summary">
-          <p>Progreso General del Curso:</p>
+        </Typography>
+        <Typography variant="h6" sx={{ mt: 2 }}>Tu calificación: <strong>{result.score}%</strong></Typography>
+        <Typography variant="body1" sx={{ mt: 1, fontStyle: 'italic' }}>"{result.motivational_phrase}"</Typography>
+        <Box sx={{ my: 3 }}>
+          <Typography>Progreso General del Curso:</Typography>
           <StarRating total={result.course_total_stars} earned={result.course_earned_stars} />
-        </div>
-        <div className="result-actions">
-          <button className="btn btn-secondary" onClick={() => navigate(`/course/${quizData.course_id}`)}>
-            Volver a la Currícula
-          </button>
-        </div>
-      </div>
+        </Box>
+        <Button variant="contained" onClick={() => navigate(`/course/${quizData.course_id}`)}>
+          Volver a la Currícula
+        </Button>
+      </Paper>
     );
   }
 
+  const progress = (currentQuestionIndex + 1) / quizData.questions.length * 100;
+
   return (
-    <div className="quiz-container">
-      <div className="quiz-header">
-        <h3 className="quiz-title">Prueba de Conocimientos</h3>
-        <div className="quiz-progress">
-          Pregunta {currentQuestionIndex + 1} de {quizData.questions.length}
-        </div>
-      </div>
-      <div className="question-block">
-        <p className="question-text">{currentQuestion.question_text}</p>
-        <div className="options-block">
-          {currentQuestion.options.map(opt => (
-            <label key={opt.id} className={`option-label ${selectedOption === opt.id ? 'selected' : ''}`}>
-              <input
-                type="radio" name={String(currentQuestion.id)} value={opt.id}
-                onChange={() => handleOptionChange(opt.id)} checked={selectedOption === opt.id}
-              />
-              {opt.option_text}
-            </label>
-          ))}
-        </div>
-      </div>
-      <div className="quiz-footer">
-        <button
+    <Paper elevation={3} sx={{ p: 4 }}>
+      <Box sx={{ mb: 2 }}>
+        <Typography variant="h5" component="h3">Prueba de Conocimientos</Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+          <Box sx={{ width: '100%', mr: 1 }}>
+            <LinearProgress variant="determinate" value={progress} />
+          </Box>
+          <Box sx={{ minWidth: 35 }}>
+            <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
+          </Box>
+        </Box>
+      </Box>
+      <Box>
+        <Typography variant="h6" sx={{ mb: 2 }}>{currentQuestion.question_text}</Typography>
+        <FormControl component="fieldset">
+          <RadioGroup
+            aria-label="quiz"
+            name="quiz"
+            value={selectedOption}
+            onChange={handleOptionChange}
+          >
+            {currentQuestion.options.map(opt => (
+              <FormControlLabel key={opt.id} value={opt.id} control={<Radio />} label={opt.option_text} />
+            ))}
+          </RadioGroup>
+        </FormControl>
+      </Box>
+      <Box sx={{ mt: 3, textAlign: 'right' }}>
+        <Button
+          variant="contained"
           onClick={handleNextQuestion}
           disabled={!selectedOption || isSubmitting}
-          className="btn btn-primary">
+        >
           {isSubmitting ? 'Calificando...' : (currentQuestionIndex < quizData.questions.length - 1 ? 'Siguiente' : 'Calificar Quiz')}
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Box>
+    </Paper>
   );
 };
 

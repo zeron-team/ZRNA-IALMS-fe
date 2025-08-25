@@ -1,35 +1,49 @@
-// frontend/src/components/EnrollmentModal.js
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Modal, Box, Typography, Button } from '@mui/material';
 import { FaLock } from 'react-icons/fa';
-import '../styles/EnrollmentModal.css';
 
-const EnrollmentModal = ({ courseId, onClose }) => {
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 2,
+  textAlign: 'center',
+};
+
+const EnrollmentModal = ({ courseId, open, onClose }) => {
   const navigate = useNavigate();
 
   const handleGoToCourse = () => {
     navigate(`/course/${courseId}`);
+    onClose();
   };
 
   return (
-    <div className="modal-backdrop">
-      <div className="modal-content enrollment-modal-content">
-        <div className="enrollment-modal-icon">
-          <FaLock />
-        </div>
-        <h2>Contenido Bloqueado</h2>
-        <p>Para acceder a esta lección, primero debes inscribirte en el curso.</p>
-        <div className="enrollment-modal-actions">
-          <button onClick={onClose} className="btn btn-secondary">
+    <Modal open={open} onClose={onClose}>
+      <Box sx={style}>
+        <FaLock size={40} style={{ marginBottom: 16 }} />
+        <Typography variant="h6" component="h2" gutterBottom>
+          Contenido Bloqueado
+        </Typography>
+        <Typography sx={{ mb: 2 }}>
+          Para acceder a esta lección, primero debes inscribirte en el curso.
+        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+          <Button onClick={onClose} variant="outlined">
             Cancelar
-          </button>
-          <button onClick={handleGoToCourse} className="btn btn-primary">
+          </Button>
+          <Button onClick={handleGoToCourse} variant="contained">
             Ir al Curso para Inscribirme
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Box>
+      </Box>
+    </Modal>
   );
 };
 

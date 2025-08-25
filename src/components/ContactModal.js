@@ -1,8 +1,21 @@
 import React, { useState } from 'react';
-import { FaComments, FaUserLock, FaQuestionCircle, FaPaperPlane } from 'react-icons/fa';
-import '../styles/ContactModal.css';
+import { Modal, Box, Typography, Button, TextField, IconButton, Fade } from '@mui/material';
+import { FaComments, FaUserLock, FaQuestionCircle, FaPaperPlane, FaTimes } from 'react-icons/fa';
 
-const ContactModal = ({ onClose }) => {
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 2,
+  outline: 'none',
+};
+
+const ContactModal = ({ open, onClose }) => {
   const [step, setStep] = useState('options'); // options, form, confirmation
   const [reason, setReason] = useState('');
   const [formData, setFormData] = useState({});
@@ -28,38 +41,43 @@ const ContactModal = ({ onClose }) => {
       message += `Nombre: ${formData.firstName} ${formData.lastName}\nEmail: ${formData.email}\nMotivo: ${formData.details}`;
     }
 
-    const phoneNumber = "5491164640871";
+    const phoneNumber = "5491135665266";
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, '_blank');
     setStep('confirmation');
   };
+  
+  const handleClose = () => {
+    setStep('options');
+    onClose();
+  }
 
   const renderFormFields = () => {
     if (reason === 'Cursos') {
       return (
         <>
-          <input name="firstName" placeholder="Nombre" onChange={handleFormChange} required />
-          <input name="lastName" placeholder="Apellido" onChange={handleFormChange} required />
-          <input name="email" type="email" placeholder="Email" onChange={handleFormChange} required />
+          <TextField name="firstName" label="Nombre" fullWidth margin="normal" onChange={handleFormChange} required />
+          <TextField name="lastName" label="Apellido" fullWidth margin="normal" onChange={handleFormChange} required />
+          <TextField name="email" type="email" label="Email" fullWidth margin="normal" onChange={handleFormChange} required />
         </>
       );
     }
     if (reason === 'Usuario') {
       return (
         <>
-          <input name="email" type="email" placeholder="Email de tu cuenta" onChange={handleFormChange} required />
-          <input name="dni" placeholder="Número de Documento (DNI)" onChange={handleFormChange} required />
+          <TextField name="email" type="email" label="Email de tu cuenta" fullWidth margin="normal" onChange={handleFormChange} required />
+          <TextField name="dni" label="Número de Documento (DNI)" fullWidth margin="normal" onChange={handleFormChange} required />
         </>
       );
     }
     if (reason === 'Otro') {
       return (
         <>
-          <input name="firstName" placeholder="Nombre" onChange={handleFormChange} required />
-          <input name="lastName" placeholder="Apellido" onChange={handleFormChange} required />
-          <input name="email" type="email" placeholder="Email" onChange={handleFormChange} required />
-          <textarea name="details" placeholder="Describe tu consulta..." onChange={handleFormChange} required />
+          <TextField name="firstName" label="Nombre" fullWidth margin="normal" onChange={handleFormChange} required />
+          <TextField name="lastName" label="Apellido" fullWidth margin="normal" onChange={handleFormChange} required />
+          <TextField name="email" type="email" label="Email" fullWidth margin="normal" onChange={handleFormChange} required />
+          <TextField name="details" label="Describe tu consulta..." multiline rows={4} fullWidth margin="normal" onChange={handleFormChange} required />
         </>
       );
     }
@@ -67,44 +85,71 @@ const ContactModal = ({ onClose }) => {
   };
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-content contact-modal" onClick={e => e.stopPropagation()}>
-        <button onClick={onClose} className="close-button">&times;</button>
+    <Modal
+      open={open}
+      onClose={handleClose}
+      closeAfterTransition
+    >
+      <Fade in={open}>
+        <Box sx={style}>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <FaTimes />
+          </IconButton>
 
-        {step === 'options' && (
-          <div className="contact-step">
-            <h2>¿Cómo podemos ayudarte?</h2>
-            <button onClick={() => handleOptionSelect('Cursos')} className="contact-option">
-              <FaComments /> Estoy interesado en los cursos
-            </button>
-            <button onClick={() => handleOptionSelect('Usuario')} className="contact-option">
-              <FaUserLock /> Tengo problemas con mi usuario y/o clave
-            </button>
-            <button onClick={() => handleOptionSelect('Otro')} className="contact-option">
-              <FaQuestionCircle /> Quiero contactarme por otra razón
-            </button>
-          </div>
-        )}
+          {step === 'options' && (
+            <Box textAlign="center">
+              <Typography variant="h5" component="h2" gutterBottom>
+                ¿Cómo podemos ayudarte?
+              </Typography>
+              <Button startIcon={<FaComments />} fullWidth variant="outlined" sx={{ mb: 1 }} onClick={() => handleOptionSelect('Cursos')}>
+                Estoy interesado en los cursos
+              </Button>
+              <Button startIcon={<FaUserLock />} fullWidth variant="outlined" sx={{ mb: 1 }} onClick={() => handleOptionSelect('Usuario')}>
+                Tengo problemas con mi usuario y/o clave
+              </Button>
+              <Button startIcon={<FaQuestionCircle />} fullWidth variant="outlined" onClick={() => handleOptionSelect('Otro')}>
+                Quiero contactarme por otra razón
+              </Button>
+            </Box>
+          )}
 
-        {step === 'form' && (
-          <div className="contact-step">
-            <h2>Por favor, completa tus datos</h2>
-            <form onSubmit={handleSubmit} className="contact-form">
-              {renderFormFields()}
-              <button type="submit" className="btn btn-primary">Enviar a WhatsApp</button>
-            </form>
-          </div>
-        )}
+          {step === 'form' && (
+            <Box>
+              <Typography variant="h5" component="h2" gutterBottom>
+                Por favor, completa tus datos
+              </Typography>
+              <form onSubmit={handleSubmit}>
+                {renderFormFields()}
+                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+                  Enviar a WhatsApp
+                </Button>
+              </form>
+            </Box>
+          )}
 
-        {step === 'confirmation' && (
-          <div className="contact-step confirmation">
-            <FaPaperPlane className="confirmation-icon" />
-            <h3>¡Gracias!</h3>
-            <p>Hemos abierto WhatsApp para que puedas enviar tu mensaje. A la brevedad, un asesor se comunicará contigo.</p>
-          </div>
-        )}
-      </div>
-    </div>
+          {step === 'confirmation' && (
+            <Box textAlign="center">
+              <FaPaperPlane size={50} style={{ marginBottom: 16 }} />
+              <Typography variant="h5" component="h2" gutterBottom>
+                ¡Gracias!
+              </Typography>
+              <Typography>
+                Hemos abierto WhatsApp para que puedas enviar tu mensaje. A la brevedad, un asesor se comunicará contigo.
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      </Fade>
+    </Modal>
   );
 };
 

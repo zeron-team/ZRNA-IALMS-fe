@@ -1,11 +1,9 @@
-// frontend/src/components/CourseDetail.js
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../services/api';
-import { FaCheck, FaLock } from 'react-icons/fa';
+import { FaCheck, FaLock, FaInstagram, FaLinkedinIn, FaWhatsapp, FaTwitter, FaTelegramPlane, FaDiscord } from 'react-icons/fa';
 import { useAuth } from '../auth/AuthContext';
-import '../styles/CourseDetail.css';
+import { Button, Card, CardContent, Typography, Box, IconButton } from '@mui/material';
 
 const CourseDetail = () => {
   const { user } = useAuth();
@@ -52,10 +50,58 @@ const CourseDetail = () => {
     <div className="page-container">
       <div className="page-header">
         <h1>{course.title}</h1>
-        <Link to="/courses" className="btn btn-secondary">&larr; Volver al Catálogo</Link>
+        <Button component={Link} to="/courses" variant="outlined">&larr; Volver al Catálogo</Button>
       </div>
       <div className="page-panel course-detail-panel">
         <p className="course-description">{course.description}</p>
+
+<Box sx={{ mt: 2, mb: 3 }}>
+  <Typography variant="h6" component="h4" gutterBottom>Compartir Curso:</Typography>
+  <Box sx={{ display: 'flex', gap: 1 }}>
+    {/* LinkedIn */}
+    <IconButton
+      aria-label="Compartir en LinkedIn"
+      onClick={() => window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(course.title)}&summary=${encodeURIComponent(course.description)}&source=${encodeURIComponent('Zeron AcademIA')}`, '_blank')}
+    >
+      <FaLinkedinIn size={24} />
+    </IconButton>
+    {/* WhatsApp */}
+    <IconButton
+      aria-label="Compartir en WhatsApp"
+      onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`¡Mira este curso en Zeron AcademIA: ${course.title}! ${window.location.href}`)}`, '_blank')}
+    >
+      <FaWhatsapp size={24} />
+    </IconButton>
+    {/* X (Twitter) */}
+    <IconButton
+      aria-label="Compartir en X (Twitter)"
+      onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(`¡Aprende ${course.title} en Zeron AcademIA!`)}`, '_blank')}
+    >
+      <FaTwitter size={24} />
+    </IconButton>
+    {/* Telegram */}
+    <IconButton
+      aria-label="Compartir en Telegram"
+      onClick={() => window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(`¡Mira este curso en Zeron AcademIA: ${course.title}!`)}`, '_blank')}
+    >
+      <FaTelegramPlane size={24} />
+    </IconButton>
+    {/* Instagram (link to profile as direct sharing is not feasible) */}
+    <IconButton
+      aria-label="Visitar Instagram"
+      onClick={() => window.open('https://www.instagram.com/zeronacademy/', '_blank')} // Replace with actual Instagram profile URL
+    >
+      <FaInstagram size={24} />
+    </IconButton>
+    {/* Discord (link to server as direct sharing is not feasible) */}
+    <IconButton
+      aria-label="Unirse a Discord"
+      onClick={() => window.open('https://discord.gg/your-discord-invite', '_blank')} // Replace with actual Discord invite link
+    >
+      <FaDiscord size={24} />
+    </IconButton>
+  </Box>
+</Box>
         <h3 className="curriculum-header">Currícula del Curso</h3>
 
         {course.modules && course.modules.length > 0 ? (
@@ -74,11 +120,11 @@ const CourseDetail = () => {
                   <h4>{module.title}</h4>
                   <p>{module.description}</p>
                   {!module.is_locked ? (
-                    <Link to={`/module/${module.id}`} className="btn btn-secondary">
+                    <Button component={Link} to={`/module/${module.id}`} variant="outlined">
                       {module.status === 'completed' ? 'Revisar Módulo' : 'Empezar Módulo'}
-                    </Link>
+                    </Button>
                   ) : (
-                    <button className="btn btn-secondary" disabled>Bloqueado</button>
+                    <Button variant="outlined" disabled>Bloqueado</Button>
                   )}
                 </div>
               </div>
@@ -88,9 +134,9 @@ const CourseDetail = () => {
           <div className="curriculum-generator">
             <p>Este curso aún no tiene una currícula definida.</p>
             {canEdit && (
-              <button onClick={handleGenerateCurriculum} disabled={isGenerating} className="btn btn-primary">
+              <Button onClick={handleGenerateCurriculum} disabled={isGenerating} variant="contained">
                 {isGenerating ? 'Generando...' : '✨ Generar Currícula con IA'}
-              </button>
+              </Button>
             )}
           </div>
         )}
