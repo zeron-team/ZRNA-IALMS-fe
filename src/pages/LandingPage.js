@@ -333,7 +333,7 @@ const LandingPage = () => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <img src="https://images.unsplash.com/photo-1546410531-bb448c51d866?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Estudiantes" style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }} />
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070" alt="Estudiantes aprendiendo" style={{ maxWidth: '100%', borderRadius: '8px' }} />
               </Box>
             </Grid>
             <Grid item xs={12} md={6} sx={{ order: { xs: 1, md: 2 } }}>
@@ -351,7 +351,7 @@ const LandingPage = () => {
             </Grid>
             <Grid item xs={12} md={6} sx={{ order: { xs: 2, md: 1 } }}>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <img src="https://images.unsplash.com/photo-1523240795601-049865a410c2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Instructores" style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }} />
+                <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070" alt="Instructor enseñando" style={{ maxWidth: '100%', borderRadius: '8px' }} />
               </Box>
             </Grid>
           </Grid>
