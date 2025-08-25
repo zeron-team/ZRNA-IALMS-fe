@@ -42,6 +42,69 @@ const LandingPage = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState(null);
 
+  const studentPlans = [
+    {
+      name: 'Plan Básico',
+      price: 'Gratis',
+      features: [
+        'Acceso a cursos gratuitos',
+        
+      ],
+      isFree: true,
+    },
+    {
+      name: 'Plan Premium',
+      price: '$9.99',
+      period: '/mes',
+      features: [
+        'Acceso ilimitado a todos los cursos',
+        'Contenido avanzado de IA',
+        'Certificación al completar el curso',
+        
+      ],
+      isFree: false,
+    },
+  ];
+
+  const instructorPlans = [
+    {
+      name: 'Plan Inicio Gratis',
+      price: 'Gratis',
+      features: [
+        'Creación de 1 curso con IA',
+        'Creación de salas con 1 curso y hasta 3 estudiantes',
+        'Dashboard básico',
+      ],
+      isFree: true,
+    },
+    {
+      name: 'Plan Básico',
+      price: '$9.99',
+      period: '/mes',
+      features: [
+        'Creación de 3 cursos con IA',
+        'Creación de salas con 2 curso y hasta 10 estudiantes',
+        'Dashboard básico',
+
+      ],
+      isFree: false,
+    },
+    {
+      name: 'Plan Corporativo',
+      price: '$99.99',
+      period: '/mes',
+      features: [
+        'Soluciones personalizadas para empresas',
+        'Creación de salas con cursos',
+        'Gestión de equipos y roles',
+        'Soporte técnico 24/7',
+        'Logo de la empresa en la plataforma',
+        'Reportes avanzados y analíticas',
+      ],
+      isFree: false,
+    },
+  ];
+
   useEffect(() => {
     setLoadingCourses(true);
     Promise.all([
@@ -211,7 +274,86 @@ const LandingPage = () => {
                 </Typography>
               </Card>
             </Grid>
-            {/* ... other feature cards ... */}
+            <Grid item xs={12} sm={6} md={3}>
+              <Card sx={{ height: '100%', p: 2, textAlign: 'center' }}>
+                <FaChalkboardTeacher size={40} color="primary.main" />
+                <Typography variant="h6" component="h3" sx={{ mt: 2, mb: 1, fontWeight: 'bold'}}>
+                  Enseña con IA
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Crea y gestiona cursos con la ayuda de herramientas de IA para instructores.
+                </Typography>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Card sx={{ height: '100%', p: 2, textAlign: 'center' }}>
+                <FaBrain size={40} color="primary.main" />
+                <Typography variant="h6" component="h3" sx={{ mt: 2, mb: 1, fontWeight: 'bold'}}>
+                  Contenido Inteligente
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Accede a material de estudio adaptado a tus necesidades y ritmo de aprendizaje.
+                </Typography>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Card sx={{ height: '100%', p: 2, textAlign: 'center' }}>
+                <FaPlusCircle size={40} color="primary.main" />
+                <Typography variant="h6" component="h3" sx={{ mt: 2, mb: 1, fontWeight: 'bold'}}>
+                  Siempre Actualizado
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Nuestra IA asegura que el contenido esté siempre al día con las últimas tendencias.
+                </Typography>
+              </Card>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* Student/Instructor Options Section */}
+      <Box sx={{ py: 8 }}>
+        <Container maxWidth="lg">
+          <Typography variant="h4" component="h2" gutterBottom textAlign="center" fontWeight="bold" sx={{ mb: 6 }}>
+            Explora tus Opciones en Zeron AcademIA
+          </Typography>
+          <Grid container spacing={6} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+                <Typography variant="h5" component="h3" fontWeight="bold" gutterBottom>
+                  Para Estudiantes
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                  Sumérgete en un mundo de conocimiento con cursos generados por IA, rutas de aprendizaje personalizadas y una comunidad vibrante. Aprende a tu propio ritmo y domina las habilidades del futuro.
+                </Typography>
+                <Button variant="contained" component={Link} to="/register" size="large">
+                  Comenzar a Aprender
+                </Button>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <img src="https://images.unsplash.com/photo-1546410531-bb448c51d866?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Estudiantes" style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }} />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{ order: { xs: 1, md: 2 } }}>
+              <Box sx={{ textAlign: { xs: 'center', md: 'right' } }}>
+                <Typography variant="h5" component="h3" fontWeight="bold" gutterBottom>
+                  Para Instructores
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                  Comparte tu experiencia y crea cursos innovadores con el apoyo de nuestras herramientas de IA. Gestiona tus estudiantes, organiza salas de estudio y expande tu alcance.
+                </Typography>
+                <Button variant="contained" component={Link} to="/register" size="large">
+                  Convertirse en Instructor
+                </Button>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{ order: { xs: 2, md: 1 } }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <img src="https://images.unsplash.com/photo-1523240795601-049865a410c2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Instructores" style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }} />
+              </Box>
+            </Grid>
           </Grid>
         </Container>
       </Box>
@@ -232,7 +374,60 @@ const LandingPage = () => {
           </Stack>
 
           <Grid container spacing={4} justifyContent="center">
-            {/* Pricing plans mapped here */}
+            {activePlanFilter === 'Estudiante' && studentPlans.map((plan, index) => (
+              <Grid item xs={12} md={4} key={index}>
+                <Card elevation={3} sx={{ p: 4, textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <CardContent>
+                    <Typography variant="h5" component="h3" fontWeight="bold" gutterBottom>
+                      {plan.name}
+                    </Typography>
+                    <Typography variant="h3" color="primary.main" fontWeight="bold" sx={{ my: 2 }}>
+                      {plan.price}{plan.period && <Typography component="span" variant="h6" color="text.secondary">{plan.period}</Typography>}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                      {plan.isFree ? 'Acceso ilimitado a cursos gratuitos y contenido básico.' : 'Herramientas avanzadas para crear y gestionar cursos con IA.'}
+                    </Typography>
+                    <Stack component="ul" sx={{ listStyle: 'none', p: 0, mb: 3 }} spacing={1}>
+                      {plan.features.map((feature, idx) => (
+                        <Typography component="li" variant="body2" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} key={idx}>
+                          <FaCheckCircle color="green" style={{ marginRight: 8 }} /> {feature}
+                        </Typography>
+                      ))}
+                    </Stack>
+                  </CardContent>
+                  <Button variant="contained" color="primary" component={Link} to="/register" size="large">
+                    {plan.isFree ? 'Comenzar Gratis' : 'Obtener Plan'}
+                  </Button>
+                </Card>
+              </Grid>
+            ))}
+            {activePlanFilter === 'Instructor' && instructorPlans.map((plan, index) => (
+              <Grid item xs={12} md={4} key={index}>
+                <Card elevation={3} sx={{ p: 4, textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <CardContent>
+                    <Typography variant="h5" component="h3" fontWeight="bold" gutterBottom>
+                      {plan.name}
+                    </Typography>
+                    <Typography variant="h3" color="primary.main" fontWeight="bold" sx={{ my: 2 }}>
+                      {plan.price}{plan.period && <Typography component="span" variant="h6" color="text.secondary">{plan.period}</Typography>}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                      Herramientas avanzadas para crear y gestionar cursos con IA.
+                    </Typography>
+                    <Stack component="ul" sx={{ listStyle: 'none', p: 0, mb: 3 }} spacing={1}>
+                      {plan.features.map((feature, idx) => (
+                        <Typography component="li" variant="body2" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} key={idx}>
+                          <FaCheckCircle color="green" style={{ marginRight: 8 }} /> {feature}
+                        </Typography>
+                      ))}
+                    </Stack>
+                  </CardContent>
+                  <Button variant="contained" color="primary" component={Link} to="/register" size="large">
+                    {plan.isFree ? 'Comenzar Gratis' : 'Obtener Plan'}
+                  </Button>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
         </Container>
       </Box>
