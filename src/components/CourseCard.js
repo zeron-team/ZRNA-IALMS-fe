@@ -43,7 +43,7 @@ const CourseCard = ({ course, children, showEnterButton = false, progress = null
         ) : (
           <>
             <Button variant="outlined" onClick={handleToggleExpand} sx={{ mr: 1 }}>
-              {isExpanded ? 'Ver menos' : 'Ver más...'}
+              {isExpanded ? 'Ver menos' : 'Ver más'}
             </Button>
             {children ? children : (
               <Button variant="contained" onClick={(e) => { e.stopPropagation(); handleCardClick(); }}>

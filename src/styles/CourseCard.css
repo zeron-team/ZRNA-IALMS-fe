@@ -68,7 +68,7 @@
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; /* Muestra un máximo de 3 líneas */
+  -webkit-line-clamp: 5; /* Muestra un máximo de 5 líneas */
   transition: -webkit-line-clamp 0.3s ease;
 }
 .course-card p.expanded {
