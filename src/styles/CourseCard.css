@@ -60,6 +60,21 @@
 
 
 /* --- LÓGICA PARA TRUNCAR TEXTO --- */
+.course-description-truncated {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5; /* Muestra un máximo de 5 líneas */
+  transition: -webkit-line-clamp 0.3s ease;
+}
+.course-description-truncated.expanded {
+  -webkit-line-clamp: unset; /* Muestra todo el texto al expandir */
+}
+
 .course-card p {
   color: var(--text-secondary);
   font-size: 0.9rem;

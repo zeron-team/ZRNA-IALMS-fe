@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { useAuth } from '../auth/AuthContext';
-import SummaryModal from '../components/SummaryModal';
 import StarRating from '../components/StarRating';
 import { Box, Typography, Grid, Button, Chip, Stack, Paper, Card, CardContent, CardActions } from '@mui/material';
 
@@ -11,8 +9,6 @@ const CourseList = () => {
   const [allCourses, setAllCourses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [modalState, setModalState] = useState({ isOpen: false, content: '', title: '', isLoading: false });
-  const navigate = useNavigate();
 
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -24,7 +20,7 @@ const CourseList = () => {
       api.getCourses(),
       api.getCategories()
     ]).then(([courseData, categoryData]) => {
-      setAllCourses(courseData);
+      setAllCourses(courseData.map(course => ({ ...course, isDescriptionExpanded: false })));
       setCategories(categoryData);
     }).catch(console.error).finally(() => setLoading(false));
   }, []);
@@ -71,18 +67,16 @@ const CourseList = () => {
     }
   };
 
-  const handleSeeMore = async (e, course) => {
+  const handleToggleDescriptionExpand = (e, courseId) => {
     e.stopPropagation();
-    setModalState({ isOpen: true, isLoading: true, title: course.title, content: '' });
-    try {
-      const summary = await api.getCourseSummary(course.id);
-      setModalState(prev => ({ ...prev, content: summary, isLoading: false }));
-    } catch (error) {
-      setModalState(prev => ({ ...prev, content: 'No se pudo cargar el resumen.', isLoading: false }));
-    }
+    setAllCourses(prevCourses =>
+      prevCourses.map(course =>
+        course.id === courseId
+          ? { ...course, isDescriptionExpanded: !course.isDescriptionExpanded }
+          : course
+      )
+    );
   };
-
-  const closeModal = () => setModalState({ isOpen: false, content: '', title: '', isLoading: false });
 
   if (loading) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando cursos...</Typography>;
 
@@ -128,13 +122,15 @@ const CourseList = () => {
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                   {course.level}
                 </Typography>
-                <Typography variant="body2">
+                <Typography variant="body2" component="p" className={`course-description-truncated ${course.isDescriptionExpanded ? 'expanded' : ''}`}>
                   {course.description}
                 </Typography>
                 <StarRating total={course.total_stars} earned={course.earned_stars} />
               </CardContent>
               <CardActions>
-                <Button size="small" onClick={(e) => handleSeeMore(e, course)}>Ver más...</Button>
+                <Button size="small" onClick={(e) => handleToggleDescriptionExpand(e, course.id)}>
+                  {course.isDescriptionExpanded ? 'Ver menos' : 'Ver más'}
+                </Button>
                 <Button size="small" variant="contained" onClick={(e) => handleEnroll(e, course.id, course.title)} disabled={userPlan === 'Estudiante Básico' && course.price > 0}>
                   Inscribirme
                 </Button>
@@ -144,14 +140,7 @@ const CourseList = () => {
         ))}
       </Grid>
 
-      <SummaryModal
-        open={modalState.isOpen}
-        title={modalState.title}
-        content={modalState.content}
-        isLoading={modalState.isLoading}
-        onClose={closeModal}
-      />
-    </Box>
+      </Box>
   );
 };
 

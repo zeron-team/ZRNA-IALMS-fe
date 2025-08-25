@@ -28,7 +28,7 @@ const CourseCard = ({ course, children, showEnterButton = false, progress = null
       </Box>
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography variant="h6" component="h3" sx={{ fontSize: '1.1rem', fontWeight: 'bold', mb: 1 }}>{course.title}</Typography>
-        <Typography variant="body2" color="text.secondary" className={isExpanded ? 'expanded' : ''}>{course.description}</Typography>
+        <Typography variant="body2" color="text.secondary" component="p" className={isExpanded ? 'expanded' : ''}>{course.description}</Typography>
         {progress !== null && (
           <Box sx={{ mt: 2 }}>
             <ProgressBar percentage={progress} />
