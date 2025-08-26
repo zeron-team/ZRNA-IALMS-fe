@@ -105,7 +105,7 @@ const ModuleViewPage = () => {
     const completedCount = modules.filter(m => m.status === 'completed').length;
     const progress = Math.round((completedCount / modules.length) * 100);
 
-    const canEdit = user.id === course.creator_id;
+    const canEdit = user.role.name === 'admin' || user.role.name === 'instructor' || user.id === course.creator_id;
     let allowed = false;
     let incomplete = false;
     if (canEdit) {
@@ -130,7 +130,7 @@ const ModuleViewPage = () => {
   if (loading || !course) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando lección...</Typography>;
   if (!moduleData) return <Typography sx={{ textAlign: 'center', mt: 4 }}>No se encontró el módulo.</Typography>;
 
-  const canEdit = user && user.id === course.creator_id;
+  const canEdit = user && (user.role.name === 'admin' || user.role.name === 'instructor' || user.id === course.creator_id);
 
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>

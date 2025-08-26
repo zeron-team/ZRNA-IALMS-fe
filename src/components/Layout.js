@@ -7,7 +7,7 @@ import Footer from './Footer';
 import WhatsAppButton from './WhatsAppButton';
 import ContactModal from './ContactModal';
 import NotificationPanel from './NotificationPanel';
-import { AppBar, Toolbar, Typography, Button, IconButton, Badge, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, IconButton, Badge, Box, Drawer, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { FaBell, FaBars, FaSignOutAlt, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 
 const Layout = ({ children }) => {
@@ -19,6 +19,22 @@ const Layout = ({ children }) => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const fetchNotifications = useCallback(() => {
     if (user) {
@@ -42,19 +58,66 @@ const Layout = ({ children }) => {
   const unreadCount = notifications.filter(n => !n.is_read).length;
   const drawerWidth = 260;
 
-  // Landing Page Layout
-  if (location.pathname === '/') {
+  const publicPages = ['/', '/login', '/register', '/check-email', '/verify-email'];
+  const isPublicPage = publicPages.includes(location.pathname);
+
+  // Public Page Layout
+  if (isPublicPage) {
     return (
       <Box>
-        <AppBar position="static" color="transparent" elevation={0}>
+        <AppBar
+          position="sticky"
+          elevation={isScrolled ? 4 : 0}
+          sx={{
+            top: 0,
+            zIndex: 1100,
+            background: isScrolled ? '#ffffff' : 'linear-gradient(45deg, #001E3C 30%, #004E89 90%)',
+            color: isScrolled ? 'text.primary' : 'white',
+            transition: 'all 0.3s',
+          }}
+        >
           <Toolbar>
             <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, color: 'inherit', textDecoration: 'none' }}>
               Zeron AcademIA
             </Typography>
-            <Button color="inherit" component={Link} to="/login" startIcon={<FaSignInAlt />}>Iniciar Sesión</Button>
-            <Button color="inherit" component={Link} to="/register" startIcon={<FaUserPlus />}>Registrarse</Button>
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+              <Button color="inherit" component={Link} to="/login" startIcon={<FaSignInAlt />}>Iniciar Sesión</Button>
+              <Button color="inherit" component={Link} to="/register" startIcon={<FaUserPlus />}>Registrarse</Button>
+            </Box>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={() => setMobileMenuOpen(true)}
+              sx={{ display: { xs: 'block', md: 'none' } }}
+            >
+              <FaBars />
+            </IconButton>
           </Toolbar>
         </AppBar>
+        <Drawer
+          anchor="right"
+          open={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
+        >
+          <Box
+            sx={{ width: 250 }}
+            role="presentation"
+            onClick={() => setMobileMenuOpen(false)}
+            onKeyDown={() => setMobileMenuOpen(false)}
+          >
+            <List>
+              <ListItemButton component={Link} to="/login">
+                <ListItemIcon><FaSignInAlt /></ListItemIcon>
+                <ListItemText primary="Iniciar Sesión" />
+              </ListItemButton>
+              <ListItemButton component={Link} to="/register">
+                <ListItemIcon><FaUserPlus /></ListItemIcon>
+                <ListItemText primary="Registrarse" />
+              </ListItemButton>
+            </List>
+          </Box>
+        </Drawer>
         <main>{children}</main>
         <Footer />
         <WhatsAppButton onClick={() => setIsContactModalOpen(true)} />
@@ -91,7 +154,7 @@ const Layout = ({ children }) => {
             Zeron AcademIA
           </Typography>
           {user ? (
-            <Box>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <IconButton color="inherit" onClick={() => setIsNotificationPanelOpen(prev => !prev)}>
                 <Badge badgeContent={unreadCount} color="error">
                   <FaBell />
@@ -104,9 +167,16 @@ const Layout = ({ children }) => {
                   onRefresh={fetchNotifications}
                 />
               )}
-              <Button color="inherit" startIcon={<FaSignOutAlt />} onClick={handleLogout}>
-                Cerrar Sesión
-              </Button>
+              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                <Button color="inherit" startIcon={<FaSignOutAlt />} onClick={handleLogout}>
+                  Cerrar Sesión
+                </Button>
+              </Box>
+              <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                <IconButton color="inherit" onClick={handleLogout}>
+                  <FaSignOutAlt />
+                </IconButton>
+              </Box>
             </Box>
           ) : (
             <Box>

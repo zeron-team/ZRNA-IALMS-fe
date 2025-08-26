@@ -29,7 +29,7 @@ const request = async (endpoint, options = {}) => {
   if (response.status === 401) {
     localStorage.removeItem('token');
     window.location.href = '/'; // Redirige a la landing page
-    throw new Error("Tu sesión ha expirado. Por favor, inicia sesión de nuevo.");
+    throw new Error("AUTH_REQUIRED: Tu sesión ha expirado. Por favor, inicia sesión de nuevo.");
   }
 
   if (!response.ok) {
@@ -178,4 +178,14 @@ export const api = {
   removeMemberFromRoom: (roomId, userId) => request(`/rooms/${roomId}/members/${userId}`, { method: 'DELETE' }),
   updateRoom: (roomId, roomData) => request(`/rooms/${roomId}`, { method: 'PUT', body: JSON.stringify(roomData)}),
 
+  // --- Course Suggestions ---
+  getCourseSuggestions: () => request('/suggestions'),
+  createCourseSuggestion: (suggestionData) => request('/suggestions', {
+    method: 'POST',
+    body: JSON.stringify(suggestionData),
+  }),
+  voteForSuggestion: (suggestionId) => request(`/suggestions/${suggestionId}/vote`, {
+    method: 'POST',
+  }),
+  searchCourseSuggestions: (query) => request(`/suggestions/search?query=${query}`),
 };
