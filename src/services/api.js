@@ -48,6 +48,17 @@ const request = async (endpoint, options = {}) => {
 // --- Objeto ÚNICO 'api' con TODOS los métodos ---
 export const api = {
 
+  // --- Course Suggestions ---
+  getCourseSuggestions: () => request('/suggestions'),
+  createCourseSuggestion: (suggestionData) => request('/suggestions', {
+    method: 'POST',
+    body: JSON.stringify(suggestionData),
+  }),
+  voteForSuggestion: (suggestionId) => request(`/suggestions/${suggestionId}/vote`, {
+    method: 'POST',
+  }),
+  searchCourseSuggestions: (query) => request(`/suggestions/search?query=${query}`),
+
   // --- Autenticación y Verificación ---
   login: (username, password) => {
     const formData = new URLSearchParams();
@@ -177,15 +188,4 @@ export const api = {
   removeCourseFromRoom: (roomId, courseId) => request(`/rooms/${roomId}/courses/${courseId}`, { method: 'DELETE' }),
   removeMemberFromRoom: (roomId, userId) => request(`/rooms/${roomId}/members/${userId}`, { method: 'DELETE' }),
   updateRoom: (roomId, roomData) => request(`/rooms/${roomId}`, { method: 'PUT', body: JSON.stringify(roomData)}),
-
-  // --- Course Suggestions ---
-  getCourseSuggestions: () => request('/suggestions'),
-  createCourseSuggestion: (suggestionData) => request('/suggestions', {
-    method: 'POST',
-    body: JSON.stringify(suggestionData),
-  }),
-  voteForSuggestion: (suggestionId) => request(`/suggestions/${suggestionId}/vote`, {
-    method: 'POST',
-  }),
-  searchCourseSuggestions: (query) => request(`/suggestions/search?query=${query}`),
 };
