@@ -1,6 +1,6 @@
 // frontend/src/services/api.js
 
-const API_URL = "http://localhost:8000";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
 /**
  * Función helper para realizar todas las peticiones a la API.
@@ -188,4 +188,17 @@ export const api = {
   removeCourseFromRoom: (roomId, courseId) => request(`/rooms/${roomId}/courses/${courseId}`, { method: 'DELETE' }),
   removeMemberFromRoom: (roomId, userId) => request(`/rooms/${roomId}/members/${userId}`, { method: 'DELETE' }),
   updateRoom: (roomId, roomData) => request(`/rooms/${roomId}`, { method: 'PUT', body: JSON.stringify(roomData)}),
+
+  // --- Ratings ---
+  rateCourse: (courseId, isUpvote) => request(`/ratings/course/${courseId}`, {
+    method: 'POST',
+    body: JSON.stringify({ is_upvote: isUpvote }),
+  }),
+  rateModule: (moduleId, isUpvote) => request(`/ratings/module/${moduleId}`, {
+    method: 'POST',
+    body: JSON.stringify({ is_upvote: isUpvote }),
+  }),
+  getCourseRatingCounts: (courseId) => request(`/ratings/course/${courseId}/public`),
+  getModuleRatingCounts: (moduleId) => request(`/ratings/module/${moduleId}`),
+  getGlobalRatingCounts: () => request(`/ratings/global-counts`),
 };

@@ -3,7 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { FaCheck, FaLock, FaInstagram, FaLinkedinIn, FaWhatsapp, FaTwitter, FaTelegramPlane, FaDiscord } from 'react-icons/fa';
 import { useAuth } from '../auth/AuthContext';
-import { Button, Card, CardContent, Typography, Box, IconButton } from '@mui/material';
+import { Button, Typography, Box, IconButton } from '@mui/material';
+
+import RatingComponent from './RatingComponent';
 
 const CourseDetail = () => {
   const { user } = useAuth();
@@ -18,12 +20,17 @@ const CourseDetail = () => {
     }
     setLoading(true);
     api.getCourseDetail(id)
-      .then(data => setCourse(data))
+      .then(data => {
+        console.log("Course data from API:", data);
+        setCourse(data);
+      })
       .catch(error => console.error("Error al obtener detalles:", error))
       .finally(() => setLoading(false));
   }, [id]);
 
-  useEffect(() => { fetchDetails(); }, [fetchDetails]);
+  useEffect(() => {
+    fetchDetails();
+  }, [fetchDetails]);
 
   const handleGenerateCurriculum = async () => {
     setIsGenerating(true);
@@ -54,6 +61,7 @@ const CourseDetail = () => {
       </div>
       <div className="page-panel course-detail-panel">
         <p className="course-description">{course.description}</p>
+        <RatingComponent entityId={course.id} entityType="course" />
 
 <Box sx={{ mt: 2, mb: 3 }}>
   <Typography variant="h6" component="h4" gutterBottom>Compartir Curso:</Typography>
@@ -119,6 +127,7 @@ const CourseDetail = () => {
                 <div className="module-step-content page-panel">
                   <h4>{module.title}</h4>
                   <p>{module.description}</p>
+                  <RatingComponent entityId={module.id} entityType="module" />
                   {!module.is_locked ? (
                     <Button component={Link} to={`/module/${module.id}`} variant="outlined">
                       {module.status === 'completed' ? 'Revisar Módulo' : 'Empezar Módulo'}

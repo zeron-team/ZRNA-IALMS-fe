@@ -52,6 +52,7 @@ const Quiz = ({ quizData, moduleId, onQuizComplete }) => {
   };
 
   if (result) {
+    console.log('Navigating to course ID:', quizData.course_id);
     return (
       <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
         <Box sx={{ color: result.passed ? 'success.main' : 'error.main', mb: 2 }}>
