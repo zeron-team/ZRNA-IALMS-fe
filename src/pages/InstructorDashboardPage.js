@@ -64,7 +64,7 @@ const InstructorDashboardPage = () => {
     const [dashboardData, setDashboardData] = useState({ personal_progress: [], room_summary: [] }); // Initialize with empty courses array
     const [detailedProgress, setDetailedProgress] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { } = useAuth();
+    
 
     useEffect(() => {
         Promise.all([

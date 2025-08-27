@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../auth/AuthContext';
 import { api } from '../services/api';
-import { useNavigate } from 'react-router-dom';
 import InfoModal from '../components/InfoModal';
 import RoomCard from '../components/RoomCard';
 import { Box, Typography, Container, Grid, Button, TextField, Paper } from '@mui/material';
@@ -14,7 +13,6 @@ const MyRoomsPage = () => {
     const { user } = useAuth();
     const [rooms, setRooms] = useState([]);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
 
     const [isCreating, setIsCreating] = useState(false);
     const [roomName, setRoomName] = useState('');

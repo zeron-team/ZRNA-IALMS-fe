@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api'; // Fixed syntax error
-import { FaUsers, FaBook, FaUserCheck, FaLayerGroup, FaChalkboard, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaUsers, FaBook, FaUserCheck, FaLayerGroup, FaChalkboard, FaChevronDown, FaFaChevronUp, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import { 
     Box, Typography, Grid, Card, Table, TableBody, 
     TableCell, TableContainer, TableHead, TableRow, Collapse, IconButton, Container, Button
@@ -62,18 +62,21 @@ const AdminDashboardPage = () => {
   const [stats, setStats] = useState(null);
   const [enrollments, setEnrollments] = useState([]);
   const [roomsSummary, setRoomsSummary] = useState([]);
+  const [globalRatingCounts, setGlobalRatingCounts] = useState({ upvotes: 0, downvotes: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
       api.getDashboardStats(),
       api.getEnrollmentsWithProgress(),
-      api.getAllRoomsSummary()
+      api.getAllRoomsSummary(),
+      api.getGlobalRatingCounts()
     ])
-    .then(([statsData, enrollmentsData, roomsData]) => {
+    .then(([statsData, enrollmentsData, roomsData, globalRatingData]) => {
       setStats(statsData);
       setEnrollments(enrollmentsData);
       setRoomsSummary(roomsData);
+      setGlobalRatingCounts(globalRatingData);
     })
     .catch(console.error)
     .finally(() => setLoading(false));
@@ -87,6 +90,8 @@ const AdminDashboardPage = () => {
     { icon: <FaUserCheck size={40} color="#FFC107" />, label: 'Inscripciones Totales', value: stats.total_enrollments },
     { icon: <FaLayerGroup size={40} color="#00BCD4" />, label: 'Categorías Totales', value: stats.total_categories },
     { icon: <FaChalkboard size={40} color="#F44336" />, label: 'Salas Totales', value: roomsSummary.length },
+    { icon: <FaThumbsUp size={40} color="green" />, label: 'Votos Positivos', value: globalRatingCounts.upvotes },
+    { icon: <FaThumbsDown size={40} color="red" />, label: 'Votos Negativos', value: globalRatingCounts.downvotes },
   ] : [];
 
   return (

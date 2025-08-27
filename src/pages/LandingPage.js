@@ -5,16 +5,11 @@ import {
   FaBrain,
   FaChalkboardTeacher,
   FaPlusCircle,
-  FaCheck,
   FaTimes,
   FaUserGraduate,
   FaArrowRight,
   FaFilter,
-  FaBroom,
-  FaPlayCircle,
   FaCheckCircle,
-  FaThumbsUp,
-  FaThumbsDown,
 } from 'react-icons/fa';
 import CourseCard from '../components/CourseCard';
 import CourseSuggestionCard from '../components/CourseSuggestionCard';
@@ -54,9 +49,6 @@ const LandingPage = () => {
   // State for AuthModal
   const [showAuthModal, setShowAuthModal] = useState(false);
 
-  // New state for global rating counts
-  const [globalRatingCounts, setGlobalRatingCounts] = useState({ upvotes: 0, downvotes: 0 });
-
   const handleOpenAuthModal = () => setShowAuthModal(true);
   const handleCloseAuthModal = () => setShowAuthModal(false);
 
@@ -69,15 +61,6 @@ const LandingPage = () => {
       console.error('Error fetching course suggestions:', error);
     } finally {
       setLoadingSuggestions(false);
-    }
-  }, []);
-
-  const fetchGlobalRatingCounts = useCallback(async () => {
-    try {
-      const data = await api.getGlobalRatingCounts();
-      setGlobalRatingCounts(data);
-    } catch (error) {
-      console.error('Error fetching global rating counts:', error);
     }
   }, []);
 
@@ -158,8 +141,7 @@ const LandingPage = () => {
       });
     
     fetchSuggestions(); // Fetch suggestions on component mount
-    fetchGlobalRatingCounts(); // Fetch global rating counts on component mount
-  }, [fetchSuggestions, fetchGlobalRatingCounts]);
+  }, [fetchSuggestions]);
 
   const handleCategoryToggle = (categoryId) => {
     setSelectedCategories(prev =>

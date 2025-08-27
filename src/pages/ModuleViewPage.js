@@ -9,7 +9,7 @@ import Quiz from '../components/Quiz';
 import ProgressBar from '../components/ProgressBar';
 import { FaArrowLeft, FaArrowRight, FaFilePdf } from 'react-icons/fa'; // Added FaFilePdf
 import { useAuth } from '../auth/AuthContext';
-import { Box, Typography, Container, Grid, Button, Paper, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
+import { Box, Typography, Grid, Button, Paper, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
 import { FaBookOpen, FaCheckCircle } from 'react-icons/fa';
 
 const ModuleViewPage = () => {

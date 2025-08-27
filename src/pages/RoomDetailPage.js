@@ -1,13 +1,13 @@
 // frontend/src/pages/RoomDetailPage.js
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { useAuth } from '../auth/AuthContext';
 import { FaWhatsapp, FaTelegram, FaClipboard, FaPlusCircle, FaTrash, FaEdit } from 'react-icons/fa';
 import { 
     Box, Typography, Container, Grid, Button, Paper, TextField, 
-    Dialog, DialogTitle, DialogContent, DialogActions, List, ListItem, ListItemText, IconButton, Card, CardContent
+    Dialog, DialogTitle, DialogContent, DialogActions, List, ListItem, ListItemText, IconButton, Card
 } from '@mui/material';
 import '../styles/InternalPageHeader.css'; // Corrected import path
 

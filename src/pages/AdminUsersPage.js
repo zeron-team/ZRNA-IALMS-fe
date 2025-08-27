@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import UserFormModal from '../components/UserFormModal';
-import { Box, Typography, Container, Grid, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Box, Typography, Container, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { FaPlusCircle } from 'react-icons/fa';
 import '../styles/InternalPageHeader.css'; // Corrected import path
 

@@ -27,7 +27,7 @@ const RatingComponent = ({ entityId, entityType, centerAlign = false }) => {
     } catch (error) {
       console.error(`Error fetching ${entityType} ratings:`, error);
     }
-  }, [entityId, entityType, user]);
+  }, [entityId, entityType]); // Removed 'user' from dependency array
 
   useEffect(() => {
     fetchRatings();
