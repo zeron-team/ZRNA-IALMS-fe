@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api'; // Fixed syntax error
-import { FaUsers, FaBook, FaUserCheck, FaLayerGroup, FaChalkboard, FaChevronDown, FaFaChevronUp, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
+import { FaUsers, FaBook, FaUserCheck, FaLayerGroup, FaChalkboard, FaChevronDown, FaChevronUp, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import { 
     Box, Typography, Grid, Card, Table, TableBody, 
     TableCell, TableContainer, TableHead, TableRow, Collapse, IconButton, Container, Button
