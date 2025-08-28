@@ -1,6 +1,6 @@
 // frontend/src/services/api.js
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
 /**
  * Función helper para realizar todas las peticiones a la API.
@@ -133,40 +133,7 @@ export const api = {
     method: 'DELETE',
   }),
   getDashboardStats: () => request('/admin/dashboard-stats'),
-  getDetailedEnrollments: () => request('/admin/enrollments'),
-
-  downloadModulePdf: async (moduleId) => {
-    const token = localStorage.getItem('token');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-
-    const response = await fetch(`${API_URL}/modules/${moduleId}/download-pdf`, { headers });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ detail: 'Error al descargar el PDF' }));
-      throw new Error(errorData.detail);
-    }
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    const contentDisposition = response.headers.get('content-disposition');
-    let filename = `module_${moduleId}.pdf`;
-    if (contentDisposition) {
-        const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
-        if (filenameMatch.length > 1) {
-            filename = filenameMatch[1];
-        }
-    }
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    window.URL.revokeObjectURL(url);
-  },
-
+  getDetailedEnrollments: () => request('/admin/enrollments-detailed'),
   createRoom: (roomData) => request('/rooms/', {
         method: 'POST',
         body: JSON.stringify(roomData)
@@ -188,6 +155,42 @@ export const api = {
   removeCourseFromRoom: (roomId, courseId) => request(`/rooms/${roomId}/courses/${courseId}`, { method: 'DELETE' }),
   removeMemberFromRoom: (roomId, userId) => request(`/rooms/${roomId}/members/${userId}`, { method: 'DELETE' }),
   updateRoom: (roomId, roomData) => request(`/rooms/${roomId}`, { method: 'PUT', body: JSON.stringify(roomData)}),
+
+  downloadModulePdf: async (moduleId) => {
+    const token = localStorage.getItem('token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    const response = await fetch(`${API_URL}/modules/${moduleId}/download-pdf`, { headers });
+
+    if (!response.ok) throw new Error('Network response was not ok');
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const contentDisposition = response.headers.get('content-disposition');
+    let filename = `module_${moduleId}.pdf`;
+    if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+        if (filenameMatch.length > 1) {
+            filename = filenameMatch[1];
+        }
+    }
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  },
+
+  generateModuleAudio: async (moduleId) => {
+    const token = localStorage.getItem('token');
+    const headers = { 'Authorization': `Bearer ${token}` };
+    const response = await fetch(`${API_URL}/modules/${moduleId}/generate-audio`, { method: 'POST', headers });
+    if (!response.ok) throw new Error('Network response was not ok');
+    return await response.json();
+  },
 
   // --- Ratings ---
   rateCourse: (courseId, isUpvote) => request(`/ratings/course/${courseId}`, {

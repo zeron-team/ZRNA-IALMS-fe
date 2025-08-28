@@ -3,13 +3,13 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import { api } from '../services/api';
+import { api, API_URL } from '../services/api';
 import NeuralLoader from '../components/NeuralLoader';
 import Quiz from '../components/Quiz';
 import ProgressBar from '../components/ProgressBar';
-import { FaArrowLeft, FaArrowRight, FaFilePdf } from 'react-icons/fa'; // Added FaFilePdf
+import { FaArrowLeft, FaArrowRight, FaFilePdf, FaHeadphones } from 'react-icons/fa'; // Added FaFilePdf
 import { useAuth } from '../auth/AuthContext';
-import { Box, Typography, Grid, Button, Paper, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
+import { Box, Typography, Grid, Button, Paper, List, ListItem, ListItemText, ListItemIcon, useMediaQuery, useTheme } from '@mui/material';
 import { FaBookOpen, FaCheckCircle } from 'react-icons/fa';
 
 const ModuleViewPage = () => {
@@ -18,9 +18,13 @@ const ModuleViewPage = () => {
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
   const [quizData, setQuizData] = useState(null);
   const [showQuiz, setShowQuiz] = useState(false);
   const { moduleId } = useParams();
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const fetchModuleData = useCallback(() => {
     if (!moduleId || isNaN(parseInt(moduleId))) {
@@ -75,6 +79,18 @@ const ModuleViewPage = () => {
     if (passed) {
       fetchModuleData();
       setShowQuiz(false);
+    }
+  };
+
+  const handleGenerateAudio = async () => {
+    setIsGeneratingAudio(true);
+    try {
+      await api.generateModuleAudio(moduleId);
+      fetchModuleData();
+    } catch (error) {
+      alert("Error al generar el audio.");
+    } finally {
+      setIsGeneratingAudio(false);
     }
   };
 
@@ -171,18 +187,37 @@ const ModuleViewPage = () => {
           <Paper elevation={3} sx={{ p: 3, height: '100%' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
               <Typography variant="h4" component="h1" gutterBottom>{moduleData.title}</Typography>
+              <Box>
+              {moduleData.content_data && !moduleData.content_audio_url && (
+                <Button 
+                  variant="outlined" 
+                  startIcon={<FaHeadphones />} 
+                  onClick={handleGenerateAudio}
+                  disabled={isGeneratingAudio}
+                  sx={{ mr: 1 }}
+                >
+                  {isGeneratingAudio ? 'Generando...' : (isSmallScreen ? null : 'Escuchar Módulo')}
+                </Button>
+              )}
               {moduleData.content_data && (
                 <Button 
                   variant="outlined" 
                   startIcon={<FaFilePdf />} 
                   onClick={handleDownloadPdf}
                 >
-                  Descargar PDF
+                  {isSmallScreen ? null : 'Descargar PDF'}
                 </Button>
               )}
+              </Box>
             </Box>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>{moduleData.description}</Typography>
             
+            {moduleData.content_audio_url && (
+              <audio controls src={`${API_URL}/${moduleData.content_audio_url.startsWith('static') ? moduleData.content_audio_url : 'static/audio/modules/' + moduleData.content_audio_url}`} style={{ width: '100%', marginBottom: '20px' }}>
+                Tu navegador no soporta el elemento de audio.
+              </audio>
+            )}
+
             {moduleData.content_data ? (
               <Box sx={{ '& img': { maxWidth: '100%', height: 'auto' } }}>
                 <ReactMarkdown children={moduleData.content_data} />
