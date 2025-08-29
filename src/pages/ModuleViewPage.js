@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { api, API_URL } from '../services/api';
-import NeuralLoader from '../components/NeuralLoader';
+import GeneratingContent from '../components/GeneratingContent';
 import Quiz from '../components/Quiz';
 import ProgressBar from '../components/ProgressBar';
 import { FaArrowLeft, FaArrowRight, FaFilePdf, FaHeadphones } from 'react-icons/fa'; // Added FaFilePdf
@@ -121,10 +121,10 @@ const ModuleViewPage = () => {
     const completedCount = modules.filter(m => m.status === 'completed').length;
     const progress = Math.round((completedCount / modules.length) * 100);
 
-    const canEdit = user.role.name === 'admin' || user.role.name === 'instructor' || user.id === course.creator_id;
+    const canGenerate = user.role.name === 'admin' || user.role.name === 'instructor' || user.id === course.creator_id || course.is_enrolled;
     let allowed = false;
     let incomplete = false;
-    if (canEdit) {
+    if (canGenerate) {
       if (currentIndex === 0) {
         allowed = true;
       } else if (prev && prev.content_data) {
@@ -146,7 +146,7 @@ const ModuleViewPage = () => {
   if (loading || !course) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Cargando lección...</Typography>;
   if (!moduleData) return <Typography sx={{ textAlign: 'center', mt: 4 }}>No se encontró el módulo.</Typography>;
 
-  const canEdit = user && (user.role.name === 'admin' || user.role.name === 'instructor' || user.id === course.creator_id);
+  const canGenerate = user && (user.role.name === 'admin' || user.role.name === 'instructor' || user.id === course.creator_id || course.is_enrolled);
 
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
@@ -224,8 +224,8 @@ const ModuleViewPage = () => {
               </Box>
             ) : (
               <Box sx={{ my: 4, p: 3, border: '1px dashed grey', borderRadius: 2, textAlign: 'center' }}>
-                {canEdit ? (
-                  isGenerating ? <NeuralLoader /> : (
+                {canGenerate ? (
+                  isGenerating ? <GeneratingContent /> : (
                     <>
                       {prevModuleIncomplete && <Typography color="error" sx={{ mb: 2 }}>Debes generar el contenido del módulo anterior primero.</Typography>}
                       <Button

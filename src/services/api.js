@@ -1,6 +1,6 @@
 // frontend/src/services/api.js
 
-export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+export const API_URL = "http://localhost:8000/api";
 
 /**
  * Función helper para realizar todas las peticiones a la API.
